@@ -7,7 +7,7 @@ from django.views import View
 from django.http import HttpRequest, JsonResponse, HttpResponse
 
 from .client import oAuth2Client
-from config.settings import (
+from core.settings import (
     CLIENT_SECRET,
     CLIENT_ID,
     REDIRECT_URI,
