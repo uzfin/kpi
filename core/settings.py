@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
+from environs import Env
+
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a1^z+@7qboe8ln*3(xsmuv&82=fu)-q#bln2-5mqc5qz4b!c98'
+SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -125,3 +129,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# HEMIS AUTH
+CLIENT_SECRET = env.str("CLIENT_SECRET")
+CLIENT_ID = env.str("CLIENT_ID")
+REDIRECT_URI = env.str("REDIRECT_URI")
+AUTHORIZE_URL = env.str("AUTHORIZE_URL")
+TOKEN_URL = env.str("TOKEN_URL")
+RESOURCE_OWNER_URL = env.str("RESOURCE_OWNER_URL")
