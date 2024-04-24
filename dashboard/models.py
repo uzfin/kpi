@@ -34,6 +34,12 @@ class Metric(models.Model):
         return self.name
 
 
+class Result(models.Model):
+    kpi = models.ForeignKey(KPI, on_delete=models.CASCADE)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='results')
+    total_ball = models.PositiveIntegerField()
+
+
 class Submission(models.Model):
     employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='submissions')
     manager = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
@@ -47,15 +53,38 @@ class Submission(models.Model):
         return self.employee.username
 
     def save(self, *args, **kwargs):
-        if not self.ball and self.metric:
-            self.ball = self.metric.ball
+        if not self.pk:  # If this is a new submission
+            if not self.ball and self.metric:
+                self.ball = self.metric.ball
+
+            try:
+                result = self.employee.results.get(kpi=self.metric.kpi)
+                result.total_ball += self.ball
+                result.save()
+            except Result.DoesNotExist:
+                result = Result(kpi=self.metric.kpi, employee=self.employee, total_ball=self.ball)
+                result.save()
+        else:  # If this is an update to an existing submission
+            prev_instance = Submission.objects.get(pk=self.pk)
+            if prev_instance.ball != self.ball:
+                try:
+                    result = self.employee.results.get(kpi=self.metric.kpi)
+                    result.total_ball += (self.ball - prev_instance.ball)
+                    result.save()
+                except Result.DoesNotExist:
+                    pass
+
         super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        try:
+            result = Result.objects.get(kpi=self.metric.kpi, employee=self.employee)
+            result.total_ball -= self.ball
+            result.save()
+        except Result.DoesNotExist:
+            pass
 
-class Result(models.Model):
-    kpi = models.ForeignKey(KPI, on_delete=models.CASCADE)
-    employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='results')
-    total_ball = models.PositiveIntegerField()
+        super().delete(*args, **kwargs)
 
 
 class Notefication(models.Model):

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class User(AbstractUser):
@@ -18,3 +19,18 @@ class User(AbstractUser):
     @property
     def full_name(self):
         return self.get_full_name()
+
+    def get_kpi_status(self, kpi):
+        ball = 0
+        try:
+            ball = self.results.get(kpi=kpi).total_ball
+        except ObjectDoesNotExist:
+            pass
+
+        return {
+            "id": kpi.id,
+            "name": kpi.name,
+            "total": kpi.total_ball,
+            "ball": ball,
+            "percent": round(ball / kpi.total_ball * 100, 2)
+        }

@@ -5,6 +5,7 @@ from .models import (
     Metric,
     Submission,
     Notefication,
+    Result,
 )
 
 
@@ -14,4 +15,5 @@ admin.site.register((
     Metric,
     Submission,
     Notefication,
+    Result,
 ))
