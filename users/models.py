@@ -13,7 +13,7 @@ class User(AbstractUser):
         (EMPLOYEE, 'Employee'),
     )
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=EMPLOYEE)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/default.jpg')
+    profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/default.png')
 
     @property
     def full_name(self):
