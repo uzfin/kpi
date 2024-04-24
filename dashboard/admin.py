@@ -1,3 +1,15 @@
 from django.contrib import admin
+from .models import (
+    Department,
+    KPI,
+    Metric,
+    Submission,
+)
 
-# Register your models here.
+
+admin.site.register((
+    Department,
+    KPI,
+    Metric,
+    Submission,
+))
