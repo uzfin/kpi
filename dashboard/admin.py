@@ -4,6 +4,7 @@ from .models import (
     KPI,
     Metric,
     Submission,
+    Notefication,
 )
 
 
@@ -12,4 +13,5 @@ admin.site.register((
     KPI,
     Metric,
     Submission,
+    Notefication,
 ))

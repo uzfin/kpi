@@ -56,3 +56,15 @@ class Result(models.Model):
     kpi = models.ForeignKey(KPI, on_delete=models.CASCADE)
     employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='results')
     total_ball = models.PositiveIntegerField()
+
+
+class Notefication(models.Model):
+    massage = models.TextField()
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notefications')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
+    unread = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.massage[:100]
