@@ -17,6 +17,8 @@ class DashboardView(LoginRequiredMixin, View):
         pairs = []
         if user.role == User.EMPLOYEE:
             for i in range(0, len(kpis), 2):
+                if len(pairs) == 2: break
+
                 if i + 1 < len(kpis):
                     pairs.append((user.get_kpi_status(kpis[i]), user.get_kpi_status(kpis[i + 1])))
                 else:
@@ -26,6 +28,8 @@ class DashboardView(LoginRequiredMixin, View):
             n = len(users)
             
             for i in range(0, len(kpis), 2):
+                if len(pairs) == 2: break
+
                 if i + 1 < len(kpis):
                     percent1, percent2 = 0, 0
                     ball1, ball2 = 0, 0
@@ -78,6 +82,8 @@ class DashboardView(LoginRequiredMixin, View):
                         )
                     )
 
+            # TODO: status of departments
+            
         ctx = {
             "user": request.user,
             "root_user": User,
