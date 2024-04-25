@@ -15,15 +15,15 @@
                 {{ kpi.description }}
             </p>
             </br>
-            <h4 class="card-title">Update Metric</h4>
+            <h4 class="card-title">Metrikni tahrirlash</h4>
             <form class="forms-sample" method="post">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="exampleInputName1">Name</label>
+                    <label for="exampleInputName1">Nomi</label>
                     <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name" value="{{ metric.name }}" required>
                 </div>
                 <div class="form-group">
-                    <label for="exampleTextarea1">Description</label>
+                    <label for="exampleTextarea1">Ta'rif</label>
                     <textarea class="form-control" id="exampleTextarea1" name="description" rows="4" value="{{ metric.description }}" required>{{ kpi.description }}</textarea>
                 </div>
                 <div class="form-group">
@@ -31,14 +31,14 @@
                     <input type="number" class="form-control" id="exampleInputName1" name="ball" placeholder="Ball" value="{{ metric.ball }}" required>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputName1">Deadline</label>
+                    <label for="exampleInputName1">Muddat</label>
                     <input type="date" class="form-control" id="exampleInputName1" name="deadline" placeholder="Deadline" value="{{ deadline }}" required>
                 </div>
 
                 <input type="hidden" name="kpi" value="{{kpi.id}}">
                 
                 <div class="form-group">
-                    <label>Metric</label>
+                    <label>Metrikga biriktirish uchun tanlang (ixtiyoriy)</label>
                     <select class="js-example-basic-single w-100" id="metricSelect", name="parent">
                         {% if metric.parent %}
                             <option value="{{ metric.parent.id }}">{{ metric.parent.name }}</option>
@@ -54,7 +54,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary mr-2">Update</button>
+                <button type="submit" class="btn btn-primary mr-2">Tahrirlash</button>
             </div>
         </div>
     </div>

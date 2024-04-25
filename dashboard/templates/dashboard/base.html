@@ -89,11 +89,11 @@
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item" href="#">
             <i class="ti-settings text-primary"></i>
-            Profile
+            Profil
           </a>
           <a class="dropdown-item" href="{% url "users:logout" %}">
             <i class="ti-power-off text-primary"></i>
-            Logout
+            Chiqish
           </a>
         </div>
       </li>
@@ -111,7 +111,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url "dashboard:main" %}">
           <i class="icon-grid menu-icon"></i>
-          <span class="menu-title">Dashboard</span>
+          <span class="menu-title">Asosiy</span>
         </a>
       </li>
 
@@ -119,7 +119,7 @@
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
             <i class="icon-bar-graph menu-icon"></i>
-            <span class="menu-title">KPIs</span>
+            <span class="menu-title">KPI lar</span>
             <i class="menu-arrow"></i>
           </a>
           <div class="collapse" id="charts">
@@ -144,7 +144,7 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url "dashboard:kpi" %}">
             <i class="mdi mdi-home-modern menu-icon"></i>
-            <span class="menu-title">KPIs</span>
+            <span class="menu-title">KPI lar</span>
           </a>
         </li>
       {% endif %}
@@ -153,13 +153,13 @@
         <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="mdi mdi-home-modern menu-icon"></i>
-            <span class="menu-title">Departments</span>
+            <span class="menu-title">Bo'limlar</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="icon-head menu-icon"></i>
-            <span class="menu-title">Employees</span>
+            <span class="menu-title">Hodimlar</span>
           </a>
         </li>
       {% endif %}
@@ -168,17 +168,17 @@
         <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="icon-head menu-icon"></i>
-            <span class="menu-title">Colleagues</span>
+            <span class="menu-title">Hamkasblarim</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "dashboard:submissions" %}">
+            <i class="mdi mdi-briefcase-upload menu-icon"></i>
+            <span class="menu-title">Ishlarim</span>
           </a>
         </li>
       {% endif %}
 
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="mdi mdi-briefcase-upload menu-icon"></i>
-          <span class="menu-title">Submissions</span>
-        </a>
-      </li>
     </ul>
   </nav>
   <!-- partial -->

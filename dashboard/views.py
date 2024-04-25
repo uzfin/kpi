@@ -371,3 +371,22 @@ class MetricUpdateView(IsManager, View):
         else:
             messages.info(request, "There was an error with metric data. Please try again.")
             return redirect('dashboard:main')
+
+
+class SubmissionsView(LoginRequiredMixin, View):
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        user = request.user
+
+        if user.role == User.EMPLOYEE:
+            submissions = user.submissions.order_by("-submitted_at")
+
+        ctx = {
+            "user": request.user,
+            "root_user": User,
+            "submissions": submissions,
+            "notefications": request.user.notefications.filter(unread=True).all(),
+            "date": date.today()
+        }
+
+        return render(request, 'dashboard/submissions/list.html', ctx)
