@@ -1,0 +1,42 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Create New KPI</h4>
+            <p class="card-description">
+            Enter New KPI Data
+            </p>
+            <form class="forms-sample" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="exampleInputName1">Name</label>
+                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Description</label>
+                    <textarea class="form-control" id="exampleTextarea1" name="description" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputName1">Ball</label>
+                    <input type="number" class="form-control" id="exampleInputName1" name="total_ball" placeholder="Ball">
+                </div>
+                <div class="form-group">
+                    <label>Responsible Employee</label>
+                    <select class="js-example-basic-single w-100" name="responsible_employee">
+                        {% for manager in managers %}
+                            <option value="{{ manager.id }}">{{ manager.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Update KPI</h4>
+            <p class="card-description">
+            Enter KPI New Data
+            </p>
+            <form class="forms-sample" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="exampleInputName1">Name</label>
+                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name" value="{{ kpi.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Description</label>
+                    <textarea class="form-control" id="exampleTextarea1" name="description" rows="4">{{ kpi.description }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputName1">Ball</label>
+                    <input type="number" class="form-control" id="exampleInputName1" name="total_ball" placeholder="Ball" value={{ kpi.total_ball }}>
+                </div>
+                <div class="form-group">
+                    <label>Responsible Employee</label>
+                    <select class="js-example-basic-single w-100" name="responsible_employee">
+                        <option value="{{ kpi.responsible_employee.id }}">{{ kpi.responsible_employee.username }}</option>
+                        {% for manager in managers %}
+                            {% if manager.id != kpi.responsible_employee.id %}
+                                <option value="{{ manager.id }}">{{ manager.username }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Update</button>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

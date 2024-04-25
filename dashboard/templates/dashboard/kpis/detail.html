@@ -1,0 +1,31 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ kpi.name }}</h4>
+          <p class="card-description">
+            Umumiy ball <code>{{ kpi.total_ball }}</code>. {{ kpi.responsible_employee.full_name }}ga biriktirilgan.
+          </p>
+          <p>
+            {{ kpi.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+    {% comment %} TODO: statistics of Departments, Employees {% endcomment %}
+</div>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <a href="{% url "dashboard:kpi-delete" kpi.id %}" class="btn btn-inverse-danger">Delete</a>
+            <a href="{% url "dashboard:kpi-update" kpi.id %}" class="btn btn-inverse-primary">Update</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
