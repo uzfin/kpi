@@ -1,0 +1,33 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Ishni joylash</h4>
+            <form class="forms-sample" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Metrikga biriktirish uchun tanlang (ixtiyoriy)</label>
+                    <select class="js-example-basic-single w-100" id="metricSelect", name="metric">
+                        <option>Xech biri!</option>
+                        {% for metric in metrics %}
+                            <option value="{{ metric.id }}">{{ metric.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Izoh</label>
+                    <textarea class="form-control" id="exampleTextarea1" name="description" rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary mr-2">Joylash</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

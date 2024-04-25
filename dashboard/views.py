@@ -3,10 +3,10 @@ from datetime import date
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from users.permissions import IsCEO, IsManager
+from users.permissions import IsCEO, IsManager, IsEmployee
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from .forms import KPICreationForm, MetricCreationForm
+from .forms import KPICreationForm, MetricCreationForm, SubmissionCreationForm
 
 from .models import KPI, Notefication, Department, Metric
 from users.models import User
@@ -176,10 +176,10 @@ class KPIDeleteView(IsCEO, View):
             kpi = KPI.objects.get(id=kpi_id)
             kpi.delete()
         except KPI.DoesNotExist:
-            messages.info(request, "There was an error with kpi data. Please try again.")
+            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:kpi')
 
-        messages.success(request, "KPI has been deleted succesfully.")
+        messages.success(request, "KPI muvaffaqiyatli oʻchirildi.")
         return redirect('dashboard:kpi')
 
 
@@ -190,7 +190,7 @@ class KPIUpdateView(IsCEO, View):
         try:
             kpi = KPI.objects.get(id=kpi_id)
         except KPI.DoesNotExist:
-            messages.info(request, "There was an error with kpi data. Please try again.")
+            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:kpi')
 
         ctx = {
@@ -208,17 +208,17 @@ class KPIUpdateView(IsCEO, View):
         try:
             kpi = KPI.objects.get(id=kpi_id)
         except KPI.DoesNotExist:
-            messages.info(request, "There was an error with kpi data. Please try again.")
+            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:kpi')
 
         update_form = KPICreationForm(request.POST, instance=kpi)
 
         if update_form.is_valid():
             update_form.save()
-            messages.success(request, "KPI has been updated succesfully.")
+            messages.success(request, "KPI muvaffaqiyatli tahrirlandi.")
             return redirect('dashboard:kpi')
         else:
-            messages.info(request, "There was an error with kpi data. Please try again.")
+            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:kpi')
 
 
@@ -230,7 +230,7 @@ class MetricsView(IsManager, View):
         try:
             kpi = KPI.objects.get(id=kpi_id)
         except KPI.DoesNotExist:
-            messages.info(request, "There was an error with kpi data. Please try again.")
+            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:main')
 
         ctx = {
@@ -253,7 +253,7 @@ class MetricCreateView(IsManager, View):
         try:
             kpi = KPI.objects.get(id=kpi_id)
         except KPI.DoesNotExist:
-            messages.info(request, "There was an error with kpi data. Please try again.")
+            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:main')
 
         ctx = {
@@ -272,13 +272,13 @@ class MetricCreateView(IsManager, View):
         create_form = MetricCreationForm(request.POST)
 
         if create_form.is_valid():
-            messages.success(request, "New Metric has been created succesfully.")
+            messages.success(request, "Yangi Metrik muvaffaqiyatli yaratildi.")
 
             create_form.save()
             return redirect('dashboard:main')
 
         else:
-            messages.info(request, "There was an error with metric data. Please try again.")
+            messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
 
             return redirect('dashboard:main')
 
@@ -292,7 +292,7 @@ class MetricDetailView(IsManager, View):
             kpi = KPI.objects.get(id=kpi_id)
             metric = kpi.metrics.get(id=metric_id)
         except KPI.DoesNotExist or Metric.DoesNotExist:
-            messages.info(request, "There was an error with metric data. Please try again.")
+            messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:main')
 
         print(metric.children.all())
@@ -319,11 +319,11 @@ class MetricDeleteView(IsManager, View):
             kpi = KPI.objects.get(id=kpi_id)
             metric = kpi.metrics.get(id=metric_id)
         except KPI.DoesNotExist or Metric.DoesNotExist:
-            messages.info(request, "There was an error with metric data. Please try again.")
+            messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:main')
         metric.delete()
 
-        messages.success(request, "KPI has been deleted succesfully.")
+        messages.success(request, "Metrik muvaffaqiyatli oʻchirildi.")
         return redirect('dashboard:main')
 
 
@@ -336,7 +336,7 @@ class MetricUpdateView(IsManager, View):
             kpi = KPI.objects.get(id=kpi_id)
             metric = kpi.metrics.get(id=metric_id)
         except KPI.DoesNotExist or Metric.DoesNotExist:
-            messages.info(request, "There was an error with metric data. Please try again.")
+            messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:main')
 
         ctx = {
@@ -359,17 +359,17 @@ class MetricUpdateView(IsManager, View):
             kpi = KPI.objects.get(id=kpi_id)
             metric = kpi.metrics.get(id=metric_id)
         except KPI.DoesNotExist or Metric.DoesNotExist:
-            messages.info(request, "There was an error with metric data. Please try again.")
+            messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:main')
 
         update_form = MetricCreationForm(request.POST, instance=metric)
 
         if update_form.is_valid():
             update_form.save()
-            messages.success(request, "Metric has been updated succesfully.")
+            messages.success(request, "Metrik muvaffaqiyatli tahrirlandi.")
             return redirect('dashboard:main')
         else:
-            messages.info(request, "There was an error with metric data. Please try again.")
+            messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:main')
 
 
@@ -380,6 +380,8 @@ class SubmissionsView(LoginRequiredMixin, View):
 
         if user.role == User.EMPLOYEE:
             submissions = user.submissions.order_by("-submitted_at")
+        elif user.role == User.MANAGER:
+            submissions = user.submissions.filter(metric__kpi__in=KPI.objects.filter(responsible_employee=user)).order_by("-submitted_at")
 
         ctx = {
             "user": request.user,
@@ -390,3 +392,21 @@ class SubmissionsView(LoginRequiredMixin, View):
         }
 
         return render(request, 'dashboard/submissions/list.html', ctx)
+
+
+class SubmissionCreateView(IsEmployee, View):
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        user = request.user
+
+        create_form = SubmissionCreationForm(request.POST, request.FILES)
+
+        if create_form.is_valid():
+            create_form.save()
+
+            messages.success(request, "Ishingiz muvaffaqiyatli joylandi.")
+            return redirect('dashboard:submissions')
+
+        else:
+            messages.info(request, "Ishingizni joylashda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:submissions')

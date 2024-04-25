@@ -39,6 +39,9 @@ class Result(models.Model):
     employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='results')
     total_ball = models.PositiveIntegerField()
 
+    class Meta:
+        unique_together = ('kpi', 'employee')
+
 
 class Submission(models.Model):
     employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='submissions')

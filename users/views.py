@@ -24,13 +24,13 @@ class RegisterView(View):
         return render(request, "users/register.html")
 
     def post(self, request):
-        create_form = UserCreateForm(data=request.POST)
+        create_form = UserCreateForm(request.POST, request.FILES)
 
         if create_form.is_valid():
             create_form.save()
             return redirect('users:login')
         else:
-            messages.info(request, "There was an error with your registration. Please try again.")
+            messages.info(request, "Roʻyxatdan oʻtishda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
 
             return render(request, "users/register.html")
 
@@ -46,18 +46,18 @@ class LoginView(View):
             user = login_form.get_user()
             login(request, user)
 
-            messages.success(request, "You have successfully logged in.")
+            messages.success(request, "Siz muvaffaqiyatli tizimga kirdingiz.")
 
             return redirect("dashboard:main")
         else:
-            messages.info(request, "Invalid username or password. Please try again.")
+            messages.info(request, "Foydalanuvchi nomi yoki parol noto‘g‘ri. Iltimos, yana bir bor urinib ko'ring.")
             return render(request, "users/login.html")
 
 
 class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
-        messages.info(request, "You have successfully logged out.")
+        messages.info(request, "Siz tizimdan muvaffaqiyatli chiqdingiz.")
         return redirect("users:login")
 
 
