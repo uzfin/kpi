@@ -87,11 +87,11 @@
           <img src="{{ user.profile_picture.url }}" alt="profile"/>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-          <a class="dropdown-item">
+          <a class="dropdown-item" href="#">
             <i class="ti-settings text-primary"></i>
-            Settings
+            Profile
           </a>
-          <a class="dropdown-item">
+          <a class="dropdown-item" href="{% url "users:logout" %}">
             <i class="ti-power-off text-primary"></i>
             Logout
           </a>
@@ -114,42 +114,65 @@
           <span class="menu-title">Dashboard</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-          <i class="icon-bar-graph menu-icon"></i>
-          <span class="menu-title">KPIs</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="charts">
-          <ul class="nav flex-column sub-menu">
-            {% if kpis %}
-              {% for kpi in kpis %}
-                {% if kpi.name|length > 20 %}
-                  <li class="nav-item"> <a class="nav-link" href="#">{{ kpi.name|slice:"0:20" }}...</a></li>
-                {% else %}
-                  <li class="nav-item"> <a class="nav-link" href="#">{{ kpi.name }}</a></li>
-                {% endif %}
-              {% endfor %}
-            {% else %}
-              <li class="nav-item"> <a class="nav-link" href="#">Mavjud emas!</a></li>
-            {% endif %}
-          </ul>
-        </div>
-      </li>
-      {% if user.role != root_user.EMPLOYEE %}
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="mdi mdi-home-modern menu-icon"></i>
-          <span class="menu-title">Departments</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="icon-head menu-icon"></i>
-          <span class="menu-title">Employees</span>
-        </a>
-      </li>
+
+      {% if user.role == root_user.MANAGER %}
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+            <i class="icon-bar-graph menu-icon"></i>
+            <span class="menu-title">KPIs</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="charts">
+            <ul class="nav flex-column sub-menu">
+              {% if kpis %}
+                {% for kpi in kpis %}
+                  {% if kpi.name|length > 20 %}
+                    <li class="nav-item"> <a class="nav-link" href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name|slice:"0:18" }}...</a></li>
+                  {% else %}
+                    <li class="nav-item"> <a class="nav-link" href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name }}</a></li>
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <li class="nav-item"> <a class="nav-link" href="#">Mavjud emas!</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </li>
       {% endif %}
+
+      {% if user.role == root_user.CEO %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "dashboard:kpi" %}">
+            <i class="mdi mdi-home-modern menu-icon"></i>
+            <span class="menu-title">KPIs</span>
+          </a>
+        </li>
+      {% endif %}
+
+      {% if user.role == root_user.CEO or user.role == root_user.MANAGER %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="mdi mdi-home-modern menu-icon"></i>
+            <span class="menu-title">Departments</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="icon-head menu-icon"></i>
+            <span class="menu-title">Employees</span>
+          </a>
+        </li>
+      {% endif %}
+
+      {% if user.role == root_user.EMPLOYEE %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="icon-head menu-icon"></i>
+            <span class="menu-title">Colleagues</span>
+          </a>
+        </li>
+      {% endif %}
+
       <li class="nav-item">
         <a class="nav-link" href="#">
           <i class="mdi mdi-briefcase-upload menu-icon"></i>

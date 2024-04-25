@@ -15,19 +15,19 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="exampleInputName1">Name</label>
-                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name" value="{{ kpi.name }}">
+                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Name" value="{{ kpi.name }}" required>
                 </div>
                 <div class="form-group">
                     <label for="exampleTextarea1">Description</label>
-                    <textarea class="form-control" id="exampleTextarea1" name="description" rows="4">{{ kpi.description }}</textarea>
+                    <textarea class="form-control" id="exampleTextarea1" name="description" rows="4">{{ kpi.description }} required</textarea>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputName1">Ball</label>
-                    <input type="number" class="form-control" id="exampleInputName1" name="total_ball" placeholder="Ball" value={{ kpi.total_ball }}>
+                    <input type="number" class="form-control" id="exampleInputName1" name="total_ball" placeholder="Ball" value={{ kpi.total_ball }} required>
                 </div>
                 <div class="form-group">
                     <label>Responsible Employee</label>
-                    <select class="js-example-basic-single w-100" name="responsible_employee">
+                    <select class="js-example-basic-single w-100" name="responsible_employee" required>
                         <option value="{{ kpi.responsible_employee.id }}">{{ kpi.responsible_employee.username }}</option>
                         {% for manager in managers %}
                             {% if manager.id != kpi.responsible_employee.id %}

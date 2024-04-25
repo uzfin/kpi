@@ -3,12 +3,12 @@ from datetime import date
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from users.permissions import IsCEO
+from users.permissions import IsCEO, IsManager
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from .forms import KPICreationForm
+from .forms import KPICreationForm, MetricCreationForm
 
-from .models import KPI, Notefication, Department
+from .models import KPI, Notefication, Department, Metric
 from users.models import User
 
 
@@ -16,7 +16,11 @@ class DashboardView(LoginRequiredMixin, View):
 
     def get(self, request: HttpRequest) -> HttpResponse:
         user: User = request.user
-        kpis = KPI.objects.all()
+
+        if user.role == User.MANAGER:
+            kpis = KPI.objects.filter(responsible_employee=user)
+        else:
+            kpis = KPI.objects.all()
 
         pairs = []
         if user.role == User.EMPLOYEE:
@@ -71,8 +75,8 @@ class DashboardView(LoginRequiredMixin, View):
                     
                     for user in users:
                         data = user.get_kpi_status(kpis[i])
-                        percent += data1['percent']
-                        ball += data1['ball']
+                        percent += data['percent']
+                        ball += data['ball']
 
                     pairs.append(
                         (
@@ -163,21 +167,6 @@ class KPIDetailView(IsCEO, View):
 
         return render(request, 'dashboard/kpis/detail.html', ctx)
 
-    def post(self, request: HttpRequest) -> HttpResponse:
-        
-        create_form = KPICreationForm(request.POST)
-
-        if create_form.is_valid():
-            messages.success(request, "New KPI has been created succesfully.")
-
-            create_form.save()
-            return redirect('dashboard:kpi')
-
-        else:
-            messages.info(request, "There was an error with kpi data. Please try again.")
-
-            return redirect('dashboard:create-kpi')
-
 
 class KPIDeleteView(IsCEO, View):
 
@@ -231,3 +220,154 @@ class KPIUpdateView(IsCEO, View):
         else:
             messages.info(request, "There was an error with kpi data. Please try again.")
             return redirect('dashboard:kpi')
+
+
+class MetricsView(IsManager, View):
+
+    def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
+        user: User = request.user
+
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+        except KPI.DoesNotExist:
+            messages.info(request, "There was an error with kpi data. Please try again.")
+            return redirect('dashboard:main')
+
+        ctx = {
+            "user": user,
+            "root_user": User,
+            "kpi": kpi,
+            "kpis": KPI.objects.filter(responsible_employee=user),
+            "metrics": kpi.metrics.filter(parent=None),
+            "notefications": user.notefications.filter(unread=True).all(),
+        }
+
+        return render(request, 'dashboard/metrics/list.html', ctx)
+
+
+class MetricCreateView(IsManager, View):
+
+    def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
+        user: User = request.user
+
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+        except KPI.DoesNotExist:
+            messages.info(request, "There was an error with kpi data. Please try again.")
+            return redirect('dashboard:main')
+
+        ctx = {
+            "user": request.user,
+            "root_user": User,
+            "kpi": kpi,
+            "kpis": KPI.objects.filter(responsible_employee=user),
+            "metrics": kpi.metrics.all(),
+            "notefications": request.user.notefications.filter(unread=True).all(),
+        }
+
+        return render(request, 'dashboard/metrics/create.html', ctx)
+
+    def post(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
+        
+        create_form = MetricCreationForm(request.POST)
+
+        if create_form.is_valid():
+            messages.success(request, "New Metric has been created succesfully.")
+
+            create_form.save()
+            return redirect('dashboard:main')
+
+        else:
+            messages.info(request, "There was an error with metric data. Please try again.")
+
+            return redirect('dashboard:main')
+
+
+class MetricDetailView(IsManager, View):
+
+    def get(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
+        user = request.user
+
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+            metric = kpi.metrics.get(id=metric_id)
+        except KPI.DoesNotExist or Metric.DoesNotExist:
+            messages.info(request, "There was an error with metric data. Please try again.")
+            return redirect('dashboard:main')
+
+        print(metric.children.all())
+
+        ctx = {
+            "user": user,
+            "root_user": User,
+            "kpi": kpi,
+            "metric": metric,
+            "children": metric.children.all(),
+            "kpis": KPI.objects.filter(responsible_employee=user),
+            "notefications": request.user.notefications.filter(unread=True).all(),
+        }
+
+        return render(request, 'dashboard/metrics/detail.html', ctx)
+
+
+class MetricDeleteView(IsManager, View):
+
+    def get(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
+        user = request.user
+
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+            metric = kpi.metrics.get(id=metric_id)
+        except KPI.DoesNotExist or Metric.DoesNotExist:
+            messages.info(request, "There was an error with metric data. Please try again.")
+            return redirect('dashboard:main')
+        metric.delete()
+
+        messages.success(request, "KPI has been deleted succesfully.")
+        return redirect('dashboard:main')
+
+
+class MetricUpdateView(IsManager, View):
+
+    def get(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
+        user = request.user
+
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+            metric = kpi.metrics.get(id=metric_id)
+        except KPI.DoesNotExist or Metric.DoesNotExist:
+            messages.info(request, "There was an error with metric data. Please try again.")
+            return redirect('dashboard:main')
+
+        ctx = {
+            "user": request.user,
+            "root_user": User,
+            "kpi": kpi,
+            "deadline": metric.deadline.strftime('%Y-%m-%d'),
+            "metric": metric,
+            "metrics": kpi.metrics.all(),
+            "kpis": KPI.objects.filter(responsible_employee=user),
+            "notefications": request.user.notefications.filter(unread=True).all(),
+        }
+
+        return render(request, 'dashboard/metrics/update.html', ctx)
+    
+    def post(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
+        user = request.user
+
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+            metric = kpi.metrics.get(id=metric_id)
+        except KPI.DoesNotExist or Metric.DoesNotExist:
+            messages.info(request, "There was an error with metric data. Please try again.")
+            return redirect('dashboard:main')
+
+        update_form = MetricCreationForm(request.POST, instance=metric)
+
+        if update_form.is_valid():
+            update_form.save()
+            messages.success(request, "Metric has been updated succesfully.")
+            return redirect('dashboard:main')
+        else:
+            messages.info(request, "There was an error with metric data. Please try again.")
+            return redirect('dashboard:main')
