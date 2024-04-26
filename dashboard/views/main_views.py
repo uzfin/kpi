@@ -95,9 +95,10 @@ class DashboardView(LoginRequiredMixin, View):
             "root_user": User,
             "kpis": kpis,
             "pairs": pairs,
-            "notefications": user.notefications.filter(unread=True).all(),
             "date": date.today()
         }
+        if user.role == User.EMPLOYEE:
+            ctx['notefications'] = user.notefications.filter(unread=True)
 
         return render(request, 'dashboard/main.html', ctx)
 

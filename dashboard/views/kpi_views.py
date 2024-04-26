@@ -19,7 +19,6 @@ class KPIView(IsCEO, View):
             "user": request.user,
             "root_user": User,
             "kpis": KPI.objects.all(),
-            "notefications": request.user.notefications.filter(unread=True).all(),
             "date": date.today()
         }
 
@@ -34,7 +33,6 @@ class KPICreateView(IsCEO, View):
             "user": request.user,
             "root_user": User,
             "managers": User.objects.filter(role=User.MANAGER),
-            "notefications": request.user.notefications.filter(unread=True).all(),
         }
 
         return render(request, 'dashboard/kpis/create.html', ctx)
@@ -44,13 +42,13 @@ class KPICreateView(IsCEO, View):
         create_form = KPICreationForm(request.POST)
 
         if create_form.is_valid():
-            messages.success(request, "New KPI has been created succesfully.")
+            messages.success(request, "Yangi KPI muvaffaqiyatli yaratildi.")
 
             create_form.save()
             return redirect('dashboard:kpi')
 
         else:
-            messages.info(request, "There was an error with kpi data. Please try again.")
+            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
 
             return redirect('dashboard:create-kpi')
 
@@ -62,14 +60,13 @@ class KPIDetailView(IsCEO, View):
         try:
             kpi = KPI.objects.get(id=kpi_id)
         except KPI.DoesNotExist:
-            messages.info(request, "There was an error with kpi data. Please try again.")
+            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:kpi')
 
         ctx = {
             "user": request.user,
             "root_user": User,
             "kpi": kpi,
-            "notefications": request.user.notefications.filter(unread=True).all(),
         }
 
         return render(request, 'dashboard/kpis/detail.html', ctx)
@@ -105,7 +102,6 @@ class KPIUpdateView(IsCEO, View):
             "root_user": User,
             "kpi": kpi,
             "managers": User.objects.filter(role=User.MANAGER),
-            "notefications": request.user.notefications.filter(unread=True).all(),
         }
 
         return render(request, 'dashboard/kpis/update.html', ctx)

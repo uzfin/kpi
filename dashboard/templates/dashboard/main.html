@@ -8,13 +8,17 @@
       <div class="col-12 col-xl-8 mb-4 mb-xl-0">
         <h3 class="font-weight-bold">Hush kelibsiz {{ user.full_name }}!</h3>
         <h6 class="font-weight-normal mb-0">Barcha tizimlar muammosiz ishlayapti!
-          <span class="text-primary"> 
-            {% if notefications %}
-              Sizda {{ notefications.count }} ta o'qilmagan xabarlar mavjud!
-            {% else %}
-              Sizda o'qilmagan xabarlar mavjud emas!
-            {% endif %}
-          </span>
+
+          {% if user.role == root_user.EMPLOYEE %}
+            <span class="text-primary"> 
+              {% if notefications %}
+                Sizda {{ notefications.count }} ta o'qilmagan xabarlar mavjud!
+              {% else %}
+                Sizda o'qilmagan xabarlar mavjud emas!
+              {% endif %}
+            </span>
+          {% endif %}
+
         </h6>
       </div>
       {% comment %} <div class="col-12 col-xl-4">

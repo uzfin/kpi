@@ -26,9 +26,10 @@ class SubmissionsView(LoginRequiredMixin, View):
             "user": request.user,
             "root_user": User,
             "submissions": submissions,
-            "notefications": request.user.notefications.filter(unread=True).all(),
             "date": date.today()
         }
+        if user.role == User.EMPLOYEE:
+            ctx['notefications'] = user.notefications.filter(unread=True).all(),
 
         return render(request, 'dashboard/submissions/list.html', ctx)
 

@@ -28,7 +28,6 @@ class MetricsView(IsManager, View):
             "kpi": kpi,
             "kpis": KPI.objects.filter(responsible_employee=user),
             "metrics": kpi.metrics.filter(parent=None),
-            "notefications": user.notefications.filter(unread=True).all(),
         }
 
         return render(request, 'dashboard/metrics/list.html', ctx)
@@ -51,7 +50,6 @@ class MetricCreateView(IsManager, View):
             "kpi": kpi,
             "kpis": KPI.objects.filter(responsible_employee=user),
             "metrics": kpi.metrics.all(),
-            "notefications": request.user.notefications.filter(unread=True).all(),
         }
 
         return render(request, 'dashboard/metrics/create.html', ctx)
@@ -93,7 +91,6 @@ class MetricDetailView(IsManager, View):
             "metric": metric,
             "children": metric.children.all(),
             "kpis": KPI.objects.filter(responsible_employee=user),
-            "notefications": request.user.notefications.filter(unread=True).all(),
         }
 
         return render(request, 'dashboard/metrics/detail.html', ctx)
@@ -136,7 +133,6 @@ class MetricUpdateView(IsManager, View):
             "metric": metric,
             "metrics": kpi.metrics.all(),
             "kpis": KPI.objects.filter(responsible_employee=user),
-            "notefications": request.user.notefications.filter(unread=True).all(),
         }
 
         return render(request, 'dashboard/metrics/update.html', ctx)
