@@ -28,10 +28,11 @@ class RegisterView(View):
 
         if create_form.is_valid():
             create_form.save()
+
+            messages.success(request, "Siz muvaffaqiyatli ro'yxatdan o'tdingiz. Tizimga kirish uchun login va parol kiriting.")
             return redirect('users:login')
         else:
             messages.info(request, "Roʻyxatdan oʻtishda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-
             return render(request, "users/register.html")
 
 
