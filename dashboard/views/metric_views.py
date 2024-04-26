@@ -23,8 +23,6 @@ class MetricsView(IsManager, View):
             return redirect('dashboard:main')
 
         ctx = {
-            "user": user,
-            "root_user": User,
             "kpi": kpi,
             "kpis": KPI.objects.filter(responsible_employee=user),
             "metrics": kpi.metrics.filter(parent=None),
@@ -45,8 +43,6 @@ class MetricCreateView(IsManager, View):
             return redirect('dashboard:main')
 
         ctx = {
-            "user": request.user,
-            "root_user": User,
             "kpi": kpi,
             "kpis": KPI.objects.filter(responsible_employee=user),
             "metrics": kpi.metrics.all(),
@@ -85,8 +81,6 @@ class MetricDetailView(IsManager, View):
         print(metric.children.all())
 
         ctx = {
-            "user": user,
-            "root_user": User,
             "kpi": kpi,
             "metric": metric,
             "children": metric.children.all(),
@@ -126,8 +120,6 @@ class MetricUpdateView(IsManager, View):
             return redirect('dashboard:main')
 
         ctx = {
-            "user": request.user,
-            "root_user": User,
             "kpi": kpi,
             "deadline": metric.deadline.strftime('%Y-%m-%d'),
             "metric": metric,

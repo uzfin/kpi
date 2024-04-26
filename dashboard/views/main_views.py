@@ -91,11 +91,8 @@ class DashboardView(LoginRequiredMixin, View):
             # TODO: status of departments
 
         ctx = {
-            "user": request.user,
-            "root_user": User,
             "kpis": kpis,
             "pairs": pairs,
-            "date": date.today()
         }
         if user.role == User.EMPLOYEE:
             ctx['notefications'] = user.notefications.filter(unread=True)

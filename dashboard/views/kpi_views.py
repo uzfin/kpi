@@ -16,10 +16,7 @@ class KPIView(IsCEO, View):
     def get(self, request: HttpRequest) -> HttpResponse:
 
         ctx = {
-            "user": request.user,
-            "root_user": User,
             "kpis": KPI.objects.all(),
-            "date": date.today()
         }
 
         return render(request, 'dashboard/kpis/list.html', ctx)
@@ -30,8 +27,6 @@ class KPICreateView(IsCEO, View):
     def get(self, request: HttpRequest) -> HttpResponse:
 
         ctx = {
-            "user": request.user,
-            "root_user": User,
             "managers": User.objects.filter(role=User.MANAGER),
         }
 
@@ -64,8 +59,6 @@ class KPIDetailView(IsCEO, View):
             return redirect('dashboard:kpi')
 
         ctx = {
-            "user": request.user,
-            "root_user": User,
             "kpi": kpi,
         }
 
@@ -98,8 +91,6 @@ class KPIUpdateView(IsCEO, View):
             return redirect('dashboard:kpi')
 
         ctx = {
-            "user": request.user,
-            "root_user": User,
             "kpi": kpi,
             "managers": User.objects.filter(role=User.MANAGER),
         }
