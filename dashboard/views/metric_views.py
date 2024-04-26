@@ -78,8 +78,6 @@ class MetricDetailView(IsManager, View):
             messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:main')
 
-        print(metric.children.all())
-
         ctx = {
             "kpi": kpi,
             "metric": metric,

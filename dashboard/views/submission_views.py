@@ -23,13 +23,8 @@ class SubmissionsView(LoginRequiredMixin, View):
             submissions = user.submissions.filter(metric__kpi__in=KPI.objects.filter(responsible_employee=user)).order_by("-submitted_at")
 
         ctx = {
-            "user": request.user,
-            "root_user": User,
-            "submissions": submissions,
-            "date": date.today()
+            "submissions": submissions
         }
-        if user.role == User.EMPLOYEE:
-            ctx['notefications'] = user.notefications.filter(unread=True).all(),
 
         return render(request, 'dashboard/submissions/list.html', ctx)
 
@@ -40,11 +35,7 @@ class SubmissionCreateView(IsEmployee, View):
         user = request.user
 
         ctx = {
-            "user": request.user,
-            "root_user": User,
             "kpis": KPI.objects.all(),
-            "notefications": request.user.notefications.filter(unread=True).all(),
-            "date": date.today()
         }
 
         return render(request, 'dashboard/submissions/create.html', ctx)
