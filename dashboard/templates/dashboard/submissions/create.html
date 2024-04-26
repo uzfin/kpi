@@ -14,7 +14,7 @@
                 <div class="form-group">
                     <label>KPI tanlang</label>
                     <select class="js-example-basic-single w-100" id="kpiSelect", name="kpi">
-                        <option></option>
+                        <option value=""></option>
                         {% for kpi in kpis %}
                             <option value="{{ kpi.id }}">{{ kpi.name }}</option>
                         {% endfor %}

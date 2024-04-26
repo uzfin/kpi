@@ -40,7 +40,7 @@
                 <div class="form-group">
                     <label>Metrikga biriktirish uchun tanlang (ixtiyoriy)</label>
                     <select class="js-example-basic-single w-100" id="metricSelect", name="parent">
-                        <option>Xech biri!</option>
+                        <option value="">Xech biri!</option>
                         {% for metric in metrics %}
                             <option value="{{ metric.id }}">{{ metric.name }}</option>
                         {% endfor %}
