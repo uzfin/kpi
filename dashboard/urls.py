@@ -1,8 +1,14 @@
 from django.urls import path
-from .views import (
-    DashboardView, KPIView, KPICreateView, KPIDetailView, KPIDeleteView, KPIUpdateView, 
+from dashboard.views.main_views import DashboardView
+from dashboard.views.kpi_views import (
+    KPIView, KPICreateView, KPIDetailView, KPIDeleteView, KPIUpdateView,
+)
+from dashboard.views.metric_views import (
     MetricsView, MetricCreateView, MetricDetailView, MetricDeleteView, MetricUpdateView,
-    SubmissionsView, #SubmissionCreateView
+    MetricsAPIView,
+)
+from dashboard.views.submission_views import (
+    SubmissionsView, SubmissionCreateView,
 )
 
 
@@ -23,5 +29,7 @@ urlpatterns = [
     path("metrics/update/<int:kpi_id>/<int:metric_id>/", MetricUpdateView.as_view(), name="metric-update"),
 
     path("submissions/", SubmissionsView.as_view(), name="submissions"),
-    # path("submissions/create/", SubmissionCreateView.as_view(), name="submissino-create"),
+    path("submissions/create/", SubmissionCreateView.as_view(), name="submission-create"),
+
+    path("metrics/api/", MetricsAPIView.as_view(), name="metrics-api"),
 ]
