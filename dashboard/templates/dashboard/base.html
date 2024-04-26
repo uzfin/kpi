@@ -155,15 +155,9 @@
 
       {% if user.role == root_user.CEO or user.role == root_user.MANAGER %}
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="{% url "dashboard:departments" %}">
             <i class="mdi mdi-home-modern menu-icon"></i>
             <span class="menu-title">Bo'limlar</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="icon-head menu-icon"></i>
-            <span class="menu-title">Hodimlar</span>
           </a>
         </li>
       {% endif %}
