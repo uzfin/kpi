@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpRequest, HttpResponse
 
-from dashboard.models import KPI, Notefication
+from dashboard.models import KPI, Notefication, Department
 from users.models import User
 
 
@@ -93,6 +93,7 @@ class DashboardView(LoginRequiredMixin, View):
         ctx = {
             "kpis": kpis,
             "pairs": pairs,
+            "departments": Department.objects.all()
         }
 
         return render(request, 'dashboard/main.html', ctx)

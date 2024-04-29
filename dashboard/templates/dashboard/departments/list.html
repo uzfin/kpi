@@ -56,6 +56,16 @@
           </tbody>
         </table>
       </div>
+
+      {% if user.role == root_user.CEO %}
+        </br>
+        <div class="template-demo" style="text-align: center">
+          <div class="btn-group" role="group" aria-label="Basic example">
+              <a class="btn btn-inverse-primary" href="#">Yaratish</a>
+          </div>
+        </div>
+      {% endif %}
+      
     </div>
   </div>
 </div>
