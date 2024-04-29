@@ -13,6 +13,9 @@ from dashboard.views.submission_views import (
 from dashboard.views.department_views import (
     DepartmentView,
 )
+from dashboard.views.employee_views import (
+    EmployeeView,
+)
 
 
 app_name = "dashboard"
@@ -35,6 +38,8 @@ urlpatterns = [
     path("submissions/create/", SubmissionCreateView.as_view(), name="submission-create"),
 
     path("departments/", DepartmentView.as_view(), name="departments"),
+
+    path("employees/<int:department_id>/", EmployeeView.as_view(), name="employees"),
 
     path("metrics/api/", MetricsAPIView.as_view(), name="metrics-api"),
 ]
