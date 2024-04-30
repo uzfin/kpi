@@ -91,6 +91,18 @@ class Submission(models.Model):
 
 
 class Notefication(models.Model):
+    SUCCESS = 1
+    INFO = 2
+    DENGER = 3
+    WARNING = 4
+    
+    TYPE_CHOICES = (
+        (SUCCESS, "Rag'batlantirish"),
+        (INFO, "Ma'lumot berish"),
+        (DENGER, 'Tanqid qilish'),
+        (WARNING, 'Ogohlantirish'),
+    )
+    type = models.PositiveSmallIntegerField(choices=TYPE_CHOICES, default=SUCCESS)
     massage = models.TextField()
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notefications')
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
