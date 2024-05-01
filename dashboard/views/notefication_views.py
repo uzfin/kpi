@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsCeoOrManager
+from users.permissions import IsCeoOrManager, IsEmployee
 from dashboard.forms import NoteficationCreationForm
 from dashboard.models import Notefication
 
@@ -38,3 +38,34 @@ class SendNoteficationView(IsCeoOrManager, View):
         else:
             messages.info(request, "Xabar maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:departments')
+
+
+class NoteficationView(IsEmployee, View):
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+
+        ctx = {
+            "notefications": request.user.notefications.order_by("-updated_at"),
+            "root_notefication": Notefication,
+        }
+
+        return render(request, 'dashboard/notefications/list.html', ctx)
+
+
+class SeeNoteficationView(IsEmployee, View):
+
+    def get(self, request: HttpRequest, notefication_id: int) -> HttpResponse:
+
+        try:
+            notefication = request.user.notefications.get(id=notefication_id)
+        except Notefication.DoesNotExist: 
+            messages.info(request, "Xabar maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+
+            return redirect('dashboard:get-notefications')
+
+        ctx = {
+            "notefication": notefication,
+            "root_notefication": Notefication,
+        }
+
+        return render(request, 'dashboard/notefications/detail.html', ctx)

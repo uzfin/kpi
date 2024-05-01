@@ -18,6 +18,8 @@ from dashboard.views.employee_views import (
 )
 from dashboard.views.notefication_views import (
     SendNoteficationView,
+    NoteficationView,
+    SeeNoteficationView,
 )
 
 
@@ -44,7 +46,9 @@ urlpatterns = [
 
     path("employees/<int:department_id>/", EmployeeView.as_view(), name="employees"),
 
+    path("notefications/", NoteficationView.as_view(), name="get-notefications"),
     path("notefications/<int:employee_id>/", SendNoteficationView.as_view(), name="notefications"),
+    path("notefications/see/<int:notefication_id>/", SeeNoteficationView.as_view(), name="see-notefication"),
 
     path("metrics/api/", MetricsAPIView.as_view(), name="metrics-api"),
 ]

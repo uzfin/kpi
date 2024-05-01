@@ -1,0 +1,33 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ notefication.sender.full_name }}</h4>
+          <p class="card-description">
+            {% if notefication.type == root_notefication.SUCCESS %}
+                <label class="badge badge-success">Rag'batlantirish</label>
+            {% elif notefication.type == root_notefication.INFO %}
+                <label class="badge badge-info">Ma'lumot berish</label>
+            {% elif notefication.type == root_notefication.DENGER %}
+                <label class="badge badge-danger">Tanbeh berish</label>
+            {% elif notefication.type == root_notefication.WARNING %}
+                <label class="badge badge-warning">Ogohlantirish</label>
+            {% endif %}
+            <code>{{ kpi.total_ball }}</code>maqsadida xabar yubordi.
+          </p>
+          <blockquote class="blockquote blockquote-primary">
+              <p>{{ notefication.massage }}</p>
+              <br>
+              <footer class="blockquote-footer">Yuborilgan sana <cite title="Source Title">{{ notefication.updated_at }}</cite></footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock content %}
