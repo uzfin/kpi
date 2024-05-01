@@ -35,7 +35,7 @@
       {% if user.role == root_user.EMPLOYEE %}
         <li class="nav-item dropdown">
           {% comment %} <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown"> {% endcomment %}
-          <a class="nav-link count-indicator dropdown-toggle" href="#">
+          <a class="nav-link count-indicator dropdown-toggle" href="{% url "dashboard:get-notefications" %}">
             <i class="icon-bell mx-0"></i>
             {% if notefications %}
               <span class="count"></span>
