@@ -30,8 +30,6 @@ class SendNoteficationView(IsCeoOrManager, View):
     def post(self, request: HttpRequest, employee_id: int) -> HttpResponse:
 
         create_form = NoteficationCreationForm(request.POST)
-        print(request.POST)
-        print(create_form.errors)
 
         if create_form.is_valid():
             create_form.save()
