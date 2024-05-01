@@ -4,14 +4,14 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsCEO 
+from users.permissions import IsCEO, IsCeoOrEmployee
 from dashboard.forms import KPICreationForm
 
 from dashboard.models import KPI, Notefication
 from users.models import User
 
 
-class KPIView(IsCEO, View):
+class KPIView(IsCeoOrEmployee, View):
 
     def get(self, request: HttpRequest) -> HttpResponse:
 
@@ -48,7 +48,7 @@ class KPICreateView(IsCEO, View):
             return redirect('dashboard:create-kpi')
 
 
-class KPIDetailView(IsCEO, View):
+class KPIDetailView(IsCeoOrEmployee, View):
 
     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
 

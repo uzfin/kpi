@@ -31,16 +31,25 @@ class SubmissionsView(LoginRequiredMixin, View):
 
 class SubmissionCreateView(IsEmployee, View):
 
-    def get(self, request: HttpRequest) -> HttpResponse:
+    def get(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
+
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+            metric = kpi.metrics.get(id=metric_id)
+        except KPI.DoesNotExist or Metric.DoesNotExist:
+            messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:main')
+
         user = request.user
 
         ctx = {
-            "kpis": KPI.objects.all(),
+            "kpi": kpi,
+            "metric": metric,
         }
 
         return render(request, 'dashboard/submissions/create.html', ctx)
 
-    def post(self, request: HttpRequest) -> HttpResponse:
+    def post(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
         user = request.user
 
         create_form = SubmissionCreationForm(request.POST, request.FILES)

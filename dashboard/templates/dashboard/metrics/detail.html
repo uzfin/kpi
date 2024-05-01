@@ -9,7 +9,7 @@
         <div class="card-body">
           {% if metric.parent %}
             <p class="card-description">
-              <a href="{% url "dashboard:metric-detail" kpi.id metric.id %}">{{ metric.parent.name }}</a>ga tegishli.
+              <a href="{% url "dashboard:metric-detail" kpi.id metric.parent.id %}">{{ metric.parent.name }}</a>ga tegishli.
             </p>
           {% endif %}
           <h4 class="card-title">{{ metric.name }}</h4>
@@ -78,9 +78,13 @@
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
-          <div class="card-body">
-            <a href="{% url "dashboard:metric-delete" kpi.id metric.id %}" class="btn btn-inverse-danger">O'chirish</a>
-            <a href="{% url "dashboard:metric-update" kpi.id metric.id %}" class="btn btn-inverse-primary">Tahrirlash</a>
+          <div class="card-body" style="text-align: center;">
+            {% if user.role == root_user.MANAGER %}
+              <a href="{% url "dashboard:metric-delete" kpi.id metric.id %}" class="btn btn-inverse-danger">O'chirish</a>
+              <a href="{% url "dashboard:metric-update" kpi.id metric.id %}" class="btn btn-inverse-primary">Tahrirlash</a>
+            {% elif user.role == root_user.EMPLOYEE %}
+              <a class="btn btn-inverse-primary" href="{% url "dashboard:submission-create" kpi.id metric.id %}">Hisobotni joylash</a>
+            {% endif %}
           </div>
         </div>
     </div>

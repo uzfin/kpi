@@ -18,16 +18,19 @@
                 #
               </th>
               <th>
-                Metric
+                KPI
               </th>
               <th>
                 Ball
               </th>
               <th>
-                Date
+                Sana
               </th>
               <th>
-                Description
+                Izoh
+              </th>
+              <th>
+                Fayl
               </th>
             </tr>
           </thead>
@@ -51,20 +54,15 @@
                 <td>
                   {{ submission.comment }}
                 </td>
+                <td>
+                  <a href="{{ submission.file.url }}">fayl</a>
+                </td>
               </tr>
             {% endfor %}
 
           </tbody>
         </table>
       </div>
-      </br>
-
-      <div class="template-demo" style="text-align: center">
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <a class="btn btn-inverse-primary" href="{% url "dashboard:submission-create" %}">Ishni joylash</a>
-        </div>
-      </div>
-      
     </div>
   </div>
 </div>

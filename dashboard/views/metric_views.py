@@ -4,14 +4,14 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from users.permissions import IsManager, IsEmployee
+from users.permissions import IsManager, IsEmployee, IsManagerOrEmployee
 from dashboard.forms import MetricCreationForm
 
 from dashboard.models import KPI, Notefication, Metric
 from users.models import User
 
 
-class MetricsView(IsManager, View):
+class MetricsView(IsManagerOrEmployee, View):
 
     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
         user: User = request.user
@@ -66,7 +66,7 @@ class MetricCreateView(IsManager, View):
             return redirect('dashboard:main')
 
 
-class MetricDetailView(IsManager, View):
+class MetricDetailView(IsManagerOrEmployee, View):
 
     def get(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
         user = request.user

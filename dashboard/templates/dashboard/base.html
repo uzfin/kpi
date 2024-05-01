@@ -144,7 +144,7 @@
         </li>
       {% endif %}
 
-      {% if user.role == root_user.CEO %}
+      {% if user.role == root_user.CEO or user.role == root_user.EMPLOYEE %}
         <li class="nav-item">
           <a class="nav-link" href="{% url "dashboard:kpi" %}">
             <i class="mdi mdi-home-modern menu-icon"></i>

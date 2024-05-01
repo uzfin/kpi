@@ -40,7 +40,7 @@ urlpatterns = [
     path("metrics/update/<int:kpi_id>/<int:metric_id>/", MetricUpdateView.as_view(), name="metric-update"),
 
     path("submissions/", SubmissionsView.as_view(), name="submissions"),
-    path("submissions/create/", SubmissionCreateView.as_view(), name="submission-create"),
+    path("submissions/create/<int:kpi_id>/<int:metric_id>/", SubmissionCreateView.as_view(), name="submission-create"),
 
     path("departments/", DepartmentView.as_view(), name="departments"),
 

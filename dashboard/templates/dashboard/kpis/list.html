@@ -39,7 +39,11 @@
                   {{ forloop.counter }}
                 </td>
                 <td>
-                    <a href="{% url "dashboard:kpi-detail" kpi.id %}">{{ kpi.name }}</a>
+                    {% if user.role == root_user.CEO %}
+                      <a href="{% url "dashboard:kpi-detail" kpi.id %}">{{ kpi.name }}</a>
+                    {% elif user.role == root_user.EMPLOYEE %}
+                      <a href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name }}</a>
+                    {% endif %}
                 </td>
                 <td>
                   {{ kpi.total_ball }}
@@ -56,13 +60,15 @@
           </tbody>
         </table>
       </div>
-      </br>
 
-      <div class="template-demo" style="text-align: center">
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <a class="btn btn-inverse-primary" href="{% url "dashboard:kpi-create" %}">Yaratish</a>
+      {% if user.role == root_user.CEO %}
+        </br>
+        <div class="template-demo" style="text-align: center">
+          <div class="btn-group" role="group" aria-label="Basic example">
+              <a class="btn btn-inverse-primary" href="{% url "dashboard:kpi-create" %}">Yaratish</a>
+          </div>
         </div>
-      </div>
+      {% endif %}
       
     </div>
   </div>

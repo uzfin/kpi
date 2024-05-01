@@ -4,34 +4,40 @@
 
 {% block content %}
 <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ kpi.name }}</h4>
+          <p class="card-description">
+            {{ metric.name }}. Beriladigan maksimum ball <code>{{ metric.ball }}</code>. <b>{{ kpi.responsible_employee.full_name }}</b>ga biriktirilgan.
+          </p>
+          <p>
+            {{ metric.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+    {% comment %} TODO: statistics of Departments, Employees {% endcomment %}
+</div>
+
+<div class="row">
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Ishni joylash</h4>
+            <h4 class="card-title">Hisobotni joylash</h4>
             <form class="forms-sample" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+
                 <input type="hidden" name="employee" value="{{ user.id }}" required></input>
+                <input type="hidden" name="kpi" value="{{ kpi.id }}" required></input>
+                <input type="hidden" name="metric" value="{{ metric.id }}" required></input>
+
                 <div class="form-group">
-                    <label>KPI tanlang</label>
-                    <select class="js-example-basic-single w-100" id="kpiSelect", name="kpi" required>
-                        <option value=""></option>
-                        {% for kpi in kpis %}
-                            <option value="{{ kpi.id }}">{{ kpi.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Metrikga biriktirish uchun tanlang (ixtiyoriy)</label>
-                    <select class="js-example-basic-single w-100" id="metricSelect", name="metric">
-                        
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="exampleTextarea1">Fayl</label>
+                    <label for="exampleTextarea1">Faylni tanlang</label>
                     <input class="form-control" id="file" name="file" type="file" required></input>
                 </div>
                 <div class="form-group">
-                    <label for="exampleTextarea1">Izoh</label>
+                    <label for="exampleTextarea1">Izoh yozing</label>
                     <textarea class="form-control" id="exampleTextarea1" name="comment" rows="4" required></textarea>
                 </div>
                 
@@ -40,5 +46,5 @@
         </div>
         </div>
     </div>
-</div>
+</div> 
 {% endblock content %}

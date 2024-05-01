@@ -49,3 +49,27 @@ class IsCeoOrManager(UserPassesTestMixin):
 
     def handle_no_permission(self):
         return redirect("users:login")
+
+
+class IsCeoOrEmployee(UserPassesTestMixin):
+    """
+    Custom permission to only allow Ceo or Employees to access the view.
+    """
+    def test_func(self):
+        # Check if the user has Ceo or Employees role
+        return self.request.user.role == User.CEO or self.request.user.role == User.EMPLOYEE
+
+    def handle_no_permission(self):
+        return redirect("users:login")
+
+
+class IsManagerOrEmployee(UserPassesTestMixin):
+    """
+    Custom permission to only allow Manager or Employees to access the view.
+    """
+    def test_func(self):
+        # Check if the user has Manager or Employees role
+        return self.request.user.role == User.MANAGER or self.request.user.role == User.EMPLOYEE
+
+    def handle_no_permission(self):
+        return redirect("users:login")
