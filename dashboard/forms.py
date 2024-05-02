@@ -23,6 +23,13 @@ class SubmissionCreationForm(forms.ModelForm):
         fields = "__all__"
 
 
+class SubmissionUpdationForm(forms.ModelForm):
+
+    class Meta:
+        model = Submission
+        fields = ['file', 'comment']
+
+
 class NoteficationCreationForm(forms.ModelForm):
 
     class Meta:

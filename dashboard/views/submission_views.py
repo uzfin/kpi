@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpRequest, HttpResponse
 from users.permissions import IsEmployee
-from dashboard.forms import SubmissionCreationForm
+from dashboard.forms import SubmissionCreationForm, SubmissionUpdationForm
 
 from dashboard.models import KPI, Notefication, Submission
 from users.models import User
@@ -78,10 +78,46 @@ class SubmissionDetailView(IsEmployee, View):
             messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:submissions')
 
-        user = request.user
-
         ctx = {
             "submission": submission,
         }
 
         return render(request, 'dashboard/submissions/detail.html', ctx)
+
+
+class SubmissionUpdateView(IsEmployee, View):
+
+    def get(self, request: HttpRequest, submission_id: int) -> HttpResponse:
+
+        try:
+            submission = request.user.submissions.get(id=submission_id)
+        except Submission.DoesNotExist:
+            messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:submissions')
+
+        ctx = {
+            "submission": submission,
+        }
+
+        return render(request, 'dashboard/submissions/update.html', ctx)
+
+    def post(self, request: HttpRequest, submission_id: int) -> HttpResponse:
+
+        try:
+            submission = request.user.submissions.get(id=submission_id)
+        except Submission.DoesNotExist:
+            messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:submissions')
+
+        update_form = SubmissionUpdationForm(request.POST, request.FILES, instance=submission)
+        if update_form.is_valid():
+            update_form.save()
+
+            messages.success(request, "Hisobotingiz muvaffaqiyatli yangilandi.")
+            return redirect("dashboard:submissions")
+
+        ctx = {
+            "submission": submission,
+        }
+        messages.info(request, "Hisobotingizni yangilashda xatolik yuz berdi. Iltimos, yana bir bor uninib ko'ring.")
+        return render(request, 'dashboard/submissions/update.html', ctx)

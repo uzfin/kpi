@@ -55,31 +55,31 @@ class Submission(models.Model):
     def __str__(self) -> str:
         return self.employee.username
 
-    def save(self, *args, **kwargs):
-        if not self.pk:  # If this is a new submission
-            if not self.ball and self.metric:
-                self.ball = self.metric.ball
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:  # If this is a new submission
+    #         if not self.ball and self.metric:
+    #             self.ball = self.metric.ball
 
-            try:
-                result = self.employee.results.get(kpi=self.metric.kpi)
-                result.total_ball += self.ball
-                result.save()
-            except Result.DoesNotExist:
-                result = Result(kpi=self.metric.kpi, employee=self.employee, total_ball=self.ball)
-                result.save()
-        else:  # If this is an update to an existing submission
-            prev_instance = Submission.objects.get(pk=self.pk)
-            if prev_instance.ball != self.ball:
-                try:
-                    result = self.employee.results.get(kpi=self.metric.kpi)
-                    result.total_ball += (self.ball - prev_instance.ball)
-                    result.save()
-                except Result.DoesNotExist:
-                    pass
+    #         try:
+    #             result = self.employee.results.get(kpi=self.metric.kpi)
+    #             result.total_ball += self.ball
+    #             result.save()
+    #         except Result.DoesNotExist:
+    #             result = Result(kpi=self.metric.kpi, employee=self.employee, total_ball=self.ball)
+    #             result.save()
+    #     else:  # If this is an update to an existing submission
+    #         prev_instance = Submission.objects.get(pk=self.pk)
+    #         if prev_instance.ball != self.ball:
+    #             try:
+    #                 result = self.employee.results.get(kpi=self.metric.kpi)
+    #                 result.total_ball += (self.ball - prev_instance.ball)
+    #                 result.save()
+    #             except Result.DoesNotExist:
+    #                 pass
 
-        super().save(*args, **kwargs)
+    #     super().save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
+    # def delete(self, *args, **kwargs):
         try:
             result = Result.objects.get(kpi=self.metric.kpi, employee=self.employee)
             result.total_ball -= self.ball
