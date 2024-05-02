@@ -63,8 +63,7 @@ class SubmissionCreateView(IsEmployee, View):
             return redirect('dashboard:submissions')
 
         else:
-            print(create_form.errors)
-            messages.info(request, "Ishingizni joylashda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            messages.info(request, "Ishingizni joylashda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring. Oldin joylagan bo'lishingiz mumkin.")
             return redirect('dashboard:submissions')
 
 
