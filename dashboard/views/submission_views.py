@@ -121,3 +121,18 @@ class SubmissionUpdateView(IsEmployee, View):
         }
         messages.info(request, "Hisobotingizni yangilashda xatolik yuz berdi. Iltimos, yana bir bor uninib ko'ring.")
         return render(request, 'dashboard/submissions/update.html', ctx)
+
+
+class SubmissionDeleteView(IsEmployee, View):
+
+    def get(self, request: HttpRequest, submission_id: int) -> HttpResponse:
+
+        try:
+            submission = request.user.submissions.get(id=submission_id)
+            submission.delete()
+
+            messages.success(request, "Hisobotingiz muvaqqatiyatli o'chirildi.")
+        except Submission.DoesNotExist:
+            messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            
+        return redirect('dashboard:submissions')

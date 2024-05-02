@@ -9,7 +9,7 @@ from dashboard.views.metric_views import (
 )
 from dashboard.views.submission_views import (
     SubmissionsView, SubmissionCreateView, SubmissionDetailView,
-    SubmissionUpdateView,
+    SubmissionUpdateView, SubmissionDeleteView,
 )
 from dashboard.views.department_views import (
     DepartmentView,
@@ -42,6 +42,7 @@ urlpatterns = [
     path("submissions/create/<int:kpi_id>/<int:metric_id>/", SubmissionCreateView.as_view(), name="submission-create"),
     path("submissions/<int:submission_id>/", SubmissionDetailView.as_view(), name="submission-detail"),
     path("submissions/update/<int:submission_id>/", SubmissionUpdateView.as_view(), name="submission-edit"),
+    path("submissions/delete/<int:submission_id>/", SubmissionDeleteView.as_view(), name="submission-delete"),
 
     path("departments/", DepartmentView.as_view(), name="departments"),
 
