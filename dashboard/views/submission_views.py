@@ -8,7 +8,7 @@ from django.http import HttpRequest, HttpResponse
 from users.permissions import IsEmployee
 from dashboard.forms import SubmissionCreationForm
 
-from dashboard.models import KPI, Notefication
+from dashboard.models import KPI, Notefication, Submission
 from users.models import User
 
 
@@ -66,3 +66,22 @@ class SubmissionCreateView(IsEmployee, View):
             print(create_form.errors)
             messages.info(request, "Ishingizni joylashda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect('dashboard:submissions')
+
+
+class SubmissionDetailView(IsEmployee, View):
+
+    def get(self, request: HttpRequest, submission_id: int) -> HttpResponse:
+
+        try:
+            submission = request.user.submissions.get(id=submission_id)
+        except Submission.DoesNotExist:
+            messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:submissions')
+
+        user = request.user
+
+        ctx = {
+            "submission": submission,
+        }
+
+        return render(request, 'dashboard/submissions/detail.html', ctx)

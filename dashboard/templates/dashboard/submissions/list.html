@@ -26,12 +26,6 @@
               <th>
                 Sana
               </th>
-              <th>
-                Izoh
-              </th>
-              <th>
-                Fayl
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -42,20 +36,13 @@
                   {{ forloop.counter }}
                 </td>
                 <td>
-                    {% comment %} <a href="#">{{ submission.metric.name }}</a> {% endcomment %}
-                    {{ submission.metric.name }}
+                  <a href="{% url "dashboard:submission-detail" submission.id %}">{{ submission.metric.name }}</a>
                 </td>
                 <td>
                   {{ submission.ball }}
                 </td>
                 <td>
                   {{ submission.submitted_at }}
-                </td>
-                <td>
-                  {{ submission.comment }}
-                </td>
-                <td>
-                  <a href="{{ submission.file.url }}">fayl</a>
                 </td>
               </tr>
             {% endfor %}

@@ -4,11 +4,11 @@ from dashboard.views.kpi_views import (
     KPIView, KPICreateView, KPIDetailView, KPIDeleteView, KPIUpdateView,
 )
 from dashboard.views.metric_views import (
-    MetricsView, MetricCreateView, MetricDetailView, MetricDeleteView, MetricUpdateView,
-    MetricsAPIView,
+    MetricsView, MetricCreateView, MetricDetailView, 
+    MetricDeleteView, MetricUpdateView, MetricsAPIView,
 )
 from dashboard.views.submission_views import (
-    SubmissionsView, SubmissionCreateView,
+    SubmissionsView, SubmissionCreateView, SubmissionDetailView
 )
 from dashboard.views.department_views import (
     DepartmentView,
@@ -17,9 +17,7 @@ from dashboard.views.employee_views import (
     EmployeeView,
 )
 from dashboard.views.notefication_views import (
-    SendNoteficationView,
-    NoteficationView,
-    SeeNoteficationView,
+    SendNoteficationView, NoteficationView, SeeNoteficationView,
 )
 
 
@@ -41,6 +39,7 @@ urlpatterns = [
 
     path("submissions/", SubmissionsView.as_view(), name="submissions"),
     path("submissions/create/<int:kpi_id>/<int:metric_id>/", SubmissionCreateView.as_view(), name="submission-create"),
+    path("submissions/<int:submission_id>/", SubmissionDetailView.as_view(), name="submission-detail"),
 
     path("departments/", DepartmentView.as_view(), name="departments"),
 

@@ -1,0 +1,43 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ submission.metric.name }}</h4>
+          <p class="card-description">
+            Umumiy ball <code>{{ submission.metric.ball }}</code>. <b>{{ kpi.responsible_employee.full_name }}</b>ga biriktirilgan.
+          </p>
+          <p>
+            {{ submission.metric.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Sizning Hisobotingiz</h4>
+            <p class="card-description">
+                Umumiy ball <code>{{ submission.ball }}</code>. Yuborilgan sana: {{ submission.submitted_at }}.
+                {% if submission.manager %}
+                    {{ submission.manager.full_name }} ko'rip chiqdi.
+                {% endif %}
+            </p>
+            <p>
+                {{ submission.comment }}
+            </p>
+            <br>
+            <a href="{{submission.file.url}}" class="btn btn-inverse-primary">Hisobotni yuklab olish</a>
+            {% comment %} <a href="{% url "dashboard:submission-edit" submission.id %}" class="btn btn-inverse-success">Hisobotni tahrirlash</a> {% endcomment %}
+            {% comment %} <a href="{% url "dashboard:submission-delete" submission.id %}" class="btn btn-inverse-danger">Hisobotni o'chirish</a> {% endcomment %}
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
