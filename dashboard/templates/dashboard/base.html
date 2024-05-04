@@ -160,6 +160,12 @@
             <span class="menu-title">Bo'limlar</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "dashboard:works" %}">
+            <i class="mdi mdi-briefcase-upload menu-icon"></i>
+            <span class="menu-title">Hisobotlar</span>
+          </a>
+        </li>
       {% endif %}
 
       {% if user.role == root_user.EMPLOYEE %}
@@ -172,7 +178,7 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url "dashboard:submissions" %}">
             <i class="mdi mdi-briefcase-upload menu-icon"></i>
-            <span class="menu-title">Ishlarim</span>
+            <span class="menu-title">Hisobotlarim</span>
           </a>
         </li>
       {% endif %}

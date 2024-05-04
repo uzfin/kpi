@@ -35,3 +35,8 @@ class NoteficationCreationForm(forms.ModelForm):
     class Meta:
         model = Notefication
         fields = "__all__"
+
+
+class AssessmentForm(forms.Form):
+    ball = forms.IntegerField()
+    comment = forms.CharField()

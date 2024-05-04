@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsEmployee
-from dashboard.forms import SubmissionCreationForm, SubmissionUpdationForm
+from users.permissions import IsEmployee, IsManagerOrEmployee, IsCeoOrManager, IsManager
+from dashboard.forms import SubmissionCreationForm, SubmissionUpdationForm, AssessmentForm
 
 from dashboard.models import KPI, Notefication, Submission
 from users.models import User
@@ -20,7 +20,7 @@ class SubmissionsView(LoginRequiredMixin, View):
         if user.role == User.EMPLOYEE:
             submissions = user.submissions.order_by("-submitted_at")
         elif user.role == User.MANAGER:
-            submissions = user.submissions.filter(metric__kpi__in=KPI.objects.filter(responsible_employee=user)).order_by("-submitted_at")
+            submissions = Submission.objects.filter(metric__kpi__in=KPI.objects.filter(responsible_employee=user), is_checked=False).order_by("-submitted_at")
 
         ctx = {
             "submissions": submissions
@@ -135,3 +135,55 @@ class SubmissionDeleteView(IsEmployee, View):
             messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             
         return redirect('dashboard:submissions')
+
+
+class WorksView(IsCeoOrManager, View):
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+
+        works = Submission.objects.order_by('-submitted_at')
+        ctx = {
+            'works': works
+        }
+        return render(request, 'dashboard/works/list.html', ctx)
+
+
+class WorkDetailView(IsCeoOrManager, View):
+
+    def get(self, request: HttpRequest, work_id: int) -> HttpResponse:
+        
+        try:
+            submission = Submission.objects.get(id=work_id)
+            submission.is_checked = True
+            submission.save()
+
+        except Submission.DoesNotExist:
+            messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+
+        ctx = {
+            'work': submission
+        }
+        return render(request, 'dashboard/works/detail.html', ctx)
+
+
+class AssessmentView(IsManager, View):
+
+    def post(self, request: HttpRequest, work_id: int) -> HttpResponse:
+        
+        try:
+            submission = Submission.objects.get(id=work_id)
+
+        except Submission.DoesNotExist:
+            messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+
+        assessment_form = AssessmentForm(request.POST)
+        if assessment_form.is_valid():
+            ball = assessment_form.cleaned_data['ball']
+            comment = assessment_form.cleaned_data['comment']
+            
+            submission.ball = ball
+
+        # ctx = {
+        #     'work': submission
+        # }
+        # return render(request, 'dashboard/works/detail.html', ctx)

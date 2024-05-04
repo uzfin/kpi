@@ -10,6 +10,8 @@ from dashboard.views.metric_views import (
 from dashboard.views.submission_views import (
     SubmissionsView, SubmissionCreateView, SubmissionDetailView,
     SubmissionUpdateView, SubmissionDeleteView,
+    WorksView, WorkDetailView,
+    AssessmentView,
 )
 from dashboard.views.department_views import (
     DepartmentView,
@@ -51,6 +53,11 @@ urlpatterns = [
     path("notefications/", NoteficationView.as_view(), name="get-notefications"),
     path("notefications/<int:employee_id>/", SendNoteficationView.as_view(), name="notefications"),
     path("notefications/see/<int:notefication_id>/", SeeNoteficationView.as_view(), name="see-notefication"),
+
+    path("works/", WorksView.as_view(), name="works"),
+    path("works/<int:work_id>/", WorkDetailView.as_view(), name="work-detail"),
+
+    path("assessment/<int:work_id>/", AssessmentView.as_view(), name="assessment"),
 
     path("metrics/api/", MetricsAPIView.as_view(), name="metrics-api"),
 ]

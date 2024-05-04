@@ -1,0 +1,65 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">KPI: {{ work.metric.name }}</h4>
+          <p class="card-description">
+            Umumiy ball <code>{{ work.metric.ball }}</code>. <b>{{ work.kpi.responsible_employee.full_name }}</b>ga biriktirilgan.
+          </p>
+          <p>
+            Ta'rif: {{ work.metric.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Hisobot: {{ work.employee.full_name }}ning hisoboti</h4>
+            <p class="card-description">
+                Umumiy ball <code>{{ work.ball }}</code>. Yuborilgan sana: <b>{{ work.submitted_at }}</b>
+                {% if work.manager %}
+                    {{ work.manager.full_name }} ko'rip chiqdi.
+                {% endif %}
+            </p>
+            <p>
+                Izoh: {{ work.comment }}
+            </p>
+            <br>
+            <a href="{{ work.file.url }}" class="btn btn-inverse-primary">Hisobotni ko'rish</a>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Hisobotni Baholash</h4>
+            <form class="forms-sample" method="post" action="{% url "dashboard:assessment" work.id %}">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="exampleInputName1">Ball</label>
+                    <input type="number" class="form-control" id="exampleInputName1" name="ball" placeholder="Ball" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleTextarea1">Izoh yozing</label>
+                    <textarea class="form-control" id="exampleTextarea1" name="comment" rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary mr-2">Baholash</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
