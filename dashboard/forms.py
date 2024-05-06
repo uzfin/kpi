@@ -1,5 +1,5 @@
 from django import forms
-from .models import KPI, Metric, Submission, Notefication
+from .models import KPI, Metric, Submission, Notefication, Mark
 
 
 class KPICreationForm(forms.ModelForm):
@@ -37,6 +37,8 @@ class NoteficationCreationForm(forms.ModelForm):
         fields = "__all__"
 
 
-class AssessmentForm(forms.Form):
-    ball = forms.IntegerField()
-    comment = forms.CharField()
+class MarkForm(forms.ModelForm):
+    
+    class Meta:
+        model = Mark
+        fields = "__all__"

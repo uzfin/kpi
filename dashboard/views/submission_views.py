@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpRequest, HttpResponse
 from users.permissions import IsEmployee, IsManagerOrEmployee, IsCeoOrManager, IsManager
-from dashboard.forms import SubmissionCreationForm, SubmissionUpdationForm, AssessmentForm
+from dashboard.forms import SubmissionCreationForm, SubmissionUpdationForm, MarkForm
 
 from dashboard.models import KPI, Notefication, Submission
 from users.models import User
@@ -175,15 +175,15 @@ class AssessmentView(IsManager, View):
 
         except Submission.DoesNotExist:
             messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect("dashboard:works")
 
-        assessment_form = AssessmentForm(request.POST)
-        if assessment_form.is_valid():
-            ball = assessment_form.cleaned_data['ball']
-            comment = assessment_form.cleaned_data['comment']
-            
-            submission.ball = ball
+        update_form = MarkForm(request.POST, instance=submission.mark)
+        if update_form.is_valid():
+            update_form.save()
 
-        # ctx = {
-        #     'work': submission
-        # }
-        # return render(request, 'dashboard/works/detail.html', ctx)
+            messages.success(request, "Hisobotni muvaffaqiyatli baholadingiz.")
+            return redirect("dashboard:works")
+
+        print(update_form.errors)
+        messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+        return redirect("dashboard:works")

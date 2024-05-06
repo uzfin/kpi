@@ -24,7 +24,7 @@
           <div class="card-body">
             <h4 class="card-title">Hisobot: {{ work.employee.full_name }}ning hisoboti</h4>
             <p class="card-description">
-                Umumiy ball <code>{{ work.ball }}</code>. Yuborilgan sana: <b>{{ work.submitted_at }}</b>
+                Umumiy ball <code>{{ work.mark.ball }}</code>. Yuborilgan sana: <b>{{ work.submitted_at }}</b>
                 {% if work.manager %}
                     {{ work.manager.full_name }} ko'rip chiqdi.
                 {% endif %}
@@ -45,6 +45,9 @@
             <h4 class="card-title">Hisobotni Baholash</h4>
             <form class="forms-sample" method="post" action="{% url "dashboard:assessment" work.id %}">
                 {% csrf_token %}
+
+                <input type="hidden" name="submission" value="{{ work.id }}">
+                <input type="hidden" name="manager" value="{{ user.id }}">
 
                 <div class="form-group">
                     <label for="exampleInputName1">Ball</label>
