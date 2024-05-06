@@ -42,14 +42,15 @@ class Result(models.Model):
     class Meta:
         unique_together = ('kpi', 'employee')
 
+    def __str__(self):
+        return self.employee.full_name
+    
 
 class Submission(models.Model):
     employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='submissions')
-    manager = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="works")
     metric = models.ForeignKey(Metric, on_delete=models.CASCADE, related_name='submissions')
     file = models.FileField(upload_to='submissions')
     comment = models.TextField()
-    ball = models.PositiveIntegerField(blank=True)
     submitted_at = models.DateTimeField(auto_now=True)
     is_checked = models.BooleanField(default=False)
 
@@ -58,40 +59,6 @@ class Submission(models.Model):
 
     def __str__(self) -> str:
         return self.employee.username
-
-    # def save(self, *args, **kwargs):
-    #     if not self.pk:  # If this is a new submission
-    #         if not self.ball and self.metric:
-    #             self.ball = self.metric.ball
-
-    #         try:
-    #             result = self.employee.results.get(kpi=self.metric.kpi)
-    #             result.total_ball += self.ball
-    #             result.save()
-    #         except Result.DoesNotExist:
-    #             result = Result(kpi=self.metric.kpi, employee=self.employee, total_ball=self.ball)
-    #             result.save()
-    #     else:  # If this is an update to an existing submission
-    #         prev_instance = Submission.objects.get(pk=self.pk)
-    #         if prev_instance.ball != self.ball:
-    #             try:
-    #                 result = self.employee.results.get(kpi=self.metric.kpi)
-    #                 result.total_ball += (self.ball - prev_instance.ball)
-    #                 result.save()
-    #             except Result.DoesNotExist:
-    #                 pass
-
-    #     super().save(*args, **kwargs)
-
-    # def delete(self, *args, **kwargs):
-    #     try:
-    #         result = Result.objects.get(kpi=self.metric.kpi, employee=self.employee)
-    #         result.total_ball -= self.ball
-    #         result.save()
-    #     except Result.DoesNotExist:
-    #         pass
-
-    #     super().delete(*args, **kwargs)
 
 
 class Mark(models.Model):
