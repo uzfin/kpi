@@ -45,3 +45,16 @@ def mark_pre_save(sender, instance, **kwargs):
         result.total_ball -= old_instance.ball
         result.total_ball += instance.ball
         result.save()
+
+        submission = instance.submission
+        submission.is_checked = True
+        submission.save()
+    
+@receiver(pre_delete, sender=Mark)
+def mark_pre_delete(sender, instance, **kwargs):
+    kpi = instance.submission.metric.kpi
+    employee = instance.submission.employee
+
+    result = Result.objects.get(kpi=kpi, employee=employee)
+    result.total_ball -= instance.ball
+    result.save()
