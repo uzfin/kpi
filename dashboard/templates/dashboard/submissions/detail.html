@@ -24,7 +24,7 @@
           <div class="card-body">
             <h4 class="card-title">Sizning Hisobotingiz</h4>
             <p class="card-description">
-                Umumiy ball <code>{{ submission.ball }}</code>. Yuborilgan sana: {{ submission.submitted_at }}.
+              Qo'yilgan ball <code>{{ submission.mark.ball }}</code>. Yuborilgan sana: {{ submission.submitted_at }}.
                 {% if submission.manager %}
                     {{ submission.manager.full_name }} ko'rip chiqdi.
                 {% endif %}
