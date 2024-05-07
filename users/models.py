@@ -34,3 +34,14 @@ class User(AbstractUser):
             "ball": ball,
             "percent": round(ball / kpi.total_ball * 100, 2)
         }
+
+    @classmethod
+    def employee_kpi_status(cls, kpis):
+        data = []
+        for employee in cls.objects.filter(role=cls.EMPLOYEE):
+            em_data = []
+            for kpi in kpis:
+                em_data.append(employee.get_kpi_status(kpi))
+            data.append(em_data)
+
+        return data
