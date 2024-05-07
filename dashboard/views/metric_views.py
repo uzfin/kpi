@@ -24,9 +24,12 @@ class MetricsView(IsManagerOrEmployee, View):
 
         ctx = {
             "kpi": kpi,
-            "kpis": KPI.objects.filter(responsible_employee=user),
             "metrics": kpi.metrics.filter(parent=None),
         }
+        if request.user.role == User.MANAGER:
+            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
+        else:
+            ctx['kpis'] = KPI.objects.all()
 
         return render(request, 'dashboard/metrics/list.html', ctx)
 
@@ -82,8 +85,11 @@ class MetricDetailView(IsManagerOrEmployee, View):
             "kpi": kpi,
             "metric": metric,
             "children": metric.children.all(),
-            "kpis": KPI.objects.filter(responsible_employee=user),
         }
+        if request.user.role == User.MANAGER:
+            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
+        else:
+            ctx['kpis'] = KPI.objects.all()
 
         return render(request, 'dashboard/metrics/detail.html', ctx)
 

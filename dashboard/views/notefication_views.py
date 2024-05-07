@@ -24,6 +24,8 @@ class SendNoteficationView(IsCeoOrManager, View):
             "employee": employee,
             "notefication": Notefication
         }
+        if request.user.role == User.MANAGER:
+            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
 
         return render(request, 'dashboard/notefications/send.html', ctx)
 

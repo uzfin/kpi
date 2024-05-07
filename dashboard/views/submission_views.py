@@ -25,6 +25,8 @@ class SubmissionsView(LoginRequiredMixin, View):
         ctx = {
             "submissions": submissions
         }
+        if request.user.role == User.MANAGER:
+            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
 
         return render(request, 'dashboard/submissions/list.html', ctx)
 
@@ -145,6 +147,8 @@ class WorksView(IsCeoOrManager, View):
         ctx = {
             'works': works
         }
+        if request.user.role == User.MANAGER:
+            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
         return render(request, 'dashboard/works/list.html', ctx)
 
 
@@ -163,6 +167,8 @@ class WorkDetailView(IsCeoOrManager, View):
         ctx = {
             'work': submission
         }
+        if request.user.role == User.MANAGER:
+            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
         return render(request, 'dashboard/works/detail.html', ctx)
 
 
@@ -186,6 +192,5 @@ class AssessmentView(IsManager, View):
             messages.success(request, "Hisobotni muvaffaqiyatli baholadingiz.")
             return redirect("dashboard:works")
 
-        print(update_form.errors)
         messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
         return redirect("dashboard:works")

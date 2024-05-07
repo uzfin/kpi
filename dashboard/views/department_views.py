@@ -4,7 +4,8 @@ from django.views import View
 from django.http import HttpRequest, HttpResponse
 from users.permissions import IsCeoOrManager
 
-from dashboard.models import Department
+from dashboard.models import Department, KPI
+from users.models import User
 
 
 class DepartmentView(IsCeoOrManager, View):
@@ -14,5 +15,7 @@ class DepartmentView(IsCeoOrManager, View):
         ctx = {
             "departments": Department.objects.all(),
         }
+        if request.user.role == User.MANAGER:
+            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
 
         return render(request, 'dashboard/departments/list.html', ctx)

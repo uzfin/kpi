@@ -21,5 +21,9 @@ class EmployeeView(IsCeoOrManager, View):
         ctx = {
             "employees": department.employees.all(),
         }
+        if request.user.role == User.MANAGER:
+            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
+        else:
+            ctx['kpis'] = KPI.objects.all()
 
         return render(request, 'dashboard/employees/list.html', ctx)
