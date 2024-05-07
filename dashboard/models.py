@@ -53,6 +53,7 @@ class Submission(models.Model):
     comment = models.TextField()
     submitted_at = models.DateTimeField(auto_now=True)
     is_checked = models.BooleanField(default=False)
+    is_marked = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('metric', 'employee')

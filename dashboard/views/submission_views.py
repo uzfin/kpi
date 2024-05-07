@@ -180,6 +180,8 @@ class AssessmentView(IsManager, View):
         update_form = MarkForm(request.POST, instance=submission.mark)
         if update_form.is_valid():
             update_form.save()
+            submission.is_marked = True
+            submission.save()
 
             messages.success(request, "Hisobotni muvaffaqiyatli baholadingiz.")
             return redirect("dashboard:works")
