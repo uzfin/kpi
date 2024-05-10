@@ -19,7 +19,7 @@ class User(AbstractUser):
         (BOSS, 'Bo\'lim boshlig\'i'),
         (GUEST, 'Mehmon'),
     )
-    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=EMPLOYEE)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=GUEST)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/default.png')
 
     @property
