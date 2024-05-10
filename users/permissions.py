@@ -3,7 +3,15 @@ from django.shortcuts import redirect
 from .models import User
 
 
-class IsCEO(UserPassesTestMixin):
+class BaseUserPassesTestMixin(UserPassesTestMixin):
+    """
+    Base permission.
+    """
+    def handle_no_permission(self):
+        return redirect("landing_page")
+
+
+class IsCEO(BaseUserPassesTestMixin):
     """
     Custom permission to only allow CEOs to access the view.
     """
@@ -11,11 +19,8 @@ class IsCEO(UserPassesTestMixin):
         # Check if the user has a CEO role
         return self.request.user.role == User.CEO
 
-    def handle_no_permission(self):
-        return redirect("users:login")
 
-
-class IsManager(UserPassesTestMixin):
+class IsManager(BaseUserPassesTestMixin):
     """
     Custom permission to only allow MANAGERs to access the view.
     """
@@ -23,11 +28,8 @@ class IsManager(UserPassesTestMixin):
         # Check if the user has a MANAGERs role
         return self.request.user.role == User.MANAGER
 
-    def handle_no_permission(self):
-        return redirect("users:login")
 
-
-class IsEmployee(UserPassesTestMixin):
+class IsEmployee(BaseUserPassesTestMixin):
     """
     Custom permission to only allow EMPLOYEEs to access the view.
     """
@@ -35,11 +37,8 @@ class IsEmployee(UserPassesTestMixin):
         # Check if the user has EMPLOYEEs role
         return self.request.user.role == User.EMPLOYEE
 
-    def handle_no_permission(self):
-        return redirect("users:login")
 
-
-class IsCeoOrManager(UserPassesTestMixin):
+class IsCeoOrManager(BaseUserPassesTestMixin):
     """
     Custom permission to only allow Ceo or Managers to access the view.
     """
@@ -47,11 +46,8 @@ class IsCeoOrManager(UserPassesTestMixin):
         # Check if the user has Ceo or Managers role
         return self.request.user.role == User.CEO or self.request.user.role == User.MANAGER
 
-    def handle_no_permission(self):
-        return redirect("users:login")
 
-
-class IsCeoOrEmployee(UserPassesTestMixin):
+class IsCeoOrEmployee(BaseUserPassesTestMixin):
     """
     Custom permission to only allow Ceo or Employees to access the view.
     """
@@ -59,17 +55,11 @@ class IsCeoOrEmployee(UserPassesTestMixin):
         # Check if the user has Ceo or Employees role
         return self.request.user.role == User.CEO or self.request.user.role == User.EMPLOYEE
 
-    def handle_no_permission(self):
-        return redirect("users:login")
 
-
-class IsManagerOrEmployee(UserPassesTestMixin):
+class IsManagerOrEmployee(BaseUserPassesTestMixin):
     """
     Custom permission to only allow Manager or Employees to access the view.
     """
     def test_func(self):
         # Check if the user has Manager or Employees role
         return self.request.user.role == User.MANAGER or self.request.user.role == User.EMPLOYEE
-
-    def handle_no_permission(self):
-        return redirect("users:login")
