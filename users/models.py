@@ -4,14 +4,20 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class User(AbstractUser):
-    CEO = 1
-    MANAGER = 2
+    ADMIN    = 0
+    CEO      = 1
+    MANAGER  = 2
     EMPLOYEE = 3
-    
+    BOSS     = 4
+    GUEST    = 5
+
     ROLE_CHOICES = (
-        (CEO, 'Rector'),
-        (MANAGER, 'Prorector'),
-        (EMPLOYEE, 'Employee'),
+        (ADMIN, 'Admin'),
+        (CEO, 'Direktor'),
+        (MANAGER, 'Nazoratchi'),
+        (EMPLOYEE, 'Hodim'),
+        (BOSS, 'Bo\'lim boshlig\'i'),
+        (GUEST, 'Mehmon'),
     )
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=EMPLOYEE)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/default.png')
@@ -34,14 +40,3 @@ class User(AbstractUser):
             "ball": ball,
             "percent": round(ball / kpi.total_ball * 100, 2)
         }
-
-    @classmethod
-    def employee_kpi_status(cls, kpis):
-        data = []
-        for employee in cls.objects.filter(role=cls.EMPLOYEE):
-            em_data = []
-            for kpi in kpis:
-                em_data.append(employee.get_kpi_status(kpi))
-            data.append(em_data)
-
-        return data
