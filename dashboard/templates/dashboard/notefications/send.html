@@ -16,6 +16,7 @@
 
           <input type="hidden" name="sender" value="{{ user.id }}" required>
           <input type="hidden" name="receiver" value="{{ employee.id }}" required>
+          <input type="hidden" name="unread" value="{{ True }}" required>
           <div class="form-group">
               <label>Xabarni kiriting</label>
               <textarea class="form-control" id="exampleTextarea1" rows="10" name="massage" required></textarea>

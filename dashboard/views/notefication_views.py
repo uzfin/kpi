@@ -4,7 +4,7 @@ from django.views import View
 from django.http import HttpRequest, HttpResponse
 from users.permissions import IsCeoOrManager, IsEmployee
 from dashboard.forms import NoteficationCreationForm
-from dashboard.models import Notefication
+from dashboard.models import Notefication, KPI
 
 from users.models import User
 
@@ -34,6 +34,7 @@ class SendNoteficationView(IsCeoOrManager, View):
         create_form = NoteficationCreationForm(request.POST)
 
         if create_form.is_valid():
+            print(create_form.cleaned_data)
             create_form.save()
             messages.success(request, "Xabar hodimga muvaffaqiyatli yuborildi.")
             return redirect('dashboard:departments')
@@ -47,7 +48,7 @@ class NoteficationView(IsEmployee, View):
     def get(self, request: HttpRequest) -> HttpResponse:
 
         ctx = {
-            "notefications": request.user.notefications.order_by("-updated_at"),
+            "all_notefications": request.user.notefications.order_by("-updated_at"),
             "root_notefication": Notefication,
         }
 
@@ -60,6 +61,8 @@ class SeeNoteficationView(IsEmployee, View):
 
         try:
             notefication = request.user.notefications.get(id=notefication_id)
+            notefication.unread = False
+            notefication.save()
         except Notefication.DoesNotExist: 
             messages.info(request, "Xabar maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
 
