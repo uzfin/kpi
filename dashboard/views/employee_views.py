@@ -4,7 +4,7 @@ from django.views import View
 from django.http import HttpRequest, HttpResponse
 from users.permissions import IsCeoOrManager
 
-from dashboard.models import Department
+from dashboard.models import Department, KPI
 from users.models import User
 
 
