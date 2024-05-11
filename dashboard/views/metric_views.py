@@ -145,6 +145,8 @@ class MetricUpdateView(IsManager, View):
 
         update_form = MetricCreationForm(request.POST, instance=metric)
 
+        print(update_form.errors)
+
         if update_form.is_valid():
             update_form.save()
             messages.success(request, "Metrik muvaffaqiyatli tahrirlandi.")

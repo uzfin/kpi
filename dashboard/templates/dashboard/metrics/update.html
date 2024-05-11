@@ -43,7 +43,7 @@
                         {% if metric.parent %}
                             <option value="{{ metric.parent.id }}">{{ metric.parent.name }}</option>
                         {% else %}
-                         <option>Xech biri!</option>
+                         <option value="">Xech biri!</option>
                         {% endif %}
                         <option value="{{ metric.id }}">{{ metric.name }}</option>
                         {% for item in metrics %}
