@@ -76,7 +76,7 @@
           <li class="dropdown"><a href="#"><span>Tizimga kirish</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="{% url "users:login" %}">Login parol orqali</a></li>
-              <li><a href="#">Hemis orqali</a></li>
+              <li><a href="{{ authorization_url }}">Hemis orqali</a></li>
               <li><a href="{% url "users:register" %}">Ro'yxatdan o'tish</a></li>
             </ul>
           </li>

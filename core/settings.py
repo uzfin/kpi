@@ -11,20 +11,19 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
-from environs import Env
-
-env = Env()
-env.read_env()
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# loading env
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -153,9 +152,9 @@ AUTH_USER_MODEL = 'users.User'
 
 
 # HEMIS AUTH
-CLIENT_SECRET = env.str("CLIENT_SECRET")
-CLIENT_ID = env.str("CLIENT_ID")
-REDIRECT_URI = env.str("REDIRECT_URI")
-AUTHORIZE_URL = env.str("AUTHORIZE_URL")
-TOKEN_URL = env.str("TOKEN_URL")
-RESOURCE_OWNER_URL = env.str("RESOURCE_OWNER_URL")
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+REDIRECT_URI = os.getenv('REDIRECT_URI')
+AUTHORIZE_URL = os.getenv('AUTHORIZE_URL')
+ACCESS_TOKEN_URL = os.getenv('ACCESS_TOKEN_URL')
+RESOURCE_OWNER_URL = os.getenv('RESOURCE_OWNER_URL')

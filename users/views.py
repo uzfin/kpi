@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -7,14 +8,6 @@ from django.views import View
 from django.http import HttpRequest, JsonResponse, HttpResponse
 
 from .client import oAuth2Client
-from core.settings import (
-    CLIENT_SECRET,
-    CLIENT_ID,
-    REDIRECT_URI,
-    RESOURCE_OWNER_URL,
-    TOKEN_URL,
-    AUTHORIZE_URL,
-)
 
 from users.forms import UserCreateForm
 
@@ -62,54 +55,45 @@ class LogoutView(LoginRequiredMixin, View):
         return redirect("users:login")
 
 
-class OAuthAuthorizationView(View):
-
-    def get(self, request: HttpRequest) -> JsonResponse:
+class AuthLoginView(View):
+    def get(self, request):
         client = oAuth2Client(
-            client_id=CLIENT_ID,
-            client_secret=CLIENT_SECRET,
-            redirect_uri=REDIRECT_URI,
-            authorize_url=AUTHORIZE_URL,
-            token_url=TOKEN_URL,
-            resource_owner_url=RESOURCE_OWNER_URL
+            client_id = settings.CLIENT_ID,
+            client_secret = settings.CLIENT_SECRET,
+            redirect_uri = settings.REDIRECT_URI,
+            authorize_url = settings.AUTHORIZE_URL,
+            token_url = settings.ACCESS_TOKEN_URL,
+            resource_owner_url = settings.RESOURCE_OWNER_URL
         )
         authorization_url = client.get_authorization_url()
-        return JsonResponse(
-            {
-                'authorization_url': authorization_url
-            },
-            status=200)
+
+        return JsonResponse({'authorization_url': authorization_url})
 
 
-class OAuthCallbackView(View):
+class AuthCallbackView(View):
+    def get(self, request):
 
-    def get(self, request: HttpRequest, **kwargs) -> HttpResponse:
-        full_info = {}
-        auth_code = self.kwargs.get('code')
-        if not auth_code:
-            return JsonResponse(
-                {
-                    'status': False,
-                    'error': 'Authorization code is missing'
-                },
-                status=400)
+        code = request.GET.get('code')
+        print(code)
+        if code is None: return JsonResponse({'error': 'code is missing!'})
 
         client = oAuth2Client(
-            client_id=CLIENT_ID,
-            client_secret=CLIENT_SECRET,
-            redirect_uri=REDIRECT_URI,
-            authorize_url=AUTHORIZE_URL,
-            token_url=TOKEN_URL,
-            resource_owner_url=RESOURCE_OWNER_URL
+            client_id = settings.CLIENT_ID,
+            client_secret = settings.CLIENT_SECRET,
+            redirect_uri = settings.REDIRECT_URI,
+            authorize_url = settings.AUTHORIZE_URL,
+            token_url = settings.ACCESS_TOKEN_URL,
+            resource_owner_url = settings.RESOURCE_OWNER_URL
         )
-        access_token_response = client.get_access_token(auth_code)
+        access_token_response = client.get_access_token(code)
 
+        full_info = {}
         if 'access_token' in access_token_response:
             access_token = access_token_response['access_token']
             user_details = client.get_user_details(access_token)
             full_info['details'] = user_details
             full_info['token'] = access_token
-            return JsonResponse(full_info, status=200)
+            return JsonResponse(full_info)
         else:
             return JsonResponse(
                 {
