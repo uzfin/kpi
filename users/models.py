@@ -21,10 +21,16 @@ class User(AbstractUser):
     )
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=GUEST)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/default.png')
+    hemis_profile_picture = models.URLField(blank=True, null=True)
+    hemis_name = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=14, blank=True, null=True)
 
     @property
     def full_name(self):
-        return self.get_full_name()
+        if self.hemis_name:
+            return self.hemis_name
+        else:
+            return self.get_full_name()
 
     def get_kpi_status(self, kpi):
         ball = 0

@@ -10,6 +10,7 @@ from django.http import HttpRequest, JsonResponse, HttpResponse
 from .client import oAuth2Client
 
 from users.forms import UserCreateForm
+from users.models import User
 
 
 class RegisterView(View):
@@ -55,28 +56,15 @@ class LogoutView(LoginRequiredMixin, View):
         return redirect("users:login")
 
 
-class AuthLoginView(View):
-    def get(self, request):
-        client = oAuth2Client(
-            client_id = settings.CLIENT_ID,
-            client_secret = settings.CLIENT_SECRET,
-            redirect_uri = settings.REDIRECT_URI,
-            authorize_url = settings.AUTHORIZE_URL,
-            token_url = settings.ACCESS_TOKEN_URL,
-            resource_owner_url = settings.RESOURCE_OWNER_URL
-        )
-        authorization_url = client.get_authorization_url()
-
-        return JsonResponse({'authorization_url': authorization_url})
-
-
 class AuthCallbackView(View):
     def get(self, request):
 
         code = request.GET.get('code')
-        print(code)
+
+        # checking code
         if code is None: return JsonResponse({'error': 'code is missing!'})
 
+        # get access token and get user info
         client = oAuth2Client(
             client_id = settings.CLIENT_ID,
             client_secret = settings.CLIENT_SECRET,
@@ -87,13 +75,58 @@ class AuthCallbackView(View):
         )
         access_token_response = client.get_access_token(code)
 
-        full_info = {}
         if 'access_token' in access_token_response:
             access_token = access_token_response['access_token']
             user_details = client.get_user_details(access_token)
-            full_info['details'] = user_details
-            full_info['token'] = access_token
-            return JsonResponse(full_info)
+
+            # check is our university's employee
+            if user_details['university_id'] != settings.UNIVERSITY_ID and user_details['type'] != 'employee':
+                return JsonResponse({'error': 'you are not an employee at UzFiPI.'})
+
+            # get user
+            try:
+                user = User.objects.get(username=user_details['login'])
+            except User.DoesNotExist:
+                user = User(
+                    username=user_details['login'],
+                )
+                # set password
+                if user_details['phone']:
+                    user.set_password(raw_password=user_details['phone'])
+                else:
+                    user.set_password(raw_password='123456789')
+
+                # set role for user
+                for role in user_details['roles']:
+                    if role['name'] in ['API User', 'Super Administrator']:
+                        user.role = User.CEO
+                    elif role['name'] in ['Rahbariyat']:
+                        user.role = User.MANAGER
+                    elif role['name'] in ['O\'qituvchi']:
+                        user.role = User.EMPLOYEE
+                
+                # set picture
+                if user_details['picture']:
+                    user.hemis_profile_picture = user_details['picture']
+                
+                # set name
+                if user_details['name']:
+                    user.hemis_name = user_details['name']
+                
+                # set name
+                if user_details['email']:
+                    user.email = user_details['email']     
+                
+                # set phone
+                if user_details['phone']:
+                    user.phone = user_details['phone']
+                
+                user.save()
+
+            login(request, user)
+
+            return redirect('dashboard:main')
+            
         else:
             return JsonResponse(
                 {

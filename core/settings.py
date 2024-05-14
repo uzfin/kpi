@@ -158,3 +158,4 @@ REDIRECT_URI = os.getenv('REDIRECT_URI')
 AUTHORIZE_URL = os.getenv('AUTHORIZE_URL')
 ACCESS_TOKEN_URL = os.getenv('ACCESS_TOKEN_URL')
 RESOURCE_OWNER_URL = os.getenv('RESOURCE_OWNER_URL')
+UNIVERSITY_ID = os.getenv('UNIVERSITY_ID') # when user login by hemis for checking uzfi's employee or not
