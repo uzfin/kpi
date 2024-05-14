@@ -79,10 +79,6 @@ class AuthCallbackView(View):
             access_token = access_token_response['access_token']
             user_details = client.get_user_details(access_token)
 
-            # check is our university's employee
-            if user_details['university_id'] != settings.UNIVERSITY_ID and user_details['type'] != 'employee':
-                return JsonResponse({'error': 'you are not an employee at UzFiPI.'})
-
             # get user
             try:
                 user = User.objects.get(username=user_details['login'])
@@ -98,6 +94,9 @@ class AuthCallbackView(View):
 
                 # set role for user
                 for role in user_details['roles']:
+                    # check is our university's employee
+                    if user_details['university_id'] != settings.UNIVERSITY_ID and user_details['type'] != 'employee':
+                        pass
                     if role['name'] in ['API User', 'Super Administrator']:
                         user.role = User.CEO
                     elif role['name'] in ['Rahbariyat']:
@@ -128,10 +127,5 @@ class AuthCallbackView(View):
             return redirect('dashboard:main')
             
         else:
-            return JsonResponse(
-                {
-                    'status': False,
-                    'error': 'Failed to obtain access token'
-                },
-                status=400
-            )
+            messages.error(request, 'Kechirasiz hemis orqali kirishda xatolik yuz berdi. Iltimos yana bir bor urinib ko\'ring.')
+            return redirect('landing_page')

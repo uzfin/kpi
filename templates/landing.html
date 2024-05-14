@@ -86,13 +86,19 @@
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-
     </div>
   </header><!-- End Header -->
 
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex align-items-center">
     <div class="container" data-aos="zoom-out" data-aos-delay="100">
+
+      {% if messages %}
+        {% for message in messages %}
+          <p style="text-align: center; color: red;">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
       <h1><span>KPI-UzFiPI</span>ga Hush Kelibsiz</h1>
       <h2>Hodimlarni baholash va nazorat qilish tizimi.</h2>
       <div class="d-flex">
