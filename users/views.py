@@ -53,7 +53,7 @@ class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         messages.info(request, "Siz tizimdan muvaffaqiyatli chiqdingiz.")
-        return redirect("users:login")
+        return redirect("landing_page")
 
 
 class AuthCallbackView(View):

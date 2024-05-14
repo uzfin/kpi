@@ -32,7 +32,6 @@ class oAuth2Client:
             'grant_type': 'authorization_code'
         }
         response = requests.post(self.token_url, data=payload)
-        print(response.json())
 
         return response.json()
 
