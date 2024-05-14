@@ -97,8 +97,6 @@ class AuthCallbackView(View):
                     # check is our university's employee
                     if user_details['university_id'] != settings.UNIVERSITY_ID and user_details['type'] != 'employee':
                         pass
-                    if role['name'] in ['API User', 'Super Administrator']:
-                        user.role = User.CEO
                     elif role['name'] in ['Rahbariyat']:
                         user.role = User.MANAGER
                     elif role['name'] in ['O\'qituvchi']:
