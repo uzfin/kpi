@@ -8,13 +8,13 @@
         <div class="card-body">
             <h4 class="card-title">KPI: {{ kpi.name }}</h4>
             <p class="card-description">
-                Umumiy ball <code>{{ kpi.total_ball }}</code>. <b>{{ kpi.responsible_employee.full_name }}</b>ga biriktirilgan.
+                Umumiy ball <code>{{ kpi.total_ball }}</code>. Ushbu KPIga ma'suldor shaxs <b>{{ kpi.responsible_employee.full_name }}</b>.
             </p>
             <p>
                 {{ kpi.description }}
             </p>
             <hr>
-            <h4 class="card-title">Mezonlar jadvali</h4>
+            <h4 class="card-title">Ushbu KPI bo'yicha Mavjud Mezonlar jadvali</h4>
             <div class="table-responsive pt-3">
                 <table class="table table-bordered">
                 <thead>

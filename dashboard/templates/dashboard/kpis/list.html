@@ -39,7 +39,7 @@
                   {{ forloop.counter }}
                 </td>
                 <td>
-                    {% if user.role == root_user.CEO %}
+                    {% if user.role == root_user.ADMIN %}
                       <a href="{% url "dashboard:kpi-detail" kpi.id %}">{{ kpi.name }}</a>
                     {% elif user.role == root_user.EMPLOYEE %}
                       <a href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name }}</a>
@@ -61,7 +61,7 @@
         </table>
       </div>
 
-      {% if user.role == root_user.CEO %}
+      {% if user.role == root_user.ADMIN %}
         </br>
         <div class="template-demo" style="text-align: center">
           <div class="btn-group" role="group" aria-label="Basic example">

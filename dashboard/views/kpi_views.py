@@ -3,6 +3,7 @@ from datetime import date
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
+from django.views.generic import ListView
 from django.http import HttpRequest, HttpResponse
 from users.permissions import IsCEO, IsCeoOrEmployee
 from dashboard.forms import KPICreationForm
@@ -11,15 +12,10 @@ from dashboard.models import KPI, Notefication
 from users.models import User
 
 
-class KPIView(IsCeoOrEmployee, View):
-
-    def get(self, request: HttpRequest) -> HttpResponse:
-
-        ctx = {
-            "kpis": KPI.objects.all(),
-        }
-
-        return render(request, 'dashboard/kpis/list.html', ctx)
+class KPIView(IsCeoOrEmployee, ListView):
+    model = KPI
+    template_name = "dashboard/kpis/list.html"
+    context_object_name = "kpis"
 
 
 class KPICreateView(IsCEO, View):
