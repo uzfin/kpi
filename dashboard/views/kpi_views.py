@@ -1,112 +1,112 @@
-from datetime import date
+# from datetime import date
 
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.views import View
-from django.views.generic import ListView
-from django.http import HttpRequest, HttpResponse
-from users.permissions import IsCEO, IsCeoOrEmployee
-from dashboard.forms import KPICreationForm
+# from django.contrib import messages
+# from django.shortcuts import render, redirect
+# from django.views import View
+# from django.views.generic import ListView
+# from django.http import HttpRequest, HttpResponse
+# from users.permissions import IsCEO, IsCeoOrEmployee
+# from dashboard.forms import KPICreationForm
 
-from dashboard.models import KPI, Notefication
-from users.models import User
-
-
-class KPIView(IsCeoOrEmployee, ListView):
-    model = KPI
-    template_name = "dashboard/kpis/list.html"
-    context_object_name = "kpis"
+# from dashboard.models import KPI, Notefication
+# from users.models import User
 
 
-class KPICreateView(IsCEO, View):
+# class KPIView(IsCeoOrEmployee, ListView):
+#     model = KPI
+#     template_name = "dashboard/kpis/list.html"
+#     context_object_name = "kpis"
 
-    def get(self, request: HttpRequest) -> HttpResponse:
 
-        ctx = {
-            "managers": User.objects.filter(role=User.MANAGER),
-        }
+# class KPICreateView(IsCEO, View):
 
-        return render(request, 'dashboard/kpis/create.html', ctx)
+#     def get(self, request: HttpRequest) -> HttpResponse:
 
-    def post(self, request: HttpRequest) -> HttpResponse:
+#         ctx = {
+#             "managers": User.objects.filter(role=User.MANAGER),
+#         }
+
+#         return render(request, 'dashboard/kpis/create.html', ctx)
+
+#     def post(self, request: HttpRequest) -> HttpResponse:
         
-        create_form = KPICreationForm(request.POST)
+#         create_form = KPICreationForm(request.POST)
 
-        if create_form.is_valid():
-            messages.success(request, "Yangi KPI muvaffaqiyatli yaratildi.")
+#         if create_form.is_valid():
+#             messages.success(request, "Yangi KPI muvaffaqiyatli yaratildi.")
 
-            create_form.save()
-            return redirect('dashboard:kpi')
+#             create_form.save()
+#             return redirect('dashboard:kpi')
 
-        else:
-            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+#         else:
+#             messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
 
-            return redirect('dashboard:create-kpi')
-
-
-class KPIDetailView(IsCeoOrEmployee, View):
-
-    def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
-
-        try:
-            kpi = KPI.objects.get(id=kpi_id)
-        except KPI.DoesNotExist:
-            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:kpi')
-
-        ctx = {
-            "kpi": kpi,
-        }
-
-        return render(request, 'dashboard/kpis/detail.html', ctx)
+#             return redirect('dashboard:create-kpi')
 
 
-class KPIDeleteView(IsCEO, View):
+# class KPIDetailView(IsCeoOrEmployee, View):
 
-    def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
+#     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
 
-        try:
-            kpi = KPI.objects.get(id=kpi_id)
-            kpi.delete()
-        except KPI.DoesNotExist:
-            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:kpi')
+#         try:
+#             kpi = KPI.objects.get(id=kpi_id)
+#         except KPI.DoesNotExist:
+#             messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+#             return redirect('dashboard:kpi')
 
-        messages.success(request, "KPI muvaffaqiyatli oʻchirildi.")
-        return redirect('dashboard:kpi')
+#         ctx = {
+#             "kpi": kpi,
+#         }
+
+#         return render(request, 'dashboard/kpis/detail.html', ctx)
 
 
-class KPIUpdateView(IsCEO, View):
+# class KPIDeleteView(IsCEO, View):
 
-    def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
+#     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
 
-        try:
-            kpi = KPI.objects.get(id=kpi_id)
-        except KPI.DoesNotExist:
-            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:kpi')
+#         try:
+#             kpi = KPI.objects.get(id=kpi_id)
+#             kpi.delete()
+#         except KPI.DoesNotExist:
+#             messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+#             return redirect('dashboard:kpi')
 
-        ctx = {
-            "kpi": kpi,
-            "managers": User.objects.filter(role=User.MANAGER),
-        }
+#         messages.success(request, "KPI muvaffaqiyatli oʻchirildi.")
+#         return redirect('dashboard:kpi')
 
-        return render(request, 'dashboard/kpis/update.html', ctx)
+
+# class KPIUpdateView(IsCEO, View):
+
+#     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
+
+#         try:
+#             kpi = KPI.objects.get(id=kpi_id)
+#         except KPI.DoesNotExist:
+#             messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+#             return redirect('dashboard:kpi')
+
+#         ctx = {
+#             "kpi": kpi,
+#             "managers": User.objects.filter(role=User.MANAGER),
+#         }
+
+#         return render(request, 'dashboard/kpis/update.html', ctx)
     
-    def post(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
+#     def post(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
 
-        try:
-            kpi = KPI.objects.get(id=kpi_id)
-        except KPI.DoesNotExist:
-            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:kpi')
+#         try:
+#             kpi = KPI.objects.get(id=kpi_id)
+#         except KPI.DoesNotExist:
+#             messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+#             return redirect('dashboard:kpi')
 
-        update_form = KPICreationForm(request.POST, instance=kpi)
+#         update_form = KPICreationForm(request.POST, instance=kpi)
 
-        if update_form.is_valid():
-            update_form.save()
-            messages.success(request, "KPI muvaffaqiyatli tahrirlandi.")
-            return redirect('dashboard:kpi')
-        else:
-            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:kpi')
+#         if update_form.is_valid():
+#             update_form.save()
+#             messages.success(request, "KPI muvaffaqiyatli tahrirlandi.")
+#             return redirect('dashboard:kpi')
+#         else:
+#             messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+#             return redirect('dashboard:kpi')

@@ -25,7 +25,8 @@
 
       {% if user.role == root_user.EMPLOYEE or user.role == root_user.MANAGER or user.role == root_user.BOSS %}
         <li class="nav-item dropdown">
-          <a class="nav-link count-indicator dropdown-toggle" href="{% url "dashboard:get-notefications" %}">
+          <a class="nav-link count-indicator dropdown-toggle" href="#">
+          {% comment %} <a class="nav-link count-indicator dropdown-toggle" href="{% url "dashboard:get-notefications" %}"> {% endcomment %}
             <i class="icon-bell mx-0"></i>
             {% if notefications %}
               <span class="count"></span>
@@ -36,11 +37,7 @@
 
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-          {% if user.hemis_profile_picture %}
-            <img src="{{ user.hemis_profile_picture }}" alt="profile"/>
-          {% else %}
-            <img src="{{ user.profile_picture.url }}" alt="profile"/>
-          {% endif %}
+          <img src="{{ user.profile_picture.url }}" alt="profile"/>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item" href="#">
@@ -75,7 +72,7 @@
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
             <i class="icon-bar-graph menu-icon"></i>
-            <span class="menu-title">KPI lar</span>
+            <span class="menu-title">KPI</span>
             <i class="menu-arrow"></i>
           </a>
           <div class="collapse" id="charts">
@@ -83,9 +80,11 @@
               {% if kpis %}
                 {% for kpi in kpis %}
                   {% if kpi.name|length > 20 %}
-                    <li class="nav-item"> <a class="nav-link" href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name|slice:"0:18" }}...</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#">{{ kpi.name|slice:"0:18" }}...</a></li>
+                    {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name|slice:"0:18" }}...</a></li> {% endcomment %}
                   {% else %}
-                    <li class="nav-item"> <a class="nav-link" href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name }}</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="$">{{ kpi.name }}</a></li>
+                    {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name }}</a></li> {% endcomment %}
                   {% endif %}
                 {% endfor %}
               {% else %}
@@ -96,24 +95,27 @@
         </li>
       {% endif %}
 
-      {% if user.role == root_user.CEO or user.role == root_user.EMPLOYEE %}
+      {% if user.role == root_user.ADMIN or user.role == root_user.CEO or user.role == root_user.EMPLOYEE %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url "dashboard:kpi" %}">
+          <a class="nav-link" href="#">
+          {% comment %} <a class="nav-link" href="{% url "dashboard:kpi" %}"> {% endcomment %}
             <i class="icon-bar-graph menu-icon"></i>
-            <span class="menu-title">KPI lar</span>
+            <span class="menu-title">KPI</span>
           </a>
         </li>
       {% endif %}
 
-      {% if user.role == root_user.CEO or user.role == root_user.MANAGER %}
+      {% if user.role == root_user.ADMIN or user.role == root_user.CEO or user.role == root_user.MANAGER %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url "dashboard:departments" %}">
+          <a class="nav-link" href="#">
+          {% comment %} <a class="nav-link" href="{% url "dashboard:departments" %}"> {% endcomment %}
             <i class="mdi mdi-home-modern menu-icon"></i>
             <span class="menu-title">Bo'limlar</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url "dashboard:works" %}">
+          <a class="nav-link" href="#">
+          {% comment %} <a class="nav-link" href="{% url "dashboard:works" %}"> {% endcomment %}
             <i class="mdi mdi-briefcase-upload menu-icon"></i>
             <span class="menu-title">Hisobotlar</span>
           </a>
@@ -128,9 +130,19 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url "dashboard:submissions" %}">
+          <a class="nav-link" href="#">
+          {% comment %} <a class="nav-link" href="{% url "dashboard:submissions" %}"> {% endcomment %}
             <i class="mdi mdi-briefcase-upload menu-icon"></i>
             <span class="menu-title">Hisobotlarim</span>
+          </a>
+        </li>
+      {% endif %}
+
+      {% if user.role == root_user.ADMIN %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="icon-head menu-icon"></i>
+            <span class="menu-title">Hodimlar</span>
           </a>
         </li>
       {% endif %}

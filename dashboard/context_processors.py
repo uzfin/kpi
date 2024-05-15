@@ -10,7 +10,7 @@ def common_data(request):
             'root_user': User,
         }
 
-        if request.user.role == User.EMPLOYEE:
+        if request.user.role in (User.EMPLOYEE, User.BOSS, User.MANAGER):
             ctx['notefications'] = request.user.notefications.filter(unread=True)
 
         return ctx
