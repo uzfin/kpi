@@ -23,7 +23,7 @@
     
     <ul class="navbar-nav navbar-nav-right">
 
-      {% if user.role == root_user.EMPLOYEE %}
+      {% if user.role == root_user.EMPLOYEE or user.role == root_user.MANAGER or user.role == root_user.BOSS %}
         <li class="nav-item dropdown">
           <a class="nav-link count-indicator dropdown-toggle" href="{% url "dashboard:get-notefications" %}">
             <i class="icon-bell mx-0"></i>
