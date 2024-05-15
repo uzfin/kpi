@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, JsonResponse, HttpResponse
 
+from .logging import log_user_activity
 from .client import oAuth2Client
 
 from users.forms import UserCreateForm
@@ -22,6 +23,9 @@ class RegisterView(View):
 
         if create_form.is_valid():
             create_form.save()
+
+            # log
+            log_user_activity(create_form.instance, "Registeration", "registered.")
 
             messages.success(request, "Siz muvaffaqiyatli ro'yxatdan o'tdingiz. Tizimga kirish uchun login va parol kiriting.")
             return redirect('users:login')
@@ -41,6 +45,9 @@ class LoginView(View):
             user = login_form.get_user()
             login(request, user)
 
+            # log
+            log_user_activity(user, "Login", "logged in.")
+
             messages.success(request, "Siz muvaffaqiyatli tizimga kirdingiz.")
 
             return redirect("dashboard:main")
@@ -52,6 +59,10 @@ class LoginView(View):
 class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
+
+        # log
+        log_user_activity(request.user, "Logout", "logged out.")
+
         messages.info(request, "Siz tizimdan muvaffaqiyatli chiqdingiz.")
         return redirect("landing_page")
 

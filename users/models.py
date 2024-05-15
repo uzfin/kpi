@@ -21,28 +21,26 @@ class User(AbstractUser):
     )
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=GUEST)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/default.png')
-    hemis_profile_picture = models.URLField(blank=True, null=True)
-    hemis_name = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=14, blank=True, null=True)
 
     @property
     def full_name(self):
-        if self.hemis_name:
-            return self.hemis_name
-        else:
-            return self.get_full_name()
+        return self.get_full_name()
 
-    def get_kpi_status(self, kpi):
-        ball = 0
-        try:
-            ball = self.results.get(kpi=kpi).total_ball
-        except ObjectDoesNotExist:
-            pass
+    def __str__(self):
+        return self.full_name
+    
 
-        return {
-            "id": kpi.id,
-            "name": kpi.name,
-            "total": kpi.total_ball,
-            "ball": ball,
-            "percent": round(ball / kpi.total_ball * 100, 2)
-        }
+class Department(models.Model):
+    # primary fields
+    name = models.CharField(max_length=255, unique=True)
+    boss = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='departments')
+    employees = models.ManyToManyField(User, related_name='employees')
+
+    # secondary fields
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+    def __str__(self) -> str:
+        return self.name

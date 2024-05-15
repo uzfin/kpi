@@ -11,6 +11,15 @@ class BaseUserPassesTestMixin(UserPassesTestMixin):
         return redirect("landing_page")
 
 
+class IsAdmin(BaseUserPassesTestMixin):
+    """
+    Custom permission to only allow CEOs to access the view.
+    """
+    def test_func(self):
+        # Check if the user has a CEO role
+        return self.request.user.role == User.CEO
+
+
 class IsCEO(BaseUserPassesTestMixin):
     """
     Custom permission to only allow CEOs to access the view.
@@ -38,28 +47,10 @@ class IsEmployee(BaseUserPassesTestMixin):
         return self.request.user.role == User.EMPLOYEE
 
 
-class IsCeoOrManager(BaseUserPassesTestMixin):
+class IsGuest(BaseUserPassesTestMixin):
     """
-    Custom permission to only allow Ceo or Managers to access the view.
-    """
-    def test_func(self):
-        # Check if the user has Ceo or Managers role
-        return self.request.user.role == User.CEO or self.request.user.role == User.MANAGER
-
-
-class IsCeoOrEmployee(BaseUserPassesTestMixin):
-    """
-    Custom permission to only allow Ceo or Employees to access the view.
+    Custom permission to only allow GUESTs to access the view.
     """
     def test_func(self):
-        # Check if the user has Ceo or Employees role
-        return self.request.user.role == User.CEO or self.request.user.role == User.EMPLOYEE
-
-
-class IsManagerOrEmployee(BaseUserPassesTestMixin):
-    """
-    Custom permission to only allow Manager or Employees to access the view.
-    """
-    def test_func(self):
-        # Check if the user has Manager or Employees role
-        return self.request.user.role == User.MANAGER or self.request.user.role == User.EMPLOYEE
+        # Check if the user has GUESTs role
+        return self.request.user.role == User.GUEST
