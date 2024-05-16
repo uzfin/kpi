@@ -24,8 +24,6 @@ class CriterionsView(IsAdmin, View):
 class CriterionsCreateView(IsAdmin, View):
 
     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
-        user: User = request.user
-
         try:
             kpi = KPI.objects.get(id=kpi_id)
         except KPI.DoesNotExist:
@@ -40,7 +38,6 @@ class CriterionsCreateView(IsAdmin, View):
         return render(request, 'dashboard/criterions/create.html', ctx)
 
     def post(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
-        
         create_form = CriterionCreationForm(request.POST)
 
         if create_form.is_valid():
@@ -62,8 +59,6 @@ class CriterionsCreateView(IsAdmin, View):
 class CriterionDetailView(IsAdmin, View):
 
     def get(self, request: HttpRequest, criterion_id: int) -> HttpResponse:
-        user = request.user
-
         try:
             criterion = Criterion.objects.get(id=criterion_id)
         except Criterion.DoesNotExist:
@@ -78,7 +73,7 @@ class CriterionDetailView(IsAdmin, View):
 
 
 class CriterionDeleteView(IsAdmin, View):
-
+    
     def get(self, request: HttpRequest, criterion_id: int) -> HttpResponse:
         try:
             criterion = Criterion.objects.get(id=criterion_id)

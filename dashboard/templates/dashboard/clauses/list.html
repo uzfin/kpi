@@ -7,13 +7,12 @@
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-            <h4 class="card-title"> <i class="mdi mdi-clipboard-check" style="color: blue"></i>  {{ criterion.name }}</h4>
+            <h4 class="card-title">Band: {{ clause.name }}</h4>
             <p class="card-description">
-                {{ criterion.description }}
+                {{ clause.description }}
             </p>
             <ul class="card-description">
-                <li>Umumiy ball <code>{{ criterion.ball }}</code>.</li>
-                <li>Ma'suldor shaxs <b>{{ criterion.responsible_person.full_name }}</b>.</li>
+                <li>Umumiy ball <code>{{ clause.ball }}</code>.</li>
             </ul>
         </div>
         {% if user.role == root_user.ADMIN %}
@@ -46,9 +45,6 @@
                   <th>
                     Ball
                   </th>
-                  <th>
-                    Ta'rif
-                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -64,9 +60,6 @@
                     </td>
                     <td>
                       {{ clause.ball }}
-                    </td>
-                    <td>
-                      {{ clause.description }}
                     </td>
                   </tr>
                 {% endfor %}

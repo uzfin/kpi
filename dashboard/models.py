@@ -79,7 +79,7 @@ class Clause(models.Model):
 
     def clean(self, *args, **kwargs):
         # Check if the creation date is after the end date of the KPI
-        if self.criterion.kpi.end_date and self.created_at > self.criterion.kpi.end_date:
+        if self.criterion.kpi.end_date and date.today() > self.criterion.kpi.end_date:
             raise ValidationError("Band yaratish sanasi KPI tugash sanasidan keyin boʻlishi mumkin emas.")
         
         # Check if the parent clause belongs to the same criterion

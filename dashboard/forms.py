@@ -1,5 +1,5 @@
 from django import forms
-from .models import KPI, Criterion
+from .models import KPI, Criterion, Clause
 
 
 class KPICreationForm(forms.ModelForm):
@@ -13,6 +13,13 @@ class CriterionCreationForm(forms.ModelForm):
 
     class Meta:
         model = Criterion
+        fields = "__all__"
+
+
+class ClauseCreationForm(forms.ModelForm):
+
+    class Meta:
+        model = Clause
         fields = "__all__"
 
 
