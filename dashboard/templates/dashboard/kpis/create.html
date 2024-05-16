@@ -19,20 +19,22 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleTextarea1">Ta'rif</label>
-                    <textarea class="form-control" id="exampleTextarea1" name="description" rows="8" required></textarea>
+                    <textarea class="form-control" id="exampleTextarea1" name="description" rows="8"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputName1">Ball</label>
-                    <input type="number" class="form-control" id="exampleInputName1" name="total_ball" placeholder="Ball" required>
+                    <input type="number" class="form-control" id="exampleInputName1" name="ball" placeholder="Ball" min="0" required>
                 </div>
                 <div class="form-group">
-                    <label>Mas'ul shaxsni tanlang</label>
-                    <select class="js-example-basic-single w-100" name="responsible_employee" required>
-                        {% for manager in managers %}
-                            <option value="{{ manager.id }}">{{ manager.username }}</option>
-                        {% endfor %}
-                    </select>
+                    <label for="exampleInputName1">Boshlanish sanasi</label>
+                    <input type="date" class="form-control" id="exampleInputName1" name="start_date" required>
                 </div>
+                <div class="form-group">
+                    <label for="exampleInputName1">Tugash sanasi</label>
+                    <input type="date" class="form-control" id="exampleInputName1" name="end_date" required>
+                </div>
+                <input type="hidden" class="form-control" id="exampleInputName1" name="created_by" value="{{ user.id }}" required>
+
                 <button type="submit" class="btn btn-primary mr-2">Yaratish</button>
             </form>
         </div>

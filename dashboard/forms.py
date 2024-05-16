@@ -1,12 +1,12 @@
-# from django import forms
-# from .models import KPI, Metric, Submission, Notefication, Mark
+from django import forms
+from .models import KPI
 
 
-# class KPICreationForm(forms.ModelForm):
+class KPICreationForm(forms.ModelForm):
 
-#     class Meta:
-#         model = KPI
-#         fields = "__all__"
+    class Meta:
+        model = KPI
+        fields = "__all__"
 
 
 # class MetricCreationForm(forms.ModelForm):

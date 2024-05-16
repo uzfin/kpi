@@ -9,7 +9,7 @@
         <div class="card-body">
           <h4 class="card-title">{{ kpi.name }}</h4>
           <p class="card-description">
-            Umumiy ball <code>{{ kpi.total_ball }}</code>. <b>{{ kpi.responsible_employee.full_name }}</b>ga biriktirilgan.
+            Umumiy ball <code>{{ kpi.total_ball }}</code>. Faoliyat davri <b>{{ kpi.start_date }}</b> dan <b>{{ kpi.end_date }}</b> gacha.
           </p>
           <p>
             {{ kpi.description }}
@@ -17,15 +17,18 @@
         </div>
       </div>
     </div>
-    {% comment %} TODO: statistics of Departments, Employees {% endcomment %}
 </div>
-<div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <a href="{% url "dashboard:kpi-delete" kpi.id %}" class="btn btn-inverse-danger">O'chirish</a>
-            <a href="{% url "dashboard:kpi-update" kpi.id %}" class="btn btn-inverse-primary">Tahrirlash</a>
-        </div>
-    </div>
-</div>
+
+{% if user.role == root_user.ADMIN %}
+  <div class="row">
+      <div class="col-md-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <a href="{% url "dashboard:kpi-delete" kpi.id %}" class="btn btn-inverse-danger">O'chirish</a>
+              <a href="{% url "dashboard:kpi-update" kpi.id %}" class="btn btn-inverse-primary">Tahrirlash</a>
+          </div>
+      </div>
+  </div>
+{% endif %}
+
 {% endblock content %}

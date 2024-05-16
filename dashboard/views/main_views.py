@@ -16,8 +16,8 @@ class DashboardView(LoginRequiredMixin, View):
         if user.role == User.ADMIN:
             ctx = {
                 "kpis": KPI.objects.all(),
-                "departments": Department.objects.all(),
-                "employees": User.objects.filter(role=User.EMPLOYEE),
+                "departments": Department.objects.all()[:10],
+                "employees": User.objects.filter(role=User.EMPLOYEE)[:10],
             }
 
             return render(request, "dashboard/main/admin.html", ctx)

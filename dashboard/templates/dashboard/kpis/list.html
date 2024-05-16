@@ -7,59 +7,61 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">KPIlar jadvali</h4>
-      <p class="card-description">
-        Hozzirgi kunda mavjud KPI lar jadvali.
-      </p>
-      <div class="table-responsive pt-3">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>
-                #
-              </th>
-              <th>
-                KPI
-              </th>
-              <th>
-                Ball
-              </th>
-              <th>
-                Mas'ul shaxs
-              </th>
-              <th>
-                Ta'rif
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-
-            {% for kpi in kpis %}
+      {% if kpis %}
+        <p class="card-description">Hozzirgi kunda mavjud KPI lar jadvali.</p>
+        <div class="table-responsive pt-3">
+          <table class="table table-bordered">
+            <thead>
               <tr>
-                <td>
-                  {{ forloop.counter }}
-                </td>
-                <td>
-                    {% if user.role == root_user.ADMIN %}
-                      <a href="{% url "dashboard:kpi-detail" kpi.id %}">{{ kpi.name }}</a>
-                    {% elif user.role == root_user.EMPLOYEE %}
-                      <a href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name }}</a>
-                    {% endif %}
-                </td>
-                <td>
-                  {{ kpi.total_ball }}
-                </td>
-                <td>
-                  {{ kpi.responsible_employee.full_name }}
-                </td>
-                <td>
-                  {{ kpi.description }}
-                </td>
+                <th>
+                  #
+                </th>
+                <th>
+                  Nomi
+                </th>
+                <th>
+                  Ball
+                </th>
+                <th>
+                  Muddati
+                </th>
+                <th>
+                  Holati
+                </th>
               </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
 
-          </tbody>
-        </table>
-      </div>
+              {% for kpi in kpis %}
+                <tr>
+                  <td>
+                    {{ forloop.counter }}
+                  </td>
+                  <td>
+                    <a href="{% url "dashboard:kpi-detail" kpi.id %}">{{ kpi.name }}</a>
+                  </td>
+                  <td>
+                    {{ kpi.ball }}
+                  </td>
+                  <td>
+                    {{ kpi.start_date }} dan {{ kpi.end_date }} gacha
+                  </td>
+                  <td>
+                    {% if kpi.is_active %}
+                      Faoliyatda
+                    {% else %}
+                      Yopilgan
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="card-description">KPI <code>mavjud emas!</code></p>
+      {% endif %}
 
       {% if user.role == root_user.ADMIN %}
         </br>

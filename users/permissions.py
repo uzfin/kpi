@@ -17,7 +17,7 @@ class IsAdmin(BaseUserPassesTestMixin):
     """
     def test_func(self):
         # Check if the user has a CEO role
-        return self.request.user.role == User.CEO
+        return self.request.user.role == User.ADMIN
 
 
 class IsCEO(BaseUserPassesTestMixin):

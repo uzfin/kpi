@@ -25,7 +25,7 @@
         <div class="card-body">
          <div class="d-flex justify-content-between">
           <p class="card-title">KPI Jadvali</p>
-          <a href="#" class="text-info">Batafsil</a>
+          <a href="{% url "dashboard:kpi" %}" class="text-info">Batafsil</a>
          </div>
          
          {% if kpis %}
@@ -44,7 +44,7 @@
                 {% for kpi in kpis %}
                   <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td><a href="#">{{ kpi.name }}</a></td>
+                    <td><a href="{% url "dashboard:kpi-detail" kpi.id %}">{{ kpi.name }}</a></td>
                     <td class="font-weight-bold">{{ kpi.ball }}</td>
                   </tr>
                 {% endfor %}
