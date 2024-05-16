@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.shortcuts import render
 from users.client import oAuth2Client
+from dashboard.models import Clause, Submission
+from users.models import User, Department
 
 
 def landing_page(request):
@@ -14,6 +16,10 @@ def landing_page(request):
     )
 
     ctx = {
-        'authorization_url': client.get_authorization_url()
+        'authorization_url': client.get_authorization_url(),
+        'user_count': User.objects.count(),
+        'department_count': Department.objects.count(),
+        'clause_count': Clause.objects.count(),
+        'submission_count': Submission.objects.count(),
     }
     return render(request, 'landing.html', ctx)
