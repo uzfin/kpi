@@ -19,10 +19,7 @@
                   #
                 </th>
                 <th>
-                  nomi
-                </th>
-                <th>
-                  Ball
+                  Nomi
                 </th>
                 <th>
                   Boshliq
@@ -40,13 +37,11 @@
                     {{ forloop.counter }}
                   </td>
                   <td>
-                      <a href="{% url "dashboard:employees" department.id %}">{{ department.name }}</a>
+                      <a href="#">{{ department.name }}</a>
+                      {% comment %} <a href="{% url "dashboard:employees" department.id %}">{{ department.name }}</a> {% endcomment %}
                   </td>
                   <td>
-                      0.00
-                  </td>
-                  <td>
-                    {{ department.responsible_employee.full_name }}
+                    {{ department.responsible_person.full_name }}
                   </td>
                   <td>
                     {{ department.employees.count }}

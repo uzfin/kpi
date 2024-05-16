@@ -1,5 +1,5 @@
 from django import forms
-from .models import KPI
+from .models import KPI, Criterion
 
 
 class KPICreationForm(forms.ModelForm):
@@ -9,11 +9,11 @@ class KPICreationForm(forms.ModelForm):
         fields = "__all__"
 
 
-# class MetricCreationForm(forms.ModelForm):
+class CriterionCreationForm(forms.ModelForm):
 
-#     class Meta:
-#         model = Metric
-#         fields = "__all__"
+    class Meta:
+        model = Criterion
+        fields = "__all__"
 
 
 # class SubmissionCreationForm(forms.ModelForm):

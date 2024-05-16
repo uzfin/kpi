@@ -1,0 +1,46 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Mezonni tahrirlash</h4>
+            <p class="card-description">Mezon ma'lumotlarini tahrirlashingiz mumkin.</p>
+            <form class="forms-sample" method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="exampleInputName1">Nomi</label>
+                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Nomi" value="{{ criterion.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Ta'rif</label>
+                    <textarea class="form-control" id="exampleTextarea1" name="description" rows="8" required>{{ criterion.description }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputName1">Ball</label>
+                    <input type="number" class="form-control" id="exampleInputName1" name="ball" placeholder="Ball" min="0" max="{{ current_kpi.ball }}" value="{{ criterion.ball }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Ma'sul shaxsni tanlang</label>
+                    <select class="js-example-basic-single w-100" name="responsible_person" required>
+                        <option selected="selected" value="{{ criterion.responsible_person.id }}">{{ criterion.responsible_person.full_name }}</option>
+                        {% for manager in managers %}
+                            {% if manager != criterion.responsible_person %}
+                                <option value="{{ manager.id }}">{{ manager.full_name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                  </div>
+                <input type="hidden" class="form-control" id="exampleInputName1" name="created_by" value="{{ user.id }}" required>
+                <input type="hidden" class="form-control" id="exampleInputName1" name="kpi" value="{{ criterion.kpi.id }}" required>
+                
+                <button type="submit" class="btn btn-primary mr-2">Tahrirlash</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

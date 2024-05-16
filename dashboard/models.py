@@ -1,3 +1,4 @@
+from datetime import date
 from django.core.exceptions import ValidationError
 from django.db import models
 from users.models import User
@@ -40,7 +41,8 @@ class Criterion(models.Model):
 
     def clean(self, *args, **kwargs):
         # Check if the creation date is after the end date of the KPI
-        if self.kpi.end_date and self.created_at > self.kpi.end_date:
+
+        if self.kpi.end_date and date.today() > self.kpi.end_date:
             raise ValidationError("Mezon yaratish sanasi KPI tugash sanasidan keyin boʻlishi mumkin emas.")
         
         # Calculate the sum of ball values of all existing criterions

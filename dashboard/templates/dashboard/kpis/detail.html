@@ -7,28 +7,63 @@
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">{{ kpi.name }}</h4>
-          <p class="card-description">
-            Umumiy ball <code>{{ kpi.total_ball }}</code>. Faoliyat davri <b>{{ kpi.start_date }}</b> dan <b>{{ kpi.end_date }}</b> gacha.
-          </p>
-          <p>
-            {{ kpi.description }}
-          </p>
+            <h4 class="card-title"> <i class="icon-bar-graph" style="color: blue"></i>  {{ kpi.name }}</h4>
+            <p class="card-description">
+                {{ kpi.description }}
+            </p>
+            <ul class="card-description">
+                <li>Umumiy ball <code>{{ kpi.ball }}</code>.</li>
+                <li>Faoliyat davri <b>{{ kpi.start_date }}</b> dan <b>{{ kpi.end_date }}</b> gacha.</li>
+            </ul>
         </div>
+        {% if user.role == root_user.ADMIN %}
+            <div class="card-body" style="text-align: center;">
+                <a href="{% url "dashboard:kpi-delete" kpi.id %}" class="btn btn-inverse-danger">O'chirish</a>
+                <a href="{% url "dashboard:kpi-update" kpi.id %}" class="btn btn-inverse-primary">Tahrirlash</a>
+            </div>
+        {% endif %}
       </div>
     </div>
-</div>
 
-{% if user.role == root_user.ADMIN %}
-  <div class="row">
-      <div class="col-md-12 grid-margin stretch-card">
-          <div class="card">
+    <div class="col-md-4 grid-margin stretch-card">
+        <div class="card">
             <div class="card-body">
-              <a href="{% url "dashboard:kpi-delete" kpi.id %}" class="btn btn-inverse-danger">O'chirish</a>
-              <a href="{% url "dashboard:kpi-update" kpi.id %}" class="btn btn-inverse-primary">Tahrirlash</a>
-          </div>
-      </div>
-  </div>
-{% endif %}
+                <h4 class="card-title">Mezonlar</h4>
+                <div class="media">
+                    <i class="ti-world mdi mdi-clipboard-check text-info d-flex align-self-start mr-3"></i>
+                    <div class="media-body">
+                        <p class="card-text">Ushbu KPI da mavjud mezonlar soni <b>{{ kpi.criterions.count }}</b> ta.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Hisobotlar</h4>
+                <div class="media">
+                    <i class="ti-world mdi mdi-briefcase-upload text-info d-flex align-self-center mr-3"></i>
+                    <div class="media-body">
+                        <p class="card-text">Hodimlar tomonidan yuborilgan hisobotlar soni <b>{{ kpi.submissions.count }}</b> ta.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Some Info abot KPI</h4>
+                <div class="media">
+                    <i class="ti-world icon-md text-info d-flex align-self-end mr-3"></i>
+                    <div class="media-body">
+                        <p class="card-text">Coming soon.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}

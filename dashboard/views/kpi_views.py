@@ -107,5 +107,9 @@ class KPIUpdateView(IsAdmin, View):
             messages.success(request, "KPI muvaffaqiyatli tahrirlandi.")
             return redirect('dashboard:kpi')
         else:
-            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            errors = create_form.errors
+
+            for field, error_list in errors.items():
+                for error in error_list:
+                    messages.info(request, error)
             return redirect('dashboard:kpi')

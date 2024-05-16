@@ -3,10 +3,10 @@ from dashboard.views.main_views import DashboardView
 from dashboard.views.kpi_views import (
     KPIView, KPIDetailView, KPICreateView, KPIDeleteView, KPIUpdateView,
 )
-# from dashboard.views.metric_views import (
-#     MetricsView, MetricCreateView, MetricDetailView, 
-#     MetricDeleteView, MetricUpdateView, MetricsAPIView,
-# )
+from dashboard.views.criterion_views import (
+    CriterionsView, CriterionsCreateView, CriterionDetailView, 
+    CriterionDeleteView, CriterionUpdateView,
+)
 # from dashboard.views.submission_views import (
 #     SubmissionsView, SubmissionCreateView, SubmissionDetailView,
 #     SubmissionUpdateView, SubmissionDeleteView,
@@ -35,11 +35,11 @@ urlpatterns = [
     path("kpis/delete/<int:kpi_id>/", KPIDeleteView.as_view(), name="kpi-delete"),
     path("kpis/update/<int:kpi_id>/", KPIUpdateView.as_view(), name="kpi-update"),
 
-    # path("metrics/<int:kpi_id>/", MetricsView.as_view(), name="metrics"),
-    # path("metrics/create/<int:kpi_id>/", MetricCreateView.as_view(), name="metric-create"),
-    # path("metrics/<int:kpi_id>/<int:metric_id>/", MetricDetailView.as_view(), name="metric-detail"),
-    # path("metrics/delete/<int:kpi_id>/<int:metric_id>/", MetricDeleteView.as_view(), name="metric-delete"),
-    # path("metrics/update/<int:kpi_id>/<int:metric_id>/", MetricUpdateView.as_view(), name="metric-update"),
+    path("criterions/", CriterionsView.as_view(), name="criterions"),
+    path("criterions/create/<int:kpi_id>/", CriterionsCreateView.as_view(), name="criterion-create"),
+    path("criterions/<int:criterion_id>/", CriterionDetailView.as_view(), name="criterion-detail"),
+    path("criterions/delete/<int:criterion_id>/", CriterionDeleteView.as_view(), name="criterion-delete"),
+    path("criterions/update/<int:criterion_id>/", CriterionUpdateView.as_view(), name="criterion-update"),
 
     # path("submissions/", SubmissionsView.as_view(), name="submissions"),
     # path("submissions/create/<int:kpi_id>/<int:metric_id>/", SubmissionCreateView.as_view(), name="submission-create"),
