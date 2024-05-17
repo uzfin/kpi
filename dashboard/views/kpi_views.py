@@ -21,7 +21,6 @@ class KPIView(IsAdmin, ListView):
 class KPIDetailView(IsAdmin, View):
 
     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
-
         try:
             kpi = KPI.objects.get(id=kpi_id)
         except KPI.DoesNotExist:

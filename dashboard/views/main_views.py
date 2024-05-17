@@ -35,6 +35,9 @@ class DashboardView(LoginRequiredMixin, View):
             }
 
             if current_kpi:
-                ctx['current_kpi'] = current_kpi
+
+                if 'current_kpi' in request.session:
+                    del request.session['current_kpi']
+                request.session['current_kpi'] = {'id': current_kpi.id, 'name': current_kpi.name}
 
             return render(request, "dashboard/main/admin.html", ctx)

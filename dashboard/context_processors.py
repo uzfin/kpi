@@ -13,6 +13,9 @@ def common_data(request):
         if request.user.role in (User.EMPLOYEE, User.BOSS, User.MANAGER):
             ctx['notefications'] = request.user.notefications.filter(unread=True)
 
+        if 'current_kpi' in request.session:
+            ctx['current_kpi'] = request.session['current_kpi']
+            
         return ctx
     
     return {}
