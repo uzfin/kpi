@@ -102,22 +102,26 @@
             <span class="menu-title">KPI</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url "dashboard:criterions" %}">
-            <i class="mdi mdi-clipboard-check menu-icon"></i>
-            <span class="menu-title">Mezonlar</span>
-          </a>
-        </li>
+        {% if current_kpi %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "dashboard:criterions" current_kpi.id %}">
+              <i class="mdi mdi-clipboard-check menu-icon"></i>
+              <span class="menu-title">Mezonlar</span>
+            </a>
+          </li>
+        {% endif %}
       {% endif %}
 
       {% if user.role == root_user.ADMIN or user.role == root_user.CEO or user.role == root_user.MANAGER %}
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          {% comment %} <a class="nav-link" href="{% url "dashboard:works" %}"> {% endcomment %}
-            <i class="mdi mdi-briefcase-upload menu-icon"></i>
-            <span class="menu-title">Hisobotlar</span>
-          </a>
-        </li>
+        {% if current_kpi %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              {% comment %} <a class="nav-link" href="{% url "dashboard:works" %}"> {% endcomment %}
+              <i class="mdi mdi-briefcase-upload menu-icon"></i>
+              <span class="menu-title">Hisobotlar</span>
+            </a>
+          </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="#">
           {% comment %} <a class="nav-link" href="{% url "dashboard:departments" %}"> {% endcomment %}

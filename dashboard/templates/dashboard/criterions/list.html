@@ -8,13 +8,13 @@
         <div class="row">
             <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                 <div class="dropdown">
-                    <button class="btn btn-danger dropdown-toggle"  style="background-color: #4747A1; border-color: #4747A1" type="button" id="dropdownMenuSizeButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-danger dropdown-toggle"  style="background-color: #248AFD; border-color: #248AFD" type="button" id="dropdownMenuSizeButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="icon-bar-graph"></i>  {{ current_kpi.name }}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuSizeButton2">
                         {% for kpi in kpis %}
                             {% if kpi != current_kpi %}
-                                <a class="dropdown-item" href="#">{{ kpi.name }}</a>
+                                <a class="dropdown-item" href="{% url "dashboard:criterions" kpi.id %}">{{ kpi.name }}</a>
                             {% endif %}
                         {% endfor %}
                     </div>

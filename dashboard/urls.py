@@ -38,9 +38,9 @@ urlpatterns = [
     path("kpis/delete/<int:kpi_id>/", KPIDeleteView.as_view(), name="kpi-delete"),
     path("kpis/update/<int:kpi_id>/", KPIUpdateView.as_view(), name="kpi-update"),
 
-    path("criterions/", CriterionsView.as_view(), name="criterions"),
+    path("criterions/<int:kpi_id>/", CriterionsView.as_view(), name="criterions"),
     path("criterions/create/<int:kpi_id>/", CriterionsCreateView.as_view(), name="criterion-create"),
-    path("criterions/<int:criterion_id>/", CriterionDetailView.as_view(), name="criterion-detail"),
+    path("criterions/clauses/<int:criterion_id>/", CriterionDetailView.as_view(), name="criterion-detail"),
     path("criterions/delete/<int:criterion_id>/", CriterionDeleteView.as_view(), name="criterion-delete"),
     path("criterions/update/<int:criterion_id>/", CriterionUpdateView.as_view(), name="criterion-update"),
 

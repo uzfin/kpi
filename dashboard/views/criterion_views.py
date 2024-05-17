@@ -10,14 +10,18 @@ from users.models import User
 
 class CriterionsView(IsAdmin, View):
 
-    def get(self, request: HttpRequest) -> HttpResponse:
-        kpi =  KPI.objects.last()
+    def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+        except KPI.DoesNotExist:
+            messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect("dashboard:kpis")
+
         ctx = {
             "criterions": kpi.criterions.all(),
             "current_kpi": kpi,
             "kpis": KPI.objects.all(),
         }
-
         return render(request, 'dashboard/criterions/list.html', ctx)
 
 
@@ -28,7 +32,7 @@ class CriterionsCreateView(IsAdmin, View):
             kpi = KPI.objects.get(id=kpi_id)
         except KPI.DoesNotExist:
             messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:criterions')
+            return redirect('dashboard:criterions', kpi_id=kpi_id)
 
         ctx = {
             "current_kpi": kpi,
@@ -44,7 +48,7 @@ class CriterionsCreateView(IsAdmin, View):
             messages.success(request, "Yangi mezon muvaffaqiyatli yaratildi.")
 
             create_form.save()
-            return redirect('dashboard:criterions')
+            return redirect('dashboard:criterions', kpi_id=kpi_id)
 
         else:
             errors = create_form.errors
@@ -53,7 +57,7 @@ class CriterionsCreateView(IsAdmin, View):
                 for error in error_list:
                     messages.info(request, error)
 
-            return redirect('dashboard:criterions')
+            return redirect('dashboard:criterions', kpi_id=kpi_id)
 
 
 class CriterionDetailView(IsAdmin, View):
@@ -63,7 +67,7 @@ class CriterionDetailView(IsAdmin, View):
             criterion = Criterion.objects.get(id=criterion_id)
         except Criterion.DoesNotExist:
             messages.info(request, "Mezon maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:criterion')
+            return redirect('dashboard:main')
 
         ctx = {
             "criterion": criterion,
@@ -79,12 +83,12 @@ class CriterionDeleteView(IsAdmin, View):
             criterion = Criterion.objects.get(id=criterion_id)
         except Criterion.DoesNotExist:
             messages.info(request, "Mezon maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:criterions')
+            return redirect('dashboard:main')
         
         criterion.delete()
 
         messages.success(request, "Mezon muvaffaqiyatli oʻchirildi.")
-        return redirect('dashboard:criterions')
+        return redirect('dashboard:criterions', kpi_id=criterion.kpi.id)
 
 
 class CriterionUpdateView(IsAdmin, View):
@@ -94,7 +98,7 @@ class CriterionUpdateView(IsAdmin, View):
             criterion = Criterion.objects.get(id=criterion_id)
         except Criterion.DoesNotExist:
             messages.info(request, "Mezon maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:criterions')
+            return redirect('dashboard:main')
 
         ctx = {
             "criterion": criterion,
@@ -108,7 +112,7 @@ class CriterionUpdateView(IsAdmin, View):
             criterion = Criterion.objects.get(id=criterion_id)
         except Criterion.DoesNotExist:
             messages.info(request, "Mezon maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:criterions')
+            return redirect('dashboard:main')
 
         update_form = CriterionCreationForm(request.POST, instance=criterion)
 
@@ -116,10 +120,10 @@ class CriterionUpdateView(IsAdmin, View):
             update_form.save()
 
             messages.success(request, "Mezon muvaffaqiyatli tahrirlandi.")
-            return redirect('dashboard:criterions')
+            return redirect('dashboard:criterions', kpi_id=criterion.kpi.id)
         else:
             for field, error_list in errors.items():
                 for error in error_list:
                     messages.info(request, error)
 
-            return redirect('dashboard:criterions')
+            return redirect('dashboard:criterions', kpi_id=criterion.kpi.id)

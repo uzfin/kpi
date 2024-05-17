@@ -25,11 +25,12 @@ class User(AbstractUser):
 
     @property
     def full_name(self):
-        return self.get_full_name()
+        if self.get_full_name():
+            return self.get_full_name()
+        return self.username
 
     def __str__(self):
-        if self.full_name: return self.full_name
-        return self.username
+        return self.full_name
     
 
 class Department(models.Model):
