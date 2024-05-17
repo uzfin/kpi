@@ -12,11 +12,15 @@
                         <i class="icon-bar-graph"></i>  {{ current_kpi.name }}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuSizeButton2">
+                      {% if kpis.count > 1 %}
                         {% for kpi in kpis %}
                             {% if kpi != current_kpi %}
                                 <a class="dropdown-item" href="{% url "dashboard:criterions" kpi.id %}">{{ kpi.name }}</a>
                             {% endif %}
                         {% endfor %}
+                      {% else %}
+                        <a class="dropdown-item" href="#">Boshqa KPI mavjud emas.</a>
+                      {% endif %}
                     </div>
                 </div>
             </div>
