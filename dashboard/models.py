@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date
 from django.core.exceptions import ValidationError
 from django.db import models
 from users.models import User
@@ -136,12 +136,32 @@ class Submission(models.Model):
 
     def clean(self, *args, **kwargs):
         # Check if the creation date is after the end date of the KPI
-        if self.kpi.end_date and datetime.now() > self.kpi.end_date:
+        if self.kpi.end_date and date.today() > self.kpi.end_date:
             raise ValidationError("Hisobot yaratish sanasi KPI tugash sanasidan keyin boʻlishi mumkin emas.")
 
     def __str__(self) -> str:
         return self.clause.name
 
+
+class Mark(models.Model):
+    # primary fields
+    submission = models.ForeignKey(Submission, on_delete=models.DO_NOTHING)
+    criterion = models.ForeignKey(Criterion, on_delete=models.DO_NOTHING)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='marks')
+    marked_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
+    ball = models.PositiveIntegerField()
+    comment = models.TextField(blank=True, default='')
+
+    # secondary fields
+    marked_at = models.DateTimeField(auto_now_add=True)
+    remarked_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('submission', 'employee')
+
+    def __str__(self):
+        return self.employee.full_name
+    
 
 class Result(models.Model):
     # primary fields

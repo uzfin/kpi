@@ -4,20 +4,19 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">{{ kpi.name }}</h4>
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+          <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-clipboard-text"></i> Band: <a href="{% url "dashboard:clause-detail" clause.id %}"> {{ clause.name }} </a></h4>
           <p class="card-description">
-            {{ metric.name }}. Beriladigan maksimum ball <code>{{ metric.ball }}</code>. <b>{{ kpi.responsible_employee.full_name }}</b>ga biriktirilgan.
+              {{ clause.description }}
           </p>
-          <p>
-            {{ metric.description }}
-          </p>
-        </div>
+          <ul class="card-description">
+              <li>Umumiy ball <code>{{ clause.ball }}</code>.</li>
+          </ul>
       </div>
     </div>
-    {% comment %} TODO: statistics of Departments, Employees {% endcomment %}
+  </div>
 </div>
 
 <div class="row">
@@ -28,9 +27,10 @@
             <form class="forms-sample" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <input type="hidden" name="employee" value="{{ user.id }}" required></input>
-                <input type="hidden" name="kpi" value="{{ kpi.id }}" required></input>
-                <input type="hidden" name="metric" value="{{ metric.id }}" required></input>
+                <input type="hidden" name="owner" value="{{ user.id }}" required></input>
+                <input type="hidden" name="kpi" value="{{ clause.kpi.id }}" required></input>
+                <input type="hidden" name="clause" value="{{ clause.id }}" required></input>
+                <input type="hidden" name="is_marked" value="{{ 1 }}" required></input>
 
                 <div class="form-group">
                     <label for="exampleTextarea1">Faylni tanlang</label>

@@ -4,11 +4,11 @@ from django.views import View
 from django.http import HttpRequest, HttpResponse
 from users.permissions import IsEmployee, IsManager
 from dashboard.forms import SubmissionCreationForm
-from dashboard.models import KPI, Notefication, Submission
+from dashboard.models import Submission, Clause
 from users.models import User
 
 
-class SubmissionsView(LoginRequiredMixin, View):
+class SubmissionsView(IsEmployee, View):
 
     def get(self, request: HttpRequest) -> HttpResponse:
         user = request.user
@@ -29,26 +29,25 @@ class SubmissionsView(LoginRequiredMixin, View):
 
 class SubmissionCreateView(IsEmployee, View):
 
-    def get(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
-
+    def get(self, request: HttpRequest, clause_id: int) -> HttpResponse:
         try:
-            kpi = KPI.objects.get(id=kpi_id)
-            metric = kpi.metrics.get(id=metric_id)
-        except KPI.DoesNotExist or Metric.DoesNotExist:
-            messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:main')
-
-        user = request.user
+            clause = Clause.objects.get(id=clause_id)
+        except Clause.DoesNotExist:
+            messages.info(request, "Band maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:clause-detail', clause_id=clause_id)
 
         ctx = {
-            "kpi": kpi,
-            "metric": metric,
+            "clause": clause,
         }
 
         return render(request, 'dashboard/submissions/create.html', ctx)
 
-    def post(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
-        user = request.user
+    def post(self, request: HttpRequest, clause_id: int) -> HttpResponse:
+        try:
+            clause = Clause.objects.get(id=clause_id)
+        except Clause.DoesNotExist:
+            messages.info(request, "Band maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:clause-detail', clause_id=clause_id)
 
         create_form = SubmissionCreationForm(request.POST, request.FILES)
 
@@ -57,12 +56,12 @@ class SubmissionCreateView(IsEmployee, View):
 
             instance.save()
 
-            messages.success(request, "Ishingiz muvaffaqiyatli joylandi.")
-            return redirect('dashboard:submissions')
+            messages.success(request, "Hisobotingiz muvaffaqiyatli joylandi.")
+            return redirect('dashboard:main')
 
         else:
             messages.info(request, "Ishingizni joylashda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring. Oldin joylagan bo'lishingiz mumkin.")
-            return redirect('dashboard:submissions')
+            return redirect('dashboard:main')
 
 
 # class SubmissionDetailView(IsEmployee, View):
