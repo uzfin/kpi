@@ -17,6 +17,10 @@ class CriterionsView(IsAdmin, View):
             messages.info(request, "KPI maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
             return redirect("dashboard:kpis")
 
+        if "current_kpi" in request.session:
+            del request.session["current_kpi"]
+        request.session["current_kpi"] = {"id": kpi.id, "name": kpi.name}
+
         ctx = {
             "criterions": kpi.criterions.all(),
             "current_kpi": kpi,
@@ -122,7 +126,7 @@ class CriterionUpdateView(IsAdmin, View):
             messages.success(request, "Mezon muvaffaqiyatli tahrirlandi.")
             return redirect('dashboard:criterions', kpi_id=criterion.kpi.id)
         else:
-            for field, error_list in errors.items():
+            for field, error_list in update_form.errors.items():
                 for error in error_list:
                     messages.info(request, error)
 

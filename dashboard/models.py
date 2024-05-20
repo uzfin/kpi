@@ -46,7 +46,7 @@ class Criterion(models.Model):
             raise ValidationError("Mezon yaratish sanasi KPI tugash sanasidan keyin boʻlishi mumkin emas.")
         
         # Calculate the sum of ball values of all existing criterions
-        existing_criterion_balls_sum = self.kpi.criterions.aggregate(total_ball=models.Sum('ball'))['total_ball'] or 0
+        existing_criterion_balls_sum = self.kpi.criterions.exclude(pk=self.pk).aggregate(total_ball=models.Sum('ball'))['total_ball'] or 0
         
         # Add the ball of the new criterion
         new_criterion_ball = self.ball
@@ -87,7 +87,7 @@ class Clause(models.Model):
             raise ValidationError("Yuqori band va joriy band bir xil mezonga tegishli bo'lishi kerak.")
 
         # Calculate the sum of ball values of all existing clauses
-        existing_clause_balls_sum = self.criterion.clauses.aggregate(total_ball=models.Sum('ball'))['total_ball'] or 0
+        existing_clause_balls_sum = self.criterion.clauses.exclude(pk=self.pk).aggregate(total_ball=models.Sum('ball'))['total_ball'] or 0
         
         # Add the ball of the new clause
         new_clause_ball = self.ball

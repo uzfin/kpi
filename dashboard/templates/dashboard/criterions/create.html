@@ -6,44 +6,45 @@
 <div class="row">
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Yangi mezon yaratish</h4>
-            <p class="card-description">
-            Mezon ma'lumotlarini to'ldiring
-            </p>
-            <form class="forms-sample" method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="exampleInputName1">Nomi</label>
-                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Nomi" required>
-                </div>
-                <div class="form-group">
-                    <label for="exampleTextarea1">Ta'rif</label>
-                    <textarea class="form-control" id="exampleTextarea1" name="description" rows="8" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputName1">Ball</label>
-                    <input type="number" class="form-control" id="exampleInputName1" name="ball" placeholder="Ball" min="0" max="{{ current_kpi.ball }}" required>
-                </div>
-                <div class="form-group">
-                    <label>Ma'sul shaxsni tanlang</label>
+            <div class="card-body">
+                <h4 class="card-title">Yangi mezon yaratish</h4>
+                <p class="card-description">
+                Mezon ma'lumotlarini to'ldiring
+                </p>
+                <form class="forms-sample" method="post">
+                    {% csrf_token %}
+
+                    <input type="hidden" class="form-control" id="exampleInputName1" name="created_by" value="{{ user.id }}" required>
+                    <input type="hidden" class="form-control" id="exampleInputName1" name="kpi" value="{{ current_kpi.id }}" required>
+                    <div class="form-group">
+                        <label for="exampleInputName1">Nomi</label>
+                        <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Nomi" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleTextarea1">Ta'rif</label>
+                        <textarea class="form-control" id="exampleTextarea1" name="description" rows="8" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputName1">Ball</label>
+                        <input type="number" class="form-control" id="exampleInputName1" name="ball" placeholder="Ball" min="0" max="{{ current_kpi.ball }}" required>
+                    </div>
                     {% if managers %}
-                        <select class="js-example-basic-single w-100" name="responsible_person" required>
-                            <option></option>
-                            {% for manager in managers %}
-                                <option value="{{ manager.id }}">{{ manager.full_name }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="form-group">
+                            <label>Ma'sul shaxsni tanlang</label>
+                            <select class="js-example-basic-single w-100" name="responsible_person" required>
+                                <option></option>
+                                {% for manager in managers %}
+                                    <option value="{{ manager.id }}">{{ manager.full_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mr-2">Yaratish</button>
                     {% else %}
                     <p style="color: red;">Nazoratchilar mavjud emas. Iltimos mezon yaratish uchun ushbu mezon uchun mas'ul shaxsni yarating.</p>
                     {% endif %}
-                  </div>
-                <input type="hidden" class="form-control" id="exampleInputName1" name="created_by" value="{{ user.id }}" required>
-                <input type="hidden" class="form-control" id="exampleInputName1" name="kpi" value="{{ current_kpi.id }}" required>
 
-                <button type="submit" class="btn btn-primary mr-2">Yaratish</button>
-            </form>
-        </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

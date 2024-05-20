@@ -37,7 +37,7 @@ class Department(models.Model):
     # primary fields
     name = models.CharField(max_length=255, unique=True)
     boss = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='departments')
-    employees = models.ManyToManyField(User, related_name='employees')
+    employees = models.ManyToManyField(User, related_name='working_departments')
 
     # secondary fields
     created_at = models.DateTimeField(auto_now_add=True)

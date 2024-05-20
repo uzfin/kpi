@@ -94,18 +94,19 @@
                 <tr>
                   <th>#</th>
                   <th>Nomi</th>
-                  <th>Ball</th>
+                  <th>Hodimlar</th>
                 </tr>
               </thead>
               <tbody>
-                {% for kpi in kpis|slice:"0:5" %}
+
+                {% for department in departments|slice:"0:5" %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
-                  <td>{{ kpi.name }}</td>
-                  <td class="font-weight-bold">{{ 0 }}</td>
+                  <td><a href="#">{{ department.name }}</a></td>
+                  <td class="font-weight-bold">{{ department.employees.count }}</td>
                 </tr>
                 {% endfor %}
-    
+
               </tbody>
             </table>
           </div>
@@ -117,35 +118,59 @@
     </div>
 </div>
 <div class="row">
-  <div class="col-md-12 grid-margin stretch-card">
+  <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <p class="card-title">Hodimlar jadvali.</p>
-        {% if employees %}
-        <p class="font-weight-500">Tizimdan foydalanuvchi hodimlar jadvali..</p>
-        <div class="row">
-          <div class="col-12">
-            <div class="table-responsive">
-              <table id="example" class="display expandable-table" style="width:100%">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Ismi</th>
-                    <th>Business type</th>
-                    <th>Policy holder</th>
-                    <th>Premium</th>
-                    <th>Status</th>
-                    <th>Updated at</th>
-                    <th></th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-          </div>
+        <h4 class="card-title">Hodimlar jadvali.</h4>
+        <p class="card-description">
+          Tizimdan foydalanuvchi hodimlar jadvali <code>{{ employees.count }} ta.</code>
+        </p>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>
+                  Hodim
+                </th>
+                <th>
+                  Ismi
+                </th>
+                <th>
+                  Ko'rsatgich
+                </th>
+                <th>
+                  Ball
+                </th>
+                <th>
+                  Bo'limlar
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for employee in employees %}
+                <tr>
+                  <td class="py-1">
+                    <img src="{{ employee.profile_picture.url }}" alt="image"/>
+                  </td>
+                  <td>
+                    {{ employee.full_name }}
+                  </td>
+                  <td>
+                    <div class="progress">
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </td>
+                  <td>
+                    {{ 0 }}
+                  </td>
+                  <td>
+                    {{ "some" }}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-        {% else %}
-          <p class="font-weight-500">Tizimda KPI lar <code>mavjud emas!</code> Yaratish uchun Batafsilni bosing.</p>
-        {% endif %}
       </div>
     </div>
   </div>
