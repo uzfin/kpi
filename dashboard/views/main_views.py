@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpRequest, HttpResponse
 from users.models import User, Department
-from dashboard.models import KPI
+from dashboard.models import KPI, Criterion
 
 
 class DashboardView(LoginRequiredMixin, View):
@@ -42,8 +42,11 @@ class DashboardView(LoginRequiredMixin, View):
 
         elif user.role == User.MANAGER:
             ctx = {
-
+                "departments": Department.objects.all()[:10],
+                "employees": User.objects.filter(role=User.EMPLOYEE)[:10],
             }
+            if current_kpi:
+                ctx['criterions'] = Criterion.objects.filter(kpi=current_kpi, responsible_person=user)
             return render(request, "dashboard/main/manager.html", ctx)
 
         elif user.role == User.BOSS:
