@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from django.core.exceptions import ValidationError
 from django.db import models
 from users.models import User
@@ -136,7 +136,7 @@ class Submission(models.Model):
 
     def clean(self, *args, **kwargs):
         # Check if the creation date is after the end date of the KPI
-        if self.clause.criterion.kpi.end_date and self.created_at > self.clause.criterion.kpi.end_date:
+        if self.kpi.end_date and datetime.now() > self.kpi.end_date:
             raise ValidationError("Hisobot yaratish sanasi KPI tugash sanasidan keyin boʻlishi mumkin emas.")
 
     def __str__(self) -> str:

@@ -11,12 +11,12 @@ from dashboard.views.clause_views import (
     ClauseDetailView, ClauseCreateView, ClauseInternalCreateView,
     ClauseDeleteView, ClauseUpdateView,
 )
-# from dashboard.views.submission_views import (
-#     SubmissionsView, SubmissionCreateView, SubmissionDetailView,
+from dashboard.views.submission_views import (
+    SubmissionsView, SubmissionCreateView, #SubmissionDetailView,
 #     SubmissionUpdateView, SubmissionDeleteView,
 #     WorksView, WorkDetailView,
 #     AssessmentView,
-# )
+)
 # from dashboard.views.department_views import (
 #     DepartmentView,
 # )
@@ -51,8 +51,8 @@ urlpatterns = [
     path("clauses/update/<int:clause_id>/", ClauseUpdateView.as_view(), name="clause-update"),
     path("clauses/create/internal/<int:parent_clause_id>/", ClauseInternalCreateView.as_view(), name="clause-internal-create"),
 
-    # path("submissions/", SubmissionsView.as_view(), name="submissions"),
-    # path("submissions/create/<int:kpi_id>/<int:metric_id>/", SubmissionCreateView.as_view(), name="submission-create"),
+    path("submissions/<kpi_id>/", SubmissionsView.as_view(), name="submissions"),
+    path("submissions/create/<int:clause_id>/", SubmissionCreateView.as_view(), name="submission-create"),
     # path("submissions/<int:submission_id>/", SubmissionDetailView.as_view(), name="submission-detail"),
     # path("submissions/update/<int:submission_id>/", SubmissionUpdateView.as_view(), name="submission-edit"),
     # path("submissions/delete/<int:submission_id>/", SubmissionDeleteView.as_view(), name="submission-delete"),

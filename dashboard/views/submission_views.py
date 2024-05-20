@@ -1,72 +1,68 @@
-# from datetime import date
-
-# from django.contrib import messages
-# from django.shortcuts import render, redirect
-# from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.views import View
-# from django.http import HttpRequest, HttpResponse
-# from users.permissions import IsEmployee, IsManagerOrEmployee, IsCeoOrManager, IsManager
-# from dashboard.forms import SubmissionCreationForm, SubmissionUpdationForm, MarkForm
-
-# from dashboard.models import KPI, Notefication, Submission
-# from users.models import User
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.views import View
+from django.http import HttpRequest, HttpResponse
+from users.permissions import IsEmployee, IsManager
+from dashboard.forms import SubmissionCreationForm
+from dashboard.models import KPI, Notefication, Submission
+from users.models import User
 
 
-# class SubmissionsView(LoginRequiredMixin, View):
+class SubmissionsView(LoginRequiredMixin, View):
 
-#     def get(self, request: HttpRequest) -> HttpResponse:
-#         user = request.user
+    def get(self, request: HttpRequest) -> HttpResponse:
+        user = request.user
 
-#         if user.role == User.EMPLOYEE:
-#             submissions = user.submissions.order_by("-submitted_at")
-#         elif user.role == User.MANAGER:
-#             submissions = Submission.objects.filter(metric__kpi__in=KPI.objects.filter(responsible_employee=user), is_checked=False).order_by("-submitted_at")
+        if user.role == User.EMPLOYEE:
+            submissions = user.submissions.order_by("-submitted_at")
+        elif user.role == User.MANAGER:
+            submissions = Submission.objects.filter(metric__kpi__in=KPI.objects.filter(responsible_employee=user), is_checked=False).order_by("-submitted_at")
 
-#         ctx = {
-#             "submissions": submissions
-#         }
-#         if request.user.role == User.MANAGER:
-#             ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
+        ctx = {
+            "submissions": submissions
+        }
+        if request.user.role == User.MANAGER:
+            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
 
-#         return render(request, 'dashboard/submissions/list.html', ctx)
+        return render(request, 'dashboard/submissions/list.html', ctx)
 
 
-# class SubmissionCreateView(IsEmployee, View):
+class SubmissionCreateView(IsEmployee, View):
 
-#     def get(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
+    def get(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
 
-#         try:
-#             kpi = KPI.objects.get(id=kpi_id)
-#             metric = kpi.metrics.get(id=metric_id)
-#         except KPI.DoesNotExist or Metric.DoesNotExist:
-#             messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-#             return redirect('dashboard:main')
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+            metric = kpi.metrics.get(id=metric_id)
+        except KPI.DoesNotExist or Metric.DoesNotExist:
+            messages.info(request, "Metrik maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:main')
 
-#         user = request.user
+        user = request.user
 
-#         ctx = {
-#             "kpi": kpi,
-#             "metric": metric,
-#         }
+        ctx = {
+            "kpi": kpi,
+            "metric": metric,
+        }
 
-#         return render(request, 'dashboard/submissions/create.html', ctx)
+        return render(request, 'dashboard/submissions/create.html', ctx)
 
-#     def post(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
-#         user = request.user
+    def post(self, request: HttpRequest, kpi_id: int, metric_id: int) -> HttpResponse:
+        user = request.user
 
-#         create_form = SubmissionCreationForm(request.POST, request.FILES)
+        create_form = SubmissionCreationForm(request.POST, request.FILES)
 
-#         if create_form.is_valid():
-#             instance = create_form.instance
+        if create_form.is_valid():
+            instance = create_form.instance
 
-#             instance.save()
+            instance.save()
 
-#             messages.success(request, "Ishingiz muvaffaqiyatli joylandi.")
-#             return redirect('dashboard:submissions')
+            messages.success(request, "Ishingiz muvaffaqiyatli joylandi.")
+            return redirect('dashboard:submissions')
 
-#         else:
-#             messages.info(request, "Ishingizni joylashda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring. Oldin joylagan bo'lishingiz mumkin.")
-#             return redirect('dashboard:submissions')
+        else:
+            messages.info(request, "Ishingizni joylashda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring. Oldin joylagan bo'lishingiz mumkin.")
+            return redirect('dashboard:submissions')
 
 
 # class SubmissionDetailView(IsEmployee, View):
