@@ -86,18 +86,32 @@ class Clause(models.Model):
         if self.parent and self.parent.criterion != self.criterion:
             raise ValidationError("Yuqori band va joriy band bir xil mezonga tegishli bo'lishi kerak.")
 
-        # Calculate the sum of ball values of all existing clauses
-        existing_clause_balls_sum = self.criterion.clauses.exclude(pk=self.pk).aggregate(total_ball=models.Sum('ball'))['total_ball'] or 0
-        
-        # Add the ball of the new clause
-        new_clause_ball = self.ball
-        
-        # Total ball after adding the new clause
-        total_ball_after_addition = existing_clause_balls_sum + new_clause_ball
-        
-        # Check if the total exceeds the criterion's ball
-        if total_ball_after_addition > self.criterion.ball:
-            raise ValidationError("Ushbu Mezonga tegishli barcha bandlar bali yig'indisi mezon balidan kam yoki teng bo'lishi kerak.")
+        if self.parent is None:
+            # Calculate the sum of ball values of all existing clauses
+            existing_clause_balls_sum = self.criterion.clauses.exclude(pk=self.pk).aggregate(total_ball=models.Sum('ball'))['total_ball'] or 0
+            
+            # Add the ball of the new clause
+            new_clause_ball = self.ball
+            
+            # Total ball after adding the new clause
+            total_ball_after_addition = existing_clause_balls_sum + new_clause_ball
+            
+            # Check if the total exceeds the criterion's ball
+            if total_ball_after_addition > self.criterion.ball:
+                raise ValidationError("Ushbu Mezonga tegishli barcha bandlar bali yig'indisi mezon balidan kam yoki teng bo'lishi kerak.")
+        else:
+            # Calculate the sum of ball values of all existing clauses
+            existing_clause_balls_sum = self.parent.children.exclude(pk=self.pk).aggregate(total_ball=models.Sum('ball'))['total_ball'] or 0
+            
+            # Add the ball of the new clause
+            new_clause_ball = self.ball
+            
+            # Total ball after adding the new clause
+            total_ball_after_addition = existing_clause_balls_sum + new_clause_ball
+            
+            # Check if the total exceeds the criterion's ball
+            if total_ball_after_addition > self.parent.ball:
+                raise ValidationError("Ushbu Bandga tegishli barcha ichki bandlar bali yig'indisi mezon balidan kam yoki teng bo'lishi kerak.")
 
     def __str__(self) -> str:
         return self.name

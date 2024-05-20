@@ -75,6 +75,7 @@ class CriterionDetailView(IsAdmin, View):
 
         ctx = {
             "criterion": criterion,
+            "clauses": criterion.clauses.filter(parent=None),
         }
 
         return render(request, 'dashboard/criterions/detail.html', ctx)

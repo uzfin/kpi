@@ -7,9 +7,9 @@
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-              <h4 class="card-title">Band yaratish</h4>
+              <h4 class="card-title">Inchi Band yaratish</h4>
               <p class="card-description">
-              Band ma'lumotlarini to'ldiring
+              Ichki Band ma'lumotlarini to'ldiring
               </p>
               <form class="forms-sample" method="post">
                   {% csrf_token %}
@@ -23,11 +23,11 @@
                   </div>
                   <div class="form-group">
                       <label for="exampleInputName1">Ball</label>
-                      <input type="number" class="form-control" id="exampleInputName1" name="ball" placeholder="Ball" min="0" max="{{ criterion.ball }}" required>
+                      <input type="number" class="form-control" id="exampleInputName1" name="ball" placeholder="Ball" min="0" max="{{ parent_clause.ball }}" required>
                   </div>
-                  <input type="hidden" class="form-control" id="exampleInputName1" name="kpi" value="{{ criterion.kpi.id }}" required>
-                  <input type="hidden" class="form-control" id="exampleInputName1" name="criterion" value="{{ criterion.id }}" required>
-                  <input type="hidden" class="form-control" id="exampleInputName1" name="parent" value="{{ clause.id }}" required>
+                  <input type="hidden" class="form-control" id="exampleInputName1" name="kpi" value="{{ parent_clause.kpi.id }}" required>
+                  <input type="hidden" class="form-control" id="exampleInputName1" name="criterion" value="{{ parent_clause.criterion.id }}" required>
+                  <input type="hidden" class="form-control" id="exampleInputName1" name="parent" value="{{ parent_clause.id }}" required>
                   <input type="hidden" class="form-control" id="exampleInputName1" name="created_by" value="{{ user.id }}" required>
 
                   <button type="submit" class="btn btn-primary mr-2">Yaratish</button>

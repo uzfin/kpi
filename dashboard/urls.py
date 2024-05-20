@@ -8,7 +8,8 @@ from dashboard.views.criterion_views import (
     CriterionDeleteView, CriterionUpdateView,
 )
 from dashboard.views.clause_views import (
-    ClauseCreateView,
+    ClauseDetailView, ClauseCreateView, ClauseInternalCreateView,
+    ClauseDeleteView,
 )
 # from dashboard.views.submission_views import (
 #     SubmissionsView, SubmissionCreateView, SubmissionDetailView,
@@ -45,6 +46,9 @@ urlpatterns = [
     path("criterions/update/<int:criterion_id>/", CriterionUpdateView.as_view(), name="criterion-update"),
 
     path("clauses/create/<int:criterion_id>/", ClauseCreateView.as_view(), name="clause-create"),
+    path("clauses/detatil/<int:clause_id>/", ClauseDetailView.as_view(), name="clause-detail"),
+    path("clauses/delete/<int:clause_id>/", ClauseDeleteView.as_view(), name="clause-delete"),
+    path("clauses/create/internal/<int:parent_clause_id>/", ClauseInternalCreateView.as_view(), name="clause-internal-create"),
 
     # path("submissions/", SubmissionsView.as_view(), name="submissions"),
     # path("submissions/create/<int:kpi_id>/<int:metric_id>/", SubmissionCreateView.as_view(), name="submission-create"),

@@ -7,7 +7,7 @@
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-            <h4 class="card-title"> <i class="mdi mdi-clipboard-check" style="color: blue"></i>  {{ criterion.name }}</h4>
+            <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-clipboard-check"></i> Mezon:  {{ criterion.name }}</h4>
             <p class="card-description">
                 {{ criterion.description }}
             </p>
@@ -53,14 +53,13 @@
               </thead>
               <tbody>
   
-                {% for clause in criterion.clauses.all %}
+                {% for clause in clauses.all %}
                   <tr>
                     <td>
                       {{ forloop.counter }}
                     </td>
                     <td>
-                      <a href="#">{{ clause.name }}</a>
-                      {% comment %} <a href="{% url "dashboard:criterion-detail" clause.id %}">{{ clause.name }}</a> {% endcomment %}
+                      <a href="{% url "dashboard:clause-detail" clause.id %}">{{ clause.name }}</a>
                     </td>
                     <td>
                       {{ clause.ball }}
