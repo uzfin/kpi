@@ -106,3 +106,39 @@ class ClauseDeleteView(IsAdmin, View):
 
         return redirect("dashboard:criterion-detail", criterion_id=clause.criterion.id)
 
+
+class ClauseUpdateView(IsAdmin, View):
+
+    def get(self, request: HttpRequest, clause_id: int) -> HttpResponse:
+        try:
+            clause = Clause.objects.get(id=clause_id)
+        except Clause.DoesNotExist:
+            messages.info(request, "Band maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:main')
+            
+        ctx = {
+            "clause": clause
+        }
+
+        return render(request, 'dashboard/clauses/update.html', ctx)
+
+    def post(self, request: HttpRequest, clause_id: int) -> HttpResponse:
+        try:
+            clause = Clause.objects.get(id=clause_id)
+        except Clause.DoesNotExist:
+            messages.info(request, "Band maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
+            return redirect('dashboard:main')
+
+        update_form = ClauseCreationForm(request.POST, instance=clause)
+
+        if update_form.is_valid():
+            update_form.save()
+
+            messages.success(request, "Band muvaffaqiyatli tahrirlandi.")
+            return redirect('dashboard:clause-detail', clause_id=clause.id)
+        else:
+            for field, error_list in update_form.errors.items():
+                for error in error_list:
+                    messages.info(request, error)
+
+            return redirect('dashboard:clause-detail', clause_id=clause.id)

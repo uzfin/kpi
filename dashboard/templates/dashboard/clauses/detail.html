@@ -23,7 +23,7 @@
         {% if user.role == root_user.ADMIN %}
             <div class="card-body" style="text-align: center;">
                 <a href="{% url "dashboard:clause-delete" clause.id %}" class="btn btn-inverse-danger">O'chirish</a>
-                <a href="#" class="btn btn-inverse-primary">Tahrirlash</a>
+                <a href="{% url "dashboard:clause-update" clause.id %}" class="btn btn-inverse-primary">Tahrirlash</a>
             </div>
         {% endif %}
       </div>
