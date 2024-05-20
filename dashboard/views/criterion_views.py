@@ -2,13 +2,13 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsAdmin
+from users.permissions import IsAdmin, IsStaff
 from dashboard.forms import CriterionCreationForm
 from dashboard.models import KPI, Criterion
 from users.models import User
 
 
-class CriterionsView(IsAdmin, View):
+class CriterionsView(IsStaff, View):
 
     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
         try:
@@ -64,7 +64,7 @@ class CriterionsCreateView(IsAdmin, View):
             return redirect('dashboard:criterions', kpi_id=kpi_id)
 
 
-class CriterionDetailView(IsAdmin, View):
+class CriterionDetailView(IsStaff, View):
 
     def get(self, request: HttpRequest, criterion_id: int) -> HttpResponse:
         try:

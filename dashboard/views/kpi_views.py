@@ -5,20 +5,20 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsAdmin
+from users.permissions import IsStaff, IsAdmin
 from dashboard.forms import KPICreationForm
 
 from dashboard.models import KPI, Notefication
 from users.models import User
 
 
-class KPIView(IsAdmin, ListView):
+class KPIView(IsStaff, ListView):
     model = KPI
     template_name = "dashboard/kpis/list.html"
     context_object_name = "kpis"
 
 
-class KPIDetailView(IsAdmin, View):
+class KPIDetailView(IsStaff, View):
 
     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
         try:

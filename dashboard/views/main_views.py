@@ -27,17 +27,42 @@ class DashboardView(LoginRequiredMixin, View):
         else:
             current_kpi = KPI.objects.last()
 
-        if user.role == User.ADMIN:
+        if current_kpi:
+            if 'current_kpi' in request.session:
+                del request.session['current_kpi']
+            request.session['current_kpi'] = {'id': current_kpi.id, 'name': current_kpi.name}
+
+        if user.role == User.ADMIN or user.role == User.CEO:
             ctx = {
                 "kpis": KPI.objects.all(),
                 "departments": Department.objects.all()[:10],
                 "employees": User.objects.filter(role=User.EMPLOYEE)[:10],
             }
-
-            if current_kpi:
-
-                if 'current_kpi' in request.session:
-                    del request.session['current_kpi']
-                request.session['current_kpi'] = {'id': current_kpi.id, 'name': current_kpi.name}
-
             return render(request, "dashboard/main/admin.html", ctx)
+
+        elif user.role == User.MANAGER:
+            ctx = {
+
+            }
+            return render(request, "dashboard/main/manager.html", ctx)
+
+        elif user.role == User.BOSS:
+            ctx = {
+
+            }
+            return render(request, "dashboard/main/boss.html", ctx)
+        
+        elif user.role == User.EMPLOYEE:
+            ctx = {
+
+            }
+            return render(request, "dashboard/main/admin.html", ctx)
+
+        elif user.role == User.GUEST:
+            ctx = {
+
+            }
+            return render(request, "dashboard/main/guest.html", ctx)
+
+        else:
+            pass

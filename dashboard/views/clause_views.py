@@ -2,13 +2,13 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsAdmin
+from users.permissions import IsAdmin, IsStaff
 from dashboard.forms import ClauseCreationForm
 from dashboard.models import Clause, Criterion
 from users.models import User
 
 
-class ClauseDetailView(IsAdmin, View):
+class ClauseDetailView(IsStaff, View):
 
     def get(self, request: HttpRequest, clause_id: int) -> HttpResponse:
         try:

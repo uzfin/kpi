@@ -54,3 +54,12 @@ class IsGuest(BaseUserPassesTestMixin):
     def test_func(self):
         # Check if the user has GUESTs role
         return self.request.user.role == User.GUEST
+
+
+class IsStaff(BaseUserPassesTestMixin):
+    """
+    Custom permission to only allow GUESTs to access the view.
+    """
+    def test_func(self):
+        # Check if the user has GUESTs role
+        return self.request.user.role != User.GUEST
