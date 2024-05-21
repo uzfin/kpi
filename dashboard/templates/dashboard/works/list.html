@@ -21,7 +21,7 @@
                 Hisobot
               </th>
               <th>
-                Employee
+                Hodim
               </th>
               <th>
                 Ball
@@ -43,16 +43,16 @@
                     {% endif %}
                 </td>
                 <td>
-                  <a href="{% url "dashboard:work-detail" work.id %}">{{ work.metric.name }}</a>
+                  <a href="{% url "dashboard:work-detail" work.id %}">{{ work.clause.name }}</a>
                 </td>
                 <td>
-                  {{work.employee.full_name }}
+                  {{ work.owner.full_name }}
                 </td>
                 <td>
                   {{ work.mark.ball }}
                 </td>
                 <td>
-                  {{ work.submitted_at }}
+                  {{ work.updated_at }}
                 </td>
               </tr>
             {% endfor %}

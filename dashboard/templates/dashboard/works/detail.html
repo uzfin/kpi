@@ -4,33 +4,30 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">KPI: {{ work.metric.name }}</h4>
-          <p class="card-description">
-            Umumiy ball <code>{{ work.metric.ball }}</code>. <b>{{ work.kpi.responsible_employee.full_name }}</b>ga biriktirilgan.
-          </p>
-          <p>
-            Ta'rif: {{ work.metric.description }}
-          </p>
-        </div>
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-clipboard-text"></i> Band: <a href="{% url "dashboard:clause-detail" work.clause.id %}">{{ work.clause.name }}</a></h4>
+        <p>
+          {{ work.clause.description }}
+        </p>
+        <p class="card-description">
+          Umumiy ball <code>{{ work.clause.ball }}</code>.
+        </p>
       </div>
     </div>
+  </div>
 </div>
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Hisobot: {{ work.employee.full_name }}ning hisoboti</h4>
-            <p class="card-description">
-                Berilgan ball <code>{{ work.mark.ball }}</code>. Yuborilgan sana: <b>{{ work.submitted_at }}</b>
-                {% if work.manager %}
-                    {{ work.manager.full_name }} ko'rip chiqdi.
-                {% endif %}
-            </p>
+            <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-briefcase-upload"></i> Hisobot</h4>
             <p>
                 Izoh: {{ work.comment }}
+            </p>
+            <p>
+                hodim: {{ work.owner.full_name }}
             </p>
             <br>
             <a href="{{ work.file.url }}" class="btn btn-inverse-primary">Hisobotni ko'rish</a>
@@ -38,28 +35,13 @@
         </div>
     </div>
 </div>
-{% if work.is_marked %}
-  <div class="row">
-      <div class="col-md-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body">
-              <p class="card-description">
-                  <b>{{ work.submitted_at }}</b> sanada {{ work.mark.manager.full_name }} tekshirgan va <code>{{ work.mark.ball }}</code> ball bergan.
-              </p>
-              <p>
-                Izoh: {{ work.mark.comment }}
-              </p>
-            </div>
-          </div>
-      </div>
-  </div>
-{% endif %}
+
 <div class="row">
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
         <div class="card-body">
-          {% if work.is_marked %}
-            <h4 class="card-title">Hisobotni Qayta Baholash</h4>
+          {% if work.is_checked %}
+            <h4 class="card-title">Hisobotni Baholash</h4>
           {% else %}
             <h4 class="card-title">Hisobotni Baholash</h4>
           {% endif %}
@@ -67,11 +49,13 @@
               {% csrf_token %}
 
               <input type="hidden" name="submission" value="{{ work.id }}">
-              <input type="hidden" name="manager" value="{{ user.id }}">
+              <input type="hidden" name="criterion" value="{{ work.clause.criterion.id }}">
+              <input type="hidden" name="employee" value="{{ work.owner.id }}">
+              <input type="hidden" name="marked_by" value="{{ user.id }}">
 
               <div class="form-group">
                   <label for="exampleInputName1">Ball</label>
-                  <input type="number" class="form-control" id="exampleInputName1" name="ball" placeholder="Ball" required>
+                  <input type="number" class="form-control" id="exampleInputName1" name="ball" min="0" max="{{ work.clause.ball }}" placeholder="Ball" required>
               </div>
 
               <div class="form-group">

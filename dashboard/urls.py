@@ -14,8 +14,10 @@ from dashboard.views.clause_views import (
 from dashboard.views.submission_views import (
     SubmissionsView, SubmissionCreateView, SubmissionDetailView,
     SubmissionUpdateView, SubmissionDeleteView,
-#     WorksView, WorkDetailView,
-#     AssessmentView,
+)
+from dashboard.views.work_views import (
+    WorksView, WorkDetailView,
+    AssessmentView,
 )
 # from dashboard.views.department_views import (
 #     DepartmentView,
@@ -57,6 +59,10 @@ urlpatterns = [
     path("submissions/update/<int:submission_id>/", SubmissionUpdateView.as_view(), name="submission-edit"),
     path("submissions/delete/<int:submission_id>/", SubmissionDeleteView.as_view(), name="submission-delete"),
 
+    path("works/<int:kpi_id>/", WorksView.as_view(), name="works"),
+    path("works/detail/<int:work_id>/", WorkDetailView.as_view(), name="work-detail"),
+    path("assessment/<int:work_id>/", AssessmentView.as_view(), name="assessment"),
+
     # path("departments/", DepartmentView.as_view(), name="departments"),
 
     # path("employees/<int:department_id>/", EmployeeView.as_view(), name="employees"),
@@ -65,10 +71,7 @@ urlpatterns = [
     # path("notefications/<int:employee_id>/", SendNoteficationView.as_view(), name="notefications"),
     # path("notefications/see/<int:notefication_id>/", SeeNoteficationView.as_view(), name="see-notefication"),
 
-    # path("works/", WorksView.as_view(), name="works"),
-    # path("works/<int:work_id>/", WorkDetailView.as_view(), name="work-detail"),
 
-    # path("assessment/<int:work_id>/", AssessmentView.as_view(), name="assessment"),
 
     # path("metrics/api/", MetricsAPIView.as_view(), name="metrics-api"),
 ]
