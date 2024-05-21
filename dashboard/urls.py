@@ -19,15 +19,15 @@ from dashboard.views.work_views import (
     WorksView, WorkDetailView,
     AssessmentView,
 )
-# from dashboard.views.department_views import (
-#     DepartmentView,
-# )
-# from dashboard.views.employee_views import (
-#     EmployeeView,
-# )
-# from dashboard.views.notefication_views import (
-#     SendNoteficationView, NoteficationView, SeeNoteficationView,
-# )
+from dashboard.views.notefication_views import (
+    SendNoteficationView, NoteficationView, SeeNoteficationView,
+)
+from dashboard.views.department_views import (
+    DepartmentView,
+)
+from dashboard.views.employee_views import (
+    EmployeeView,
+)
 
 
 app_name = "dashboard"
@@ -63,15 +63,11 @@ urlpatterns = [
     path("works/detail/<int:work_id>/", WorkDetailView.as_view(), name="work-detail"),
     path("assessment/<int:work_id>/", AssessmentView.as_view(), name="assessment"),
 
-    # path("departments/", DepartmentView.as_view(), name="departments"),
+    path("departments/", DepartmentView.as_view(), name="departments"),
 
-    # path("employees/<int:department_id>/", EmployeeView.as_view(), name="employees"),
+    path("employees/<int:department_id>/", EmployeeView.as_view(), name="employees"),
 
-    # path("notefications/", NoteficationView.as_view(), name="get-notefications"),
-    # path("notefications/<int:employee_id>/", SendNoteficationView.as_view(), name="notefications"),
-    # path("notefications/see/<int:notefication_id>/", SeeNoteficationView.as_view(), name="see-notefication"),
-
-
-
-    # path("metrics/api/", MetricsAPIView.as_view(), name="metrics-api"),
+    path("notefications/", NoteficationView.as_view(), name="get-notefications"),
+    path("notefications/<int:employee_id>/", SendNoteficationView.as_view(), name="notefications"),
+    path("notefications/see/<int:notefication_id>/", SeeNoteficationView.as_view(), name="see-notefication"),
 ]

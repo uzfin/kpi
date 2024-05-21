@@ -1,5 +1,5 @@
 from django import forms
-from .models import KPI, Criterion, Clause, Submission, Mark
+from .models import KPI, Criterion, Clause, Submission, Mark, Notefication
 
 
 class KPICreationForm(forms.ModelForm):
@@ -44,8 +44,8 @@ class MarkForm(forms.ModelForm):
         fields = "__all__"
 
 
-# class NoteficationCreationForm(forms.ModelForm):
+class NoteficationCreationForm(forms.ModelForm):
 
-#     class Meta:
-#         model = Notefication
-#         fields = "__all__"
+    class Meta:
+        model = Notefication
+        fields = "__all__"

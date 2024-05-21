@@ -65,10 +65,11 @@ class IsStaff(BaseUserPassesTestMixin):
         return self.request.user.role != User.GUEST
 
 
-class IsCeoOrManager(BaseUserPassesTestMixin):
+class IsACM(BaseUserPassesTestMixin):
     """
-    Custom permission to only allow CEO or Manger to access the view.
+    Custom permission to only allow Admin, Ceo, Manager to access the view.
     """
     def test_func(self):
         # Check if the user has CEO or Manger role
-        return self.request.user.role == User.CEO or self.request.user.role == User.MANAGER
+        role = self.request.user.role
+        return role == User.ADMIN or role == User.CEO or role == User.MANAGER

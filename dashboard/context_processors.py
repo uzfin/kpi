@@ -4,8 +4,9 @@ from users.models import User
 
 def common_data(request):
     if not request.user.is_anonymous:
+        user = request.user
         ctx = {
-            'user': request.user,
+            'user': user,
             'date': date.today(),
             'root_user': User,
         }
@@ -15,7 +16,7 @@ def common_data(request):
 
         if 'current_kpi' in request.session:
             ctx['current_kpi'] = request.session['current_kpi']
-            
+
         return ctx
     
     return {}

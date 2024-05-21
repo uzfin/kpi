@@ -2,13 +2,13 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsManager, IsCeoOrManager
+from users.permissions import IsManager, IsACM
 from dashboard.models import Submission, KPI
 from dashboard.forms import MarkForm
 from users.models import User
 
 
-class WorksView(IsCeoOrManager, View):
+class WorksView(IsACM, View):
 
     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
         try:
@@ -27,7 +27,7 @@ class WorksView(IsCeoOrManager, View):
         return render(request, 'dashboard/works/list.html', ctx)
 
 
-class WorkDetailView(IsCeoOrManager, View):
+class WorkDetailView(IsACM, View):
 
     def get(self, request: HttpRequest, work_id: int) -> HttpResponse:
         

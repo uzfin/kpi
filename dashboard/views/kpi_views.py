@@ -1,5 +1,4 @@
 from datetime import date
-
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
@@ -7,7 +6,6 @@ from django.views.generic import ListView
 from django.http import HttpRequest, HttpResponse
 from users.permissions import IsStaff, IsAdmin
 from dashboard.forms import KPICreationForm
-
 from dashboard.models import KPI, Notefication
 from users.models import User
 
