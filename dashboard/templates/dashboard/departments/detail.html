@@ -16,8 +16,7 @@
         {% if user.role == root_user.ADMIN %}
             <div class="card-body" style="text-align: center;">
                 <a href="{% url "dashboard:department-delete" department.id %}" class="btn btn-inverse-danger">O'chirish</a>
-                <a href="{#" class="btn btn-inverse-primary">Tahrirlash</a>
-                {% comment %} <a href="{% url "dashboard:department-update" kpi.id %}" class="btn btn-inverse-primary">Tahrirlash</a> {% endcomment %}
+                <a href="{% url "dashboard:department-update" department.id %}" class="btn btn-inverse-primary">Tahrirlash</a>
             </div>
         {% endif %}
       </div>

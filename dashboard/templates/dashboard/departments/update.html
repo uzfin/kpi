@@ -17,7 +17,7 @@
                 <input type="hidden" class="form-control" id="exampleInputName1" name="created_by" value="{{ user.id }}" required>
                 <div class="form-group">
                     <label for="exampleInputName1">Nomi</label>
-                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Nomi" required>
+                    <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Nomi" value="{{ department.name }}" required>
                 </div>
                 <div class="form-group">
                     <label>Ma'sul shaxsni tanlang</label>
@@ -25,7 +25,11 @@
                         <option></option>
                         {% for employee in employees %}
                             {% if employee.role == root_user.BOSS %}
-                                <option value="{{ employee.id }}">{{ employee.full_name }}</option>
+                                {% if employee == department.boss %}
+                                    <option value="{{ employee.id }}" selected="selected">{{ employee.full_name }}</option>
+                                {% else %}
+                                    <option value="{{ employee.id }}">{{ employee.full_name }}</option>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -35,7 +39,11 @@
                     <select class="js-example-basic-multiple w-100" name="employees" multiple="multiple" required>
                         {% for employee in employees %}
                             {% if employee.role == root_user.EMPLOYEE %}
-                                <option value="{{ employee.id }}">{{ employee.full_name }}</option>
+                                {% if employee in department.employees.all %}
+                                    <option value="{{ employee.id }}" selected="selected">{{ employee.full_name }}</option>
+                                {% else %}
+                                    <option value="{{ employee.id }}">{{ employee.full_name }}</option>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     </select>

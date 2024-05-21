@@ -76,3 +76,41 @@ class DepartmentDeleteView(IsAdmin, View):
         messages.success(request, "Bo'lim muvaffaqiyatli o'chirildi.")
         
         return redirect("dashboard:departments")
+
+
+class DepartmentUpdateView(IsAdmin, View):
+
+    def get(self, request: HttpRequest, department_id: int) -> HttpResponse:
+        try:
+            department = Department.objects.get(id=department_id)
+        except Department.DoesNotExist:
+            messages.info(request, "Bo'lim ma'lumotlarida xatolik yuz berdi.")
+            return redirect("dashboard:departments")
+
+        ctx = {
+            "department": department,
+            "employees": User.objects.all(),
+        }
+        
+        return render(request, 'dashboard/departments/update.html', ctx)
+
+    def post(self, request: HttpRequest, department_id: int) -> HttpResponse:
+        try:
+            department = Department.objects.get(id=department_id)
+        except Department.DoesNotExist:
+            messages.info(request, "Bo'lim ma'lumotlarida xatolik yuz berdi.")
+            return redirect("dashboard:departments")
+
+        update_form = DepartmentCreationForm(request.POST, instance=department)
+
+        if update_form.is_valid():
+            update_form.save()
+            messages.success(request, "Bo'lim muvaffaqiyatli tahrirlandi.")
+            return redirect('dashboard:department-detail', department_id=department_id)
+        else:
+            errors = update_form.errors
+
+            for field, error_list in errors.items():
+                for error in error_list:
+                    messages.info(request, error)
+            return redirect('dashboard:department-detail', department_id=department_id)
