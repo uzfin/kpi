@@ -115,13 +115,15 @@
       {% endif %}
 
       {% if user.role == root_user.ADMIN or user.role == root_user.CEO or user.role == root_user.MANAGER %}
-        {% if current_kpi %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url "dashboard:works" current_kpi.id %}">
-              <i class="mdi mdi-briefcase-upload menu-icon"></i>
-              <span class="menu-title">Hisobotlar</span>
-            </a>
-          </li>
+        {% if current_kpi  %}
+          {% if user.role == root_user.CEO or user.role == root_user.MANAGER %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url "dashboard:works" current_kpi.id %}">
+                <i class="mdi mdi-briefcase-upload menu-icon"></i>
+                <span class="menu-title">Hisobotlar</span>
+              </a>
+            </li>
+          {% endif %}
         {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="#">
@@ -135,7 +137,7 @@
       {% if user.role == root_user.EMPLOYEE %}
         <li class="nav-item">
           <a class="nav-link" href="#">
-            <i class="icon-head menu-icon"></i>
+            <i class="mdi mdi-account-multiple menu-icon"></i>
             <span class="menu-title">Hamkasblarim</span>
           </a>
         </li>
@@ -150,7 +152,7 @@
       {% if user.role == root_user.ADMIN %}
         <li class="nav-item">
           <a class="nav-link" href="#">
-            <i class="icon-head menu-icon"></i>
+            <i class="mdi mdi-account-multiple menu-icon"></i>
             <span class="menu-title">Hodimlar</span>
           </a>
         </li>

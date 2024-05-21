@@ -2,13 +2,13 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsManager
+from users.permissions import IsManager, IsCeoOrManager
 from dashboard.models import Submission, KPI
 from dashboard.forms import MarkForm
 from users.models import User
 
 
-class WorksView(IsManager, View):
+class WorksView(IsCeoOrManager, View):
 
     def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
         try:
@@ -17,21 +17,25 @@ class WorksView(IsManager, View):
             messages.info(request, "KPI ma'lumotlarida xatolik yuz berdi.")
             return redirect("dashboard:main")
 
-        works = current_kpi.submissions.filter(clause__criterion__in=request.user.criterions.all()).order_by('-updated_at')
+        if request.user.role == User.MANAGER:
+            works = current_kpi.submissions.filter(clause__criterion__in=request.user.criterions.all()).order_by('-updated_at')
+        elif request.user.role == User.CEO:
+            works = current_kpi.submissions.order_by('-updated_at')
         ctx = {
             'works': works
         }
         return render(request, 'dashboard/works/list.html', ctx)
 
 
-class WorkDetailView(IsManager, View):
+class WorkDetailView(IsCeoOrManager, View):
 
     def get(self, request: HttpRequest, work_id: int) -> HttpResponse:
         
         try:
             submission = Submission.objects.get(id=work_id)
-            submission.is_checked = True
-            submission.save()
+            if request.user.role == User.MANAGER:
+                submission.is_checked = True
+                submission.save()
 
         except Submission.DoesNotExist:
             messages.info(request, "Hisobot maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
