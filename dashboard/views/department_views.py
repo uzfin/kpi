@@ -15,3 +15,14 @@ class DepartmentView(IsACM, View):
         }
 
         return render(request, 'dashboard/departments/list.html', ctx)
+
+
+class DepartmentCreateView(IsACM, View):
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+
+        ctx = {
+            "employees": User.objects.all(),
+        }
+
+        return render(request, 'dashboard/departments/create.html', ctx)

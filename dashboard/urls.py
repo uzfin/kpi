@@ -23,7 +23,7 @@ from dashboard.views.notefication_views import (
     SendNoteficationView, NoteficationView, SeeNoteficationView,
 )
 from dashboard.views.department_views import (
-    DepartmentView,
+    DepartmentView, DepartmentCreateView,
 )
 from dashboard.views.employee_views import (
     EmployeeView,
@@ -64,6 +64,7 @@ urlpatterns = [
     path("assessment/<int:work_id>/", AssessmentView.as_view(), name="assessment"),
 
     path("departments/", DepartmentView.as_view(), name="departments"),
+    path("departments/create/", DepartmentCreateView.as_view(), name="department-create"),
 
     path("employees/<int:department_id>/", EmployeeView.as_view(), name="employees"),
 
