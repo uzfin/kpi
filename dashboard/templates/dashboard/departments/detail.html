@@ -1,0 +1,76 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+            <h4 class="card-title" style="color: #248AFD"> <i class="mdi mdi-bank"></i>  {{ department.name }}</h4>
+            <ul class="card-description">
+                <li>Bo'lim boshlig'i <b>{{ department.boss.full_name }}</b>.</li>
+                <li>Hodimlar soni <code>{{ department.employees.count }}</code>.</li>
+            </ul>
+        </div>
+        {% if user.role == root_user.ADMIN %}
+            <div class="card-body" style="text-align: center;">
+                <a href="{% url "dashboard:department-delete" department.id %}" class="btn btn-inverse-danger">O'chirish</a>
+                <a href="{#" class="btn btn-inverse-primary">Tahrirlash</a>
+                {% comment %} <a href="{% url "dashboard:department-update" kpi.id %}" class="btn btn-inverse-primary">Tahrirlash</a> {% endcomment %}
+            </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Hodimlar</h4>
+                <p>Ushbu bo'limda mavjud hodimlar jadvali.</p>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>
+                            Hodim
+                          </th>
+                          <th>
+                            Ismi
+                          </th>
+                          <th>
+                            Ko'rsatgich
+                          </th>
+                          <th>
+                            Ball
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for employee in department.employees.all %}
+                          <tr>
+                            <td class="py-1">
+                              <img src="{{ employee.profile_picture.url }}" alt="image"/>
+                            </td>
+                            <td>
+                              {{ employee.full_name }}
+                            </td>
+                            <td>
+                              <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                            </td>
+                            <td>
+                              {{ 0 }}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

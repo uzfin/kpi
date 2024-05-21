@@ -14,13 +14,14 @@
             <form class="forms-sample" method="post">
                 {% csrf_token %}
 
+                <input type="hidden" class="form-control" id="exampleInputName1" name="created_by" value="{{ user.id }}" required>
                 <div class="form-group">
                     <label for="exampleInputName1">Nomi</label>
                     <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Nomi" required>
                 </div>
                 <div class="form-group">
                     <label>Ma'sul shaxsni tanlang</label>
-                    <select class="js-example-basic-single w-100" name="responsible_person" required>
+                    <select class="js-example-basic-single w-100" name="boss" required>
                         <option></option>
                         {% for employee in employees %}
                             {% if employee.role == root_user.BOSS %}
