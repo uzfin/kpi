@@ -57,9 +57,9 @@ class DashboardView(LoginRequiredMixin, View):
         
         elif user.role == User.EMPLOYEE:
             ctx = {
-
+                "colleagues": User.objects.all()
             }
-            return render(request, "dashboard/main/admin.html", ctx)
+            return render(request, "dashboard/main/employee.html", ctx)
 
         elif user.role == User.GUEST:
             ctx = {

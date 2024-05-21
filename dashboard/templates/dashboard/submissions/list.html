@@ -36,13 +36,13 @@
                   {{ forloop.counter }}
                 </td>
                 <td>
-                  <a href="{% url "dashboard:submission-detail" submission.id %}">{{ submission.metric.name }}</a>
+                  <a href="{% url "dashboard:submission-detail" submission.id %}">{{ submission.clause.name }}</a>
                 </td>
                 <td>
                   {{ submission.mark.ball }}
                 </td>
                 <td>
-                  {{ submission.submitted_at }}
+                  {{ submission.updated_at }}
                 </td>
               </tr>
             {% endfor %}

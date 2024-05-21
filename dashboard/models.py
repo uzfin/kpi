@@ -145,7 +145,7 @@ class Submission(models.Model):
 
 class Mark(models.Model):
     # primary fields
-    submission = models.ForeignKey(Submission, on_delete=models.DO_NOTHING)
+    submission = models.OneToOneField(Submission, on_delete=models.DO_NOTHING, related_name='mark')
     criterion = models.ForeignKey(Criterion, on_delete=models.DO_NOTHING)
     employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='marks')
     marked_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
@@ -159,7 +159,12 @@ class Mark(models.Model):
     class Meta:
         unique_together = ('submission', 'employee')
 
-    def __str__(self):
+    def clean(self, *args, **kwargs):
+        # Ensure the mark ball does not exceed the clause ball
+        if self.ball > self.submission.clause.ball:
+            raise ValidationError("Hisobot uchun beriladigan ball hisobot bandi balidan yuqori bo'lishi mumkin emas.")
+
+    def __str__(self) -> str:
         return self.employee.full_name
     
 

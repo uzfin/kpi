@@ -7,12 +7,12 @@
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">{{ submission.metric.name }}</h4>
-          <p class="card-description">
-            Umumiy ball <code>{{ submission.metric.ball }}</code>. <b>{{ kpi.responsible_employee.full_name }}</b>ga biriktirilgan.
-          </p>
+          <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-clipboard-text"></i> Band: <a href="{% url "dashboard:clause-detail" submission.clause.id %}">{{ submission.clause.name }}</a></h4>
           <p>
-            {{ submission.metric.description }}
+            {{ submission.clause.description }}
+          </p>
+          <p class="card-description">
+            Umumiy ball <code>{{ submission.clause.ball }}</code>.
           </p>
         </div>
       </div>
@@ -22,21 +22,34 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Sizning Hisobotingiz</h4>
+            <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-briefcase-upload"></i> Sizning Hisobotingiz</h4>
             <p class="card-description">
-              Qo'yilgan ball <code>{{ submission.mark.ball }}</code>. Yuborilgan sana: {{ submission.submitted_at }}.
-                {% if submission.manager %}
-                    {{ submission.manager.full_name }} ko'rip chiqdi.
-                {% endif %}
+              {{ submission.comment }}
             </p>
-            <p>
-                {{ submission.comment }}
-            </p>
-            <br>
-            <a href="{{submission.file.url}}" class="btn btn-inverse-primary">Hisobotni yuklab olish</a>
-            <a href="{% url "dashboard:submission-edit" submission.id %}" class="btn btn-inverse-success">Hisobotni tahrirlash</a>
-            <a href="{% url "dashboard:submission-delete" submission.id %}" class="btn btn-inverse-danger">Hisobotni o'chirish</a>
-          </div>
+            
+            {% if mark %}
+              {% if mark.is_checked %}
+                <p class="card-description">
+                  Qo'yilgan ball <code>{{ mark.ball }}</code>. Yuborilgan sana: {{ mark.updated_at }}.
+                    {% if submission.manager %}
+                        {{ submission.manager.full_name }} ko'rip chiqdi.
+                    {% endif %}
+                </p>
+              {% endif %}
+            {% else %}
+              <p class="card-description">
+                Qo'yilgan ball <code>{{ submission.mark.ball }}</code>.
+                  {% if submission.mark.marked_by %}
+                      {{ submission.mark.marked_by.full_name }} ko'rip chiqdi.
+                  {% endif %}
+              </p>
+              <br> 
+              <a href="{{submission.file.url}}" class="btn btn-inverse-primary">Hisobotni yuklab olish</a>
+              <a href="{% url "dashboard:submission-edit" submission.id %}" class="btn btn-inverse-success">Hisobotni tahrirlash</a>
+              <a href="{% url "dashboard:submission-delete" submission.id %}" class="btn btn-inverse-danger">Hisobotni o'chirish</a>
+            </div>
+          {% endif %}
+          
         </div>
     </div>
 </div>

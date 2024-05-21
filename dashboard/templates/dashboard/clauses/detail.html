@@ -10,7 +10,7 @@
             {% if clause.parent %}
                 <h6>Band: <a href="{% url "dashboard:clause-detail" clause.parent.id %}">{{ clause.parent.name }}</a></h6>
                 <br>
-                <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-clipboard-text"></i> Ichki Band: <a href="#">{{ clause.name }}</a></h4>
+                <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-clipboard-text"></i> Ichki Band: {{ clause.name }}</h4>
             {% else %}
                 <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-clipboard-text"></i> Band: {{ clause.name }}</h4>
             {% endif %}

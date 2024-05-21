@@ -7,12 +7,12 @@
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">{{ submission.metric.name }}</h4>
-          <p class="card-description">
-            {{ submission.metric.name }}. Beriladigan maksimum ball <code>{{ submission.metric.ball }}</code>.
-          </p>
+          <h4 class="card-title" style="color: #248AFD"><i class="mdi mdi-clipboard-text"></i> Band: <a href="{% url "dashboard:clause-detail" submission.clause.id %}">{{ submission.clause.name }}</a></h4>
           <p>
-            {{ submission.metric.description }}
+            {{ submission.clause.description }}
+          </p>
+          <p class="card-description">
+            Beriladigan maksimum ball <code>{{ submission.clause.ball }}</code>.
           </p>
         </div>
       </div>
@@ -28,9 +28,9 @@
             <form class="forms-sample" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <input type="hidden" name="employee" value="{{ user.id }}" required></input>
-                <input type="hidden" name="kpi" value="{{ submission.metric.kpi.id }}" required></input>
-                <input type="hidden" name="metric" value="{{ submission.metric.id }}" required></input>
+                <input type="hidden" name="owner" value="{{ user.id }}" required></input>
+                <input type="hidden" name="kpi" value="{{ submission.clause.kpi.id }}" required></input>
+                <input type="hidden" name="clause" value="{{ submission.clause.id }}" required></input>
 
                 <div class="form-group">
                     <label for="exampleTextarea1">Faylni tanlang</label>

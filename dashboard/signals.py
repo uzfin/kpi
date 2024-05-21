@@ -26,7 +26,7 @@ def mark_post_save(sender, instance, created, **kwargs):
     if created: 
         try:
             result = Result.objects.get(kpi=kpi, employee=employee)
-            result.total_ball += instance.ball
+            result.ball += instance.ball
             result.save()
         except Result.DoesNotExist:
             Result.objects.create(
@@ -34,7 +34,7 @@ def mark_post_save(sender, instance, created, **kwargs):
                 employee=employee,
                 ball=instance.ball
             )
-    
+
 @receiver(pre_save, sender=Mark)
 def mark_pre_save(sender, instance, **kwargs):
     if instance.pk:
@@ -52,6 +52,11 @@ def mark_pre_save(sender, instance, **kwargs):
         submission.is_checked = True
         submission.save()
     
+@receiver(pre_delete, sender=Submission)
+def mark_pre_delete(sender, instance, **kwargs):
+    mark = instance.mark
+    mark.delete()
+
 @receiver(pre_delete, sender=Mark)
 def mark_pre_delete(sender, instance, **kwargs):
     kpi = instance.criterion.kpi

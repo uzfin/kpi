@@ -5,6 +5,8 @@ from .models import (
     Clause,
     Submission,
     Notefication,
+    Mark,
+    Result,
 )
 
 
@@ -15,5 +17,7 @@ admin.site.register(
         Clause,
         Submission,
         Notefication,
+        Mark,
+        Result,
     )
 )
