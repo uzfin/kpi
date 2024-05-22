@@ -56,12 +56,20 @@ class DashboardView(LoginRequiredMixin, View):
             return render(request, "dashboard/main/boss.html", ctx)
         
         elif user.role == User.EMPLOYEE:
-            done = round(Result.objects.get(employee=user, kpi=current_kpi).ball / current_kpi.ball, 2) 
+            try:
+                ball = Result.objects.get(employee=user, kpi=current_kpi).ball
+                done = round(ball / current_kpi.ball * 100)
+            except Result.DoesNotExist:
+                ball = 0
+                done = 0
             ctx = {
                 "colleagues": User.objects.all(),
+                "ball": ball,
                 "done": done,
-                "undone": 100 - done
+                "undone": 100 - done,
+                "kpis": KPI.objects.all(),
             }
+            print(ctx)
             return render(request, "dashboard/main/employee.html", ctx)
 
         elif user.role == User.GUEST:
