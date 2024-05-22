@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpRequest, HttpResponse
 from users.models import User, Department
-from dashboard.models import KPI, Criterion
+from dashboard.models import KPI, Criterion, Result
 
 
 class DashboardView(LoginRequiredMixin, View):
@@ -30,7 +30,7 @@ class DashboardView(LoginRequiredMixin, View):
         if current_kpi:
             if 'current_kpi' in request.session:
                 del request.session['current_kpi']
-            request.session['current_kpi'] = {'id': current_kpi.id, 'name': current_kpi.name}
+            request.session['current_kpi'] = {'id': current_kpi.id, 'name': current_kpi.name, 'ball': current_kpi.ball}
 
         if user.role == User.ADMIN or user.role == User.CEO:
             ctx = {
@@ -56,8 +56,11 @@ class DashboardView(LoginRequiredMixin, View):
             return render(request, "dashboard/main/boss.html", ctx)
         
         elif user.role == User.EMPLOYEE:
+            done = round(Result.objects.get(employee=user, kpi=current_kpi).ball / current_kpi.ball, 2) 
             ctx = {
-                "colleagues": User.objects.all()
+                "colleagues": User.objects.all(),
+                "done": done,
+                "undone": 100 - done
             }
             return render(request, "dashboard/main/employee.html", ctx)
 

@@ -43,19 +43,11 @@
 <div class="row">
     <div class="col-md-6 grid-margin stretch-card">
         <div class="card tale-bg">
-            <div class="card-people mt-auto pt-0">
-                <img src="{% static "images/dashboard/kpi.jpg" %}" alt="people">
-                <div class="weather-info">
-                    <div class="d-flex" style="color: #248AFD;">
-                        <div>
-                            <h2 class="mb-0 font-weight-normal">{{ 0 }}<sup>Ball</sup></h2>
-                        </div>
-                        <div style="margin-left: 40px;">
-                            <h4 class="location font-weight-normal"><i class="icon-bar-graph"></i> {{ current_kpi.name }}</h4>
-                            <h6 class="font-weight-normal" style="margin-top: 7px;"><i class="mdi mdi-chart-line"></i> {{ 80 }}%</h6>
-                        </div>
-                    </div>
-                </div>
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title" style="color: #248AFD"><i class="icon-bar-graph"></i>  {{ current_kpi.name }}</h4>
+                <canvas id="doughnutChart"></canvas>
+              </div>
             </div>
         </div>
     </div>
@@ -86,7 +78,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for colleague in colleagues|slice:"0:7" %}
+                {% for colleague in colleagues|slice:"0:6" %}
                   <tr>
                     <td class="py-1">
                       <img src="{{ colleague.profile_picture.url }}" alt="image"/>
@@ -113,3 +105,45 @@
 </div>
 
 {% endblock content %}
+
+{% block additional_js %}
+  <script src="{% static "vendors/chart.js/Chart.min.js" %}"></script>
+
+  <script>
+    var doughnutPieData = {
+      datasets: [{
+        data: [{{ undone }}, {{ done }}],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+      }],
+
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: [
+        'Bajarilmagan',
+        'Bajarilgan',
+      ]
+    };
+    var doughnutPieOptions = {
+      responsive: true,
+      animation: {
+        animateScale: true,
+        animateRotate: true
+      }
+    };
+  </script>
+  <script src="{% static "js/chart.js" %}"></script>
+{% endblock additional_js %}
