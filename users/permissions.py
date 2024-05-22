@@ -17,7 +17,7 @@ class IsAdmin(BaseUserPassesTestMixin):
     """
     def test_func(self):
         # Check if the user has a CEO role
-        return self.request.user.role == User.ADMIN
+        return not self.request.user.is_anonymous and self.request.user.role == User.ADMIN
 
 
 class IsCEO(BaseUserPassesTestMixin):
@@ -26,7 +26,7 @@ class IsCEO(BaseUserPassesTestMixin):
     """
     def test_func(self):
         # Check if the user has a CEO role
-        return self.request.user.role == User.CEO
+        return not self.request.user.is_anonymous and self.request.user.role == User.CEO
 
 
 class IsManager(BaseUserPassesTestMixin):
@@ -35,7 +35,7 @@ class IsManager(BaseUserPassesTestMixin):
     """
     def test_func(self):
         # Check if the user has a MANAGERs role
-        return self.request.user.role == User.MANAGER
+        return not self.request.user.is_anonymous and self.request.user.role == User.MANAGER
 
 
 class IsEmployee(BaseUserPassesTestMixin):
@@ -44,7 +44,7 @@ class IsEmployee(BaseUserPassesTestMixin):
     """
     def test_func(self):
         # Check if the user has EMPLOYEEs role
-        return self.request.user.role == User.EMPLOYEE
+        return not self.request.user.is_anonymous and self.request.user.role == User.EMPLOYEE
 
 
 class IsGuest(BaseUserPassesTestMixin):
@@ -53,7 +53,7 @@ class IsGuest(BaseUserPassesTestMixin):
     """
     def test_func(self):
         # Check if the user has GUESTs role
-        return self.request.user.role == User.GUEST
+        return not self.request.user.is_anonymous and self.request.user.role == User.GUEST
 
 
 class IsStaff(BaseUserPassesTestMixin):
@@ -62,7 +62,7 @@ class IsStaff(BaseUserPassesTestMixin):
     """
     def test_func(self):
         # Check if the user has GUESTs role
-        return self.request.user.role != User.GUEST
+        return not self.request.user.is_anonymous and self.request.user.role != User.GUEST
 
 
 class IsACM(BaseUserPassesTestMixin):
@@ -71,5 +71,7 @@ class IsACM(BaseUserPassesTestMixin):
     """
     def test_func(self):
         # Check if the user has CEO or Manger role
-        role = self.request.user.role
-        return role == User.ADMIN or role == User.CEO or role == User.MANAGER
+        if not self.request.user.is_anonymous:
+            role = self.request.user.role
+            return role == User.ADMIN or role == User.CEO or role == User.MANAGER
+        return False

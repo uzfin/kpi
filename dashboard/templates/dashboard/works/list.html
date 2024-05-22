@@ -18,7 +18,7 @@
                 Holati
               </th>
               <th>
-                Hisobot
+                Mezon
               </th>
               <th>
                 Hodim
@@ -43,7 +43,7 @@
                     {% endif %}
                 </td>
                 <td>
-                  <a href="{% url "dashboard:work-detail" work.id %}">{{ work.clause.name }}</a>
+                  <a href="{% url "dashboard:work-detail" work.id %}">{{ work.clause.criterion.name }}</a>
                 </td>
                 <td>
                   {{ work.owner.full_name }}
