@@ -45,7 +45,12 @@
         <div class="card tale-bg">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title" style="color: #248AFD"><i class="icon-bar-graph"></i>  {{ current_kpi.name }}</h4>
+                <h4 class="card-title" style="color: #248AFD">
+                  <i class="icon-bar-graph"></i>  {{ current_kpi.name }}
+                  <span style="color: red;">|</span>
+                  <span style="color: black;">Maksimal KPI ball: </span> {{ current_kpi.ball }} <span style="color: red;">|</span> 
+                  <span style="color: black;">Siz to'plagan ball: </span> {{ ball }}
+                </h4>
                 <canvas id="doughnutChart"></canvas>
               </div>
             </div>
