@@ -2,22 +2,15 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsACM
-from users.models import User, Department
+from users.permissions import IsAdmin
+from users.models import User
 
 
-class EmployeeView(IsACM, View):
+class EmployeesView(IsAdmin, View):
 
-    def get(self, request: HttpRequest, department_id: int) -> HttpResponse:
-
-        try:
-            department = Department.objects.get(id=department_id)
-        except Department.DoesNotExist: 
-            messages.info(request, "Department maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:departments')
-
+    def get(self, request: HttpRequest) -> HttpResponse:
         ctx = {
-            "employees": department.employees.all(),
+            "employees": User.objects.filter(role__in=(User.GUEST, User.EMPLOYEE, User.BOSS, User.MANAGER, User.CEO)),
         }
 
         return render(request, 'dashboard/employees/list.html', ctx)

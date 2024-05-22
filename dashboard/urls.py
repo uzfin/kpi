@@ -28,7 +28,7 @@ from dashboard.views.department_views import (
     DepartmentUpdateView,
 )
 from dashboard.views.employee_views import (
-    EmployeeView,
+    EmployeesView,
 )
 
 
@@ -71,7 +71,7 @@ urlpatterns = [
     path("departments/delete/<int:department_id>/", DepartmentDeleteView.as_view(), name="department-delete"),
     path("departments/update/<int:department_id>/", DepartmentUpdateView.as_view(), name="department-update"),
 
-    path("employees/<int:department_id>/", EmployeeView.as_view(), name="employees"),
+    path("employees/", EmployeesView.as_view(), name="employees"),
 
     path("notefications/", NoteficationView.as_view(), name="get-notefications"),
     path("notefications/<int:employee_id>/", SendNoteficationView.as_view(), name="notefications"),
