@@ -93,11 +93,10 @@
           </div>
         </li>
       {% endif %}
-
-      {% if user.role == root_user.ADMIN or user.role == root_user.CEO or user.role == root_user.EMPLOYEE %}
+      {% if user.role == root_user.ADMIN or user.role == root_user.CEO or user.role == root_user.MANAGER or user.role == root_user.EMPLOYEE %}
         {% if user.role != root_user.EMPLOYEE %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url "dashboard:kpi" %}">
+            <a class="nav-link" href="{% url "dashboard:reporter" current_kpi.id %}">
               <i class="icon-bar-graph menu-icon"></i>
               <span class="menu-title">KPI</span>
             </a>

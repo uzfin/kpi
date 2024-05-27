@@ -69,7 +69,6 @@ class DashboardView(LoginRequiredMixin, View):
                 "undone": 100 - done,
                 "kpis": KPI.objects.all(),
             }
-            print(ctx)
             return render(request, "dashboard/main/employee.html", ctx)
 
         elif user.role == User.GUEST:

@@ -102,7 +102,7 @@
                 {% for department in departments|slice:"0:5" %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
-                  <td><a href="#">{{ department.name }}</a></td>
+                  <td><a href="{% url "dashboard:department-detail" department.id %}">{{ department.name }}</a></td>
                   <td class="font-weight-bold">{{ department.employees.count }}</td>
                 </tr>
                 {% endfor %}

@@ -30,6 +30,9 @@ from dashboard.views.department_views import (
 from dashboard.views.employee_views import (
     EmployeesView,
 )
+from dashboard.views.reporter_views import (
+    ReporterView,
+)
 
 
 app_name = "dashboard"
@@ -76,4 +79,6 @@ urlpatterns = [
     path("notefications/", NoteficationView.as_view(), name="get-notefications"),
     path("notefications/<int:employee_id>/", SendNoteficationView.as_view(), name="notefications"),
     path("notefications/see/<int:notefication_id>/", SeeNoteficationView.as_view(), name="see-notefication"),
+
+    path("reporter/<int:kpi_id>/", ReporterView.as_view(), name="reporter"),
 ]
