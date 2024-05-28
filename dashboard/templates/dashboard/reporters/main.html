@@ -24,7 +24,7 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSizeButton2">
                   {% for kpi in kpis %}
                       {% if kpi.id != current_kpi.id %}
-                          <a class="dropdown-item" href="{% url "dashboard:main" %}?kpi_id={{ kpi.id }}">{{ kpi.name }}</a>
+                          <a class="dropdown-item" href="{% url "dashboard:reporter" kpi.id %}">{{ kpi.name }}</a>
                       {% endif %}
                   {% endfor %}
               </div>
@@ -70,10 +70,10 @@
   <script src="{% static "vendors/chart.js/Chart.min.js" %}"></script>
   <script>
     var data = {
-        labels: [{% for kpi in kpis_data %} "{{ kpi.name }}",{% endfor %}],
+        labels: [{% for kpi in kpis_data %} "{{ kpi.month }}-{{ kpi.year }}",{% endfor %}],
         datasets: [{
           label: 'Hisobotlar',
-          data: [{% for kpi in kpis_data %} {{ kpi.submission_count }},{% endfor %}],
+          data: [{% for kpi in kpis_data %} {{ kpi.count }},{% endfor %}],
           backgroundColor: [
             'rgba(255, 99, 132, 0.8)',
             'rgba(54, 162, 235, 0.8)',
@@ -104,7 +104,7 @@
 
     var doughnutPieData = {
       datasets: [{
-        data: [30, 20, 15, 20, 15,],
+        data: [{% for department in departments_data %} {{ department.submmission_count }}, {% endfor %}],
         backgroundColor: [
           'rgba(255, 99, 132, 0.5)',
           'rgba(54, 162, 235, 0.5)',
@@ -128,13 +128,7 @@
       }],
 
       // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-        'birinchi',
-        'ikkinchi',
-        'uchinchi',
-        'tortinchi',
-        'beshinchi',
-      ]
+      labels: [{% for department in departments_data %} "{{ department.name }}", {% endfor %}]
     };
     var doughnutPieOptions = {
       responsive: true,
