@@ -1,0 +1,101 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+
+{% block search_block %}
+    <ul class="navbar-nav mr-lg-2">
+      <li class="nav-item nav-search d-none d-lg-block">
+        <div class="input-group">
+          <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+            <span class="input-group-text" id="search">
+              <i class="icon-search"></i>
+            </span>
+          </div>
+          <input type="text" class="form-control" id="navbar-search-input" placeholder="Hodimlarni izlash" aria-label="search" aria-describedby="search">
+        </div>
+      </li>
+    </ul>
+{% endblock search_block %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <p class="card-title">KPI kesimida</p>
+                    <div class="dropdown">
+                        <button class="btn btn-danger dropdown-toggle"  style="background-color: #248AFD; border-color: #248AFD" type="button" id="dropdownMenuSizeButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if current_kpi %}
+                              <i class="icon-bar-graph"></i>  {{ current_kpi.name }}
+                            {% else %}
+                              KPI tanlang!
+                            {% endif %}
+                        </button>
+                        {% if kpis.count > 1 %}
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuSizeButton2">
+                              {% for kpi in kpis %}
+                                  {% if kpi.id != current_kpi.id %}
+                                      <a class="dropdown-item" href="{% url "dashboard:reporter-kpi" kpi.id %}">{{ kpi.name }}</a>
+                                  {% endif %}
+                              {% endfor %}
+                          </div>
+                        {% else %}
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuSizeButton2">
+                            <a class="dropdown-item" href="#">Boshqa KPI mavjud emas.</a>
+                          </div>
+                        {% endif %}
+                      </div>
+                </div>
+                <div class="table-responsive pt-3">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>
+                            #
+                            </th>
+                            <th>
+                            Hodim
+                            </th>
+                            <th>
+                            Progress
+                            </th>
+                            <th>
+                            Hisobotlar
+                            </th>
+                            <th>
+                            Bo'limlar
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for employee in employees_data %}
+                                <tr>
+                                    <td>
+                                        {{ forloop.counter }}
+                                    </td>
+                                    <td>
+                                        <a href="#">{{ employee.employee.full_name }}</a>
+                                    </td>
+                                    <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ employee.count|div:clauses }}%" aria-valuenow="{{employee.count|div:clauses }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    </td>
+                                    <td>
+                                        {{ employee.count }}
+                                    </td>
+                                    <td>
+                                        {{ employee.departments }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -9,7 +9,7 @@ from django.db.models import Count, functions as db_functions
 
 from users.permissions import IsACM
 from users.models import User, Department
-from dashboard.models import KPI, Submission, Result
+from dashboard.models import KPI, Submission, Result, Clause
 
 
 class ReporterView(IsACM, View):
@@ -47,3 +47,36 @@ class ReporterView(IsACM, View):
             "departments_data": departments_data,
         }
         return render(request, "dashboard/reporters/main.html", ctx)
+
+
+class ReporterKPIView(IsACM, View):
+    
+    def get(self, request: HttpRequest, kpi_id: int) -> HttpResponse:
+        try:
+            kpi = KPI.objects.get(id=kpi_id)
+
+            if 'current_kpi' in request.session:
+                del request.session['current_kpi']
+            request.session['current_kpi'] = {"id": kpi.id, "name": kpi.name}
+        except KPI.DoesNotExist:
+            messages.info(request, "KPI ma'lumotlarida xatolik yuz berdi.")
+            return redirect("dashboard:main")
+        
+        employees_data = []
+        for employee in User.objects.filter(role=User.EMPLOYEE):
+            employee_data = {
+                "employee": employee,
+                "count": employee.submissions.filter(kpi=kpi).count(),
+                "departments": ", ".join([department.name for department in employee.working_departments.all()]),
+            }
+            employees_data.append(employee_data)
+        
+        clauses_without_children = Clause.objects.annotate(num_children=Count('children')).filter(num_children=0)
+        
+        ctx = {
+            "kpis": KPI.objects.all(),
+            "clauses": clauses_without_children.count(),
+            "employees_data": sorted(employees_data, key=lambda employee: employee['count'], reverse=True),
+        }
+        print(clauses_without_children.count())
+        return render(request, "dashboard/reporters/kpi.html", ctx)

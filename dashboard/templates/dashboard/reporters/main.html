@@ -45,7 +45,10 @@
         <div class="card tale-bg">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">KPI kesimida</h4>
+                <div class="d-flex justify-content-between">
+                  <p class="card-title">KPI kesimida</p>
+                  <a href="{% url "dashboard:reporter-kpi" current_kpi.id %}" class="text-info">Batafsil</a>
+                 </div>
                 <canvas id="barChart"></canvas>
               </div>
             </div>
@@ -55,7 +58,10 @@
         <div class="card tale-bg">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">Bo'limlar kesimida</h4>
+                <div class="d-flex justify-content-between">
+                  <p class="card-title">Bo'limlar kesimida</p>
+                  <a href="{% url "dashboard:kpi" %}" class="text-info">Batafsil</a>
+                 </div>
                 <canvas id="pieChart"></canvas>
               </div>
             </div>
