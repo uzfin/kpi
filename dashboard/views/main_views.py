@@ -63,7 +63,7 @@ class DashboardView(LoginRequiredMixin, View):
                 ball = 0
                 done = 0
             ctx = {
-                "colleagues": User.objects.all(),
+                "colleagues": User.objects.filter(role=User.EMPLOYEE, working_departments__in=user.working_departments.all())[:5],
                 "ball": ball,
                 "done": done,
                 "undone": 100 - done,
