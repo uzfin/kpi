@@ -67,8 +67,27 @@ class DashboardView(LoginRequiredMixin, View):
             return render(request, "dashboard/main/manager.html", ctx)
 
         elif user.role == User.BOSS:
+            department = user.departments.first()
+            employees = []
+            for employee in department.employees.all():
+                data = {
+                    "id": employee.id,
+                    "name": employee.full_name,
+                    "profile_picture": employee.profile_picture.url
+                }
+                try:
+                    result = employee.results.get(kpi=current_kpi)
+                    data["ball"] = result.ball
+                    data["percent"] = round(result.ball / current_kpi.ball * 100)
+                    employees.append(data)
+                except:
+                    data["ball"] = 0
+                    data["percent"] = 0
+                    employees.append(data) 
+            employees = sorted(employees, key=lambda em: em['ball'], reverse=True)
             ctx = {
-
+                "department": department,
+                "employees": employees,
             }
             return render(request, "dashboard/main/boss.html", ctx)
         

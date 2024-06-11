@@ -111,7 +111,14 @@
           </li>
         {% endif %}
       {% endif %}
-
+      {% if user.role == root_user.BOSS %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "dashboard:reporter-department" current_kpi.id department.id %}">
+              <i class="icon-bar-graph menu-icon"></i>
+              <span class="menu-title">KPI</span>
+            </a>
+          </li>
+        {% endif %}
       {% if user.role == root_user.ADMIN or user.role == root_user.CEO or user.role == root_user.MANAGER %}
         {% if current_kpi  %}
           {% if user.role == root_user.CEO or user.role == root_user.MANAGER %}

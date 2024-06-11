@@ -31,7 +31,7 @@ from dashboard.views.employee_views import (
     EmployeesView,
 )
 from dashboard.views.reporter_views import (
-    ReporterView, ReporterKPIView,
+    ReporterView, ReporterKPIView, ReporterDepartmentView,
 )
 
 
@@ -82,4 +82,5 @@ urlpatterns = [
 
     path("reporter/<int:kpi_id>/", ReporterView.as_view(), name="reporter"),
     path("reporter/kpi/<int:kpi_id>/", ReporterKPIView.as_view(), name="reporter-kpi"),
+    path("reporter/department/<int:kpi_id>/<int:department_id>/", ReporterDepartmentView.as_view(), name="reporter-department"),
 ]

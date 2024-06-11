@@ -38,6 +38,15 @@ class IsManager(BaseUserPassesTestMixin):
         return not self.request.user.is_anonymous and self.request.user.role == User.MANAGER
 
 
+class IsBoss(BaseUserPassesTestMixin):
+    """
+    Custom permission to only allow BOSSs to access the view.
+    """
+    def test_func(self):
+        # Check if the user has BOSSs role
+        return not self.request.user.is_anonymous and self.request.user.role == User.BOSS
+
+
 class IsEmployee(BaseUserPassesTestMixin):
     """
     Custom permission to only allow EMPLOYEEs to access the view.
