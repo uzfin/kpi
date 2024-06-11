@@ -63,7 +63,7 @@
         <div class="card-body">
          <div class="d-flex justify-content-between">
           <p class="card-title">Hamkasblarim Jadvali</p>
-          <a href="#" class="text-info">Hammasi</a>
+          {% comment %} <a href="#" class="text-info">Hammasi</a> {% endcomment %}
          </div>
          <div class="table-responsive">
             <table class="table table-striped">
@@ -87,18 +87,18 @@
                 {% for colleague in colleagues|slice:"0:6" %}
                   <tr>
                     <td class="py-1">
-                      <img src="{{ colleague.profile_picture.url }}" alt="image"/>
+                      <img src="{{ colleague.profile_picture }}" alt="image"/>
                     </td>
                     <td>
-                      {{ colleague.full_name }}
+                      {{ colleague.name }}
                     </td>
                     <td>
                       <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ colleague.percent }}%" aria-valuenow="{{ colleague.percent }}" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
                     </td>
                     <td>
-                      {{ 0 }}
+                      {{ colleague.ball }}
                     </td>
                   </tr>
                 {% endfor %}

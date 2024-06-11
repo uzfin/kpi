@@ -113,12 +113,12 @@
       {% endif %}
 
       {% if user.role == root_user.EMPLOYEE %}
-        <li class="nav-item">
+        {% comment %} <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="mdi mdi-account-multiple menu-icon"></i>
             <span class="menu-title">Hamkasblarim</span>
           </a>
-        </li>
+        </li> {% endcomment %}
         <li class="nav-item">
           <a class="nav-link" href="{% url "dashboard:submissions" current_kpi.id %}">
             <i class="mdi mdi-briefcase-upload menu-icon"></i>

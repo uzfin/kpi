@@ -98,8 +98,30 @@ class DashboardView(LoginRequiredMixin, View):
             except Result.DoesNotExist:
                 ball = 0
                 done = 0
+
+            working_departments = user.working_departments.first()
+            colleagues = []
+            for colleague in working_departments.employees.all():
+                data = {
+                    "id": colleague.id,
+                    "name": colleague.full_name,
+                    "profile_picture": colleague.profile_picture.url,
+                }
+                try:
+                    ball = Result.objects.get(employee=colleague, kpi=current_kpi).ball
+                    done = round(ball / current_kpi.ball * 100)
+                    data['ball'] = ball
+                    data['percent'] = done
+                    colleagues.append(data)
+                except Result.DoesNotExist:
+                    ball = 0
+                    done = 0
+                    data['ball'] = ball
+                    data['percent'] = done
+                    colleagues.append(data)
+            colleagues = sorted(colleagues, key=lambda c: c['ball'], reverse=True)
             ctx = {
-                "colleagues": User.objects.filter(role=User.EMPLOYEE, working_departments__in=user.working_departments.all())[:5],
+                "colleagues": colleagues,
                 "ball": ball,
                 "done": done,
                 "undone": 100 - done,
