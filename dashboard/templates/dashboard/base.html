@@ -67,32 +67,6 @@
         </a>
       </li>
 
-      {% if user.role == root_user.MANAGER %}
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-            <i class="mdi mdi-clipboard-check menu-icon"></i>
-            <span class="menu-title">Mezonlar</span>
-            <i class="menu-arrow"></i>
-          </a>
-          <div class="collapse" id="charts">
-            <ul class="nav flex-column sub-menu">
-              {% if criterions %}
-                {% for criterion in criterions %}
-                  {% if criterion.name|length > 20 %}
-                    <li class="nav-item"> <a class="nav-link" href="#">{{ criterion.name|slice:"0:18" }}...</a></li>
-                    {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name|slice:"0:18" }}...</a></li> {% endcomment %}
-                  {% else %}
-                    <li class="nav-item"> <a class="nav-link" href="#">{{ criterion.name }}</a></li>
-                    {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url "dashboard:metrics" kpi.id %}">{{ kpi.name }}</a></li> {% endcomment %}
-                  {% endif %}
-                {% endfor %}
-              {% else %}
-                <li class="nav-item"> <a class="nav-link" href="#"><code>Mavjud emas!</code></a></li>
-              {% endif %}
-            </ul>
-          </div>
-        </li>
-      {% endif %}
       {% if user.role == root_user.ADMIN or user.role == root_user.CEO or user.role == root_user.MANAGER or user.role == root_user.EMPLOYEE %}
         {% if user.role != root_user.EMPLOYEE %}
           <li class="nav-item">
