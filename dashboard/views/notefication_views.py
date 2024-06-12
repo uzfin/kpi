@@ -2,14 +2,14 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpRequest, HttpResponse
-from users.permissions import IsACM, IsEmployee
+from users.permissions import IsACM, IsEmployee, IsCMB
 from dashboard.forms import NoteficationCreationForm
 from dashboard.models import Notefication, KPI
 
 from users.models import User
 
 
-class SendNoteficationView(IsACM, View):
+class SendNoteficationView(IsCMB, View):
 
     def get(self, request: HttpRequest, employee_id: int) -> HttpResponse:
 
@@ -22,10 +22,9 @@ class SendNoteficationView(IsACM, View):
 
         ctx = {
             "employee": employee,
-            "notefication": Notefication
+            "department": request.user.departments.first(),
+            "notefication": Notefication,
         }
-        if request.user.role == User.MANAGER:
-            ctx['kpis'] = KPI.objects.filter(responsible_employee=request.user)
 
         return render(request, 'dashboard/notefications/send.html', ctx)
 
@@ -36,10 +35,10 @@ class SendNoteficationView(IsACM, View):
         if create_form.is_valid():
             create_form.save()
             messages.success(request, "Xabar hodimga muvaffaqiyatli yuborildi.")
-            return redirect('dashboard:departments')
+            return redirect('dashboard:main')
         else:
             messages.info(request, "Xabar maʼlumotlarda xatolik yuz berdi. Iltimos, yana bir bor urinib ko'ring.")
-            return redirect('dashboard:departments')
+            return redirect('dashboard:main')
 
 
 class NoteficationView(IsEmployee, View):

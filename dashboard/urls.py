@@ -77,7 +77,7 @@ urlpatterns = [
     path("employees/", EmployeesView.as_view(), name="employees"),
 
     path("notefications/", NoteficationView.as_view(), name="get-notefications"),
-    path("notefications/<int:employee_id>/", SendNoteficationView.as_view(), name="notefications"),
+    path("notefications/<int:employee_id>/", SendNoteficationView.as_view(), name="send-notefications"),
     path("notefications/see/<int:notefication_id>/", SeeNoteficationView.as_view(), name="see-notefication"),
 
     path("reporter/<int:kpi_id>/", ReporterView.as_view(), name="reporter"),

@@ -66,6 +66,9 @@
                 <th>
                   Ball
                 </th>
+                <th>
+                  Xabar yuborish
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -84,6 +87,9 @@
                   </td>
                   <td>
                     {{ employee.ball }}
+                  </td>
+                  <td>
+                    <a href="{% url "dashboard:send-notefications" employee.id %}" class="btn btn-inverse-primary p-2">Xabar</a>
                   </td>
                 </tr>
               {% endfor %}

@@ -84,3 +84,15 @@ class IsACM(BaseUserPassesTestMixin):
             role = self.request.user.role
             return role == User.ADMIN or role == User.CEO or role == User.MANAGER
         return False
+
+
+class IsCMB(BaseUserPassesTestMixin):
+    """
+    Custom permission to only allow Ceo, Manager, Boss to access the view.
+    """
+    def test_func(self):
+        # Check if the user has CEO or Manger role
+        if not self.request.user.is_anonymous:
+            role = self.request.user.role
+            return role == User.BOSS or role == User.CEO or role == User.MANAGER
+        return False

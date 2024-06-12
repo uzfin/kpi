@@ -26,9 +26,12 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ["kpi.uzfi.uz", "213.230.97.98", "hamis.uzfi.uz"]
+if os.getenv("MODE", "development") == "production":
+    DEBUG = False
+    ALLOWED_HOSTS = ["kpi.uzfi.uz", "213.230.97.98", "hamis.uzfi.uz"]
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = ["*"]
 
 
 # Application definition

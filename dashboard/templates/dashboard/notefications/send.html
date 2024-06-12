@@ -16,7 +16,7 @@
 
           <input type="hidden" name="sender" value="{{ user.id }}" required>
           <input type="hidden" name="receiver" value="{{ employee.id }}" required>
-          <input type="hidden" name="unread" value="{{ True }}" required>
+          <input type="hidden" name="unread" value="{{ 1 }}" required>
           <div class="form-group">
               <label>Xabarni kiriting</label>
               <textarea class="form-control" id="exampleTextarea1" rows="10" name="massage" required></textarea>
@@ -48,18 +48,6 @@
               </label>
             </div>
           </div>
-
-{% comment %}           
-          <div class="form-group">
-            <label>Xabar turini tanlang</label>
-            <select class="js-example-basic-single w-100", name="type" required>
-              <option selected="{{ notefication.SECCESS }}">Rag'batlantirish {{ notefication.SECCESS }}</option>
-              <option value="{{ notefication.INFO }}">Ma'lumot berish</option>
-              <option value="{{ notefication.DENGER }}">Tanqid qilish</option>
-              <option value="{{ notefication.WARNING }}">Ogohlantirish</option>
-            </select>
-          </div> {% endcomment %}
-
           </br>
           <button type="submit" class="btn btn-primary mr-2">Yuborish</button>
 
