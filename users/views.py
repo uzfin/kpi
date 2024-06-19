@@ -86,43 +86,20 @@ class AuthCallbackView(View):
             except User.DoesNotExist:
                 user = User(
                     username=user_details['login'],
+                    role=User.EMPLOYEE,
                 )
                 # set password
                 if user_details['phone']:
                     user.set_password(raw_password=user_details['phone'])
                 else:
                     user.set_password(raw_password='123456789')
-
-                # set role for user
-                for role in user_details['roles']:
-                    # check is our university's employee
-                    if user_details['university_id'] != settings.UNIVERSITY_ID and user_details['type'] != 'employee':
-                        pass
-                    elif role['name'] in ['Rahbariyat']:
-                        user.role = User.MANAGER
-                    elif role['name'] in ['O\'qituvchi']:
-                        user.role = User.EMPLOYEE
-                
-                # set picture
-                if user_details['picture']:
-                    user.hemis_profile_picture = user_details['picture']
-                
-                # set name
-                if user_details['name']:
-                    user.hemis_name = user_details['name']
-                
-                # set name
-                if user_details['email']:
-                    user.email = user_details['email']     
-                
-                # set phone
-                if user_details['phone']:
-                    user.phone = user_details['phone']
                 
                 user.save()
 
             login(request, user)
 
+            messages.info(request, 'Siz tizimdan muvaffaqiyatli ro\'yxatdan o\'tdingiz')
+            messages.info(request, 'Siz hali biror bo\'limga biriktirilmagansiz shu sababli hamkasblaringiz mavjud emas!')
             return redirect('dashboard:main')
             
         else:
