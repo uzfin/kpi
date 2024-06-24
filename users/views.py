@@ -95,11 +95,11 @@ class AuthCallbackView(View):
                     user.set_password(raw_password='123456789')
                 
                 user.save()
+                messages.info(request, 'Siz tizimdan muvaffaqiyatli ro\'yxatdan o\'tdingiz')
+                messages.info(request, 'Siz hali biror bo\'limga biriktirilmagansiz shu sababli hamkasblaringiz mavjud emas!')
 
             login(request, user)
-
-            messages.info(request, 'Siz tizimdan muvaffaqiyatli ro\'yxatdan o\'tdingiz')
-            messages.info(request, 'Siz hali biror bo\'limga biriktirilmagansiz shu sababli hamkasblaringiz mavjud emas!')
+            messages.info(request, 'Siz tizimdan muvaffaqiyatli kirdingiz.')
             return redirect('dashboard:main')
             
         else:
