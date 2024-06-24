@@ -99,7 +99,7 @@ class AuthCallbackView(View):
                 messages.info(request, 'Siz hali biror bo\'limga biriktirilmagansiz shu sababli hamkasblaringiz mavjud emas!')
 
             login(request, user)
-            messages.info(request, 'Siz tizimdan muvaffaqiyatli kirdingiz.')
+            messages.success(request, 'Siz tizimdan muvaffaqiyatli kirdingiz.')
             return redirect('dashboard:main')
             
         else:
